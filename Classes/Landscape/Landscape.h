@@ -6,14 +6,15 @@
 #define LAB4_LANDSCAPE_H
 
 #include <iostream>
+#include <vector>
+#include "..\Cell\Cell.h"
 
-class LANDSCAPE {
+class Landscape {
 private:
-    const size_t dimx_; //длина поля в клетках
-    const size_t dimy_; //ширина поля в клетках
-    std::vector<Cell> game_field;
+    std::pair <size_t, size_t> field_size;
+    std::vector<Cell> game_field; //сжатая в вектор матрица клеток игрового поля
 public:
-    LANDSCAPE():dimx_(0),dimy_(0) {};
+    Landscape(size_t dimx_ = 1000, size_t dimy_ = 1000):field_size(dimx_, dimy_) {};
 
 };
 
