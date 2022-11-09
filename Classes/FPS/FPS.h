@@ -1,7 +1,3 @@
-//
-// Created by kklim on 02.11.2022.
-//
-
 #pragma once
 #include "..\Base\Base.h"
 
@@ -17,7 +13,7 @@ public:
     FPS();
     ~FPS();
 
-    void draw(sf::RenderTarget & target, sf::RenderStates states) const;
+    virtual void draw(sf::RenderTarget & target, sf::RenderStates states) const override;
     void countTime(sf::Time &gameTimer);
 
     FPS & operator++();

@@ -1,27 +1,18 @@
-//
-// Created by kklim on 01.11.2022.
-//
 #pragma once
-#include "..\Base\Base.h"
-#include "..\IGame\IGame.h"
-#include "..\ButtonSwitcher\ButtonSwithcer.h"
-#include "..\FPS\FPS.h"
-#define mainLoop
 
-class Game
-{
+class Game {
 private:
-    static Game *instance;
+    //static Game *instance;
 
     sf::RenderWindow window;
-    sf::Event evnt;
+    sf::Event event;
     sf::Font font;
     sf::Image icon;
 
-    std::unique_ptr <IGame> gameController;
+    //std::unique_ptr <IGame> gameController;
 
-    sf::Time accumulator;
-    const sf::Time frameTime = sf::seconds(1.f / 120.f);
+    sf::Time time;
+    static const sf::Time frameTime;
     sf::Clock clock;
 
     sf::Time timer;
@@ -39,11 +30,12 @@ public:
     void run();
 
     static Game * getInstance();
-    sf::RenderWindow & getWindow() const;
-    sf::Font *getFont() const;
+    sf::RenderWindow & getWindow();
+    sf::Font *getFont();
     sf::Time getTimer() const;
     void setController(std::unique_ptr <IGame> newController);
     void exit();
-    sf::Music * getMusic() const;
-    void hurryUpTime();
+    sf::Music * getMusic();
+    //void boost();
 };
+
