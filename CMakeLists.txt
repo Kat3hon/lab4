@@ -2,7 +2,11 @@ cmake_minimum_required(VERSION 3.23)
 project(lab4)
 
 set(CMAKE_CXX_STANDARD 20)
-set(SOURCE_FILES startup.cpp Classes/Landscape/Landscape.h Classes/Landscape/Landscape.cpp Classes/Lain/Lain.cpp Classes/Lain/Lain.h Classes/Enemy/Enemy.cpp Classes/Enemy/Enemy.h Classes/Effect/Effect.cpp Classes/Effect/Effect.h Classes/Cell/Cell.cpp Classes/Cell/Cell.h Classes/Castle/Castle.cpp Classes/Castle/Castle.h Classes/Building/Building.cpp Classes/Building/Building.h Classes/Tower/Tower.cpp Classes/Tower/Tower.h Classes/Trap/Trap.cpp Classes/Trap/Trap.h Classes/Weapon/Weapon.cpp Classes/Weapon/Weapon.h Classes/Game/Game.cpp Classes/Game/Game.h Classes/Base/Base.cpp Classes/Base/Base.h Classes/MainMenu/MainMenu.cpp Classes/MainMenu/MainMenu.h Classes/LevelMenu/LevelMenu.cpp Classes/LevelMenu/LevelMenu.h Classes/IGame/IGame.h Classes/ButtonSwitcher/ButtonSwitcher.cpp Classes/ButtonSwitcher/ButtonSwitcher.h Classes/DefaultFont/DefaultFont.h Classes/Button/Button.h Classes/FPS/FPS.cpp Classes/FPS/FPS.h Classes/ParticleMenu/ParticleMenu.cpp Classes/ParticleMenu/ParticleMenu.h Classes/MainGame/MainGame.cpp Classes/MainGame/MainGame.h Classes/Wallet/Wallet.cpp Classes/Wallet/Wallet.h Classes/Wave/Wave.cpp Classes/Wave/Wave.h Classes/Pause/Pause.cpp Classes/Pause/Pause.h Classes/GameLoader/GameLoader.cpp Classes/GameLoader/GameLoader.h Classes/SetLevel/SetLevel.cpp Classes/SetLevel/SetLevel.h Classes/Path/Path.cpp Classes/Path/Path.h)
+set(SOURCE_FILES startup.cpp
+        Classes/Game/Game.cpp
+        Classes/FPS/FPS.cpp
+        Classes/MainMenu/MainMenu.cpp
+        Classes/MenuOption/MenuOption.cpp Classes/LevelMenu/LevelMenu.cpp Classes/LevelMenu/LevelMenu.h)
 
 
 #сделать проверку на добавление нужной библиотеки
@@ -11,7 +15,7 @@ set(SFML_ROOT ${SFML_DIR})
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake-modules")
 find_package(SFML 2 COMPONENTS system window graphics audio network REQUIRED)
 
-include_directories(${SFML_INCLUDE_DIR})
+include_directories(${SFML_INCLUDE_DIR} Storage)
 add_executable(lab4 ${SOURCE_FILES})
 target_link_libraries(lab4 ${SFML_LIBRARIES})
 

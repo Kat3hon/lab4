@@ -1,39 +1,35 @@
-//
-// Created by kklim on 02.11.2022.
-//
-
 #include "FPS.h"
 
-FPS::FPS() {
-    if (!font.loadFromFile("Fonts/Comfortaa.ttf"))
-        MessageBox(0, "Can not load Comfortaa.ttf", 0, 0);
+const sf::Time FPS::second = sf::seconds(1.f);
 
-    fps = 0;
-    timer = sf::Time::Zero;
+FPS::FPS():fps(0), fpsTimer(sf::Time::Zero) {
+    if (!fpsFont.loadFromFile("../Storage/Fonts/Comfortaa.ttf"))
+        MessageBox(nullptr, "Can not load Comfortaa.ttf", "Error!", MB_OK);
 
-    fpsText.setFont(font);
+    fpsText.setFont(fpsFont);
     fpsText.setCharacterSize(30);
-    fpsText.setColor(sf::Color(200, 200, 220));
+    fpsText.setFillColor(sf::Color::White);
     fpsText.setString("fps = ");
 }
-
-FPS::~FPS(){}
 
 void FPS::draw(sf::RenderTarget & target, sf::RenderStates states) const {
     target.draw(fpsText);
 }
 
-void FPS::countTime(sf::Time & gameTimer) {
-    timer += gameTimer;
+void FPS::countTime(sf::Time & dTime) {
+    fpsTimer += dTime;
 
-    if (timer >= second) {
-        fpsText.setString("fps = " + intToString(fps));
+    if (fpsTimer >= second) {
+        std::stringstream tmpStream;
+        tmpStream << fps;
+        std::string fpsString = tmpStream.str();
+        fpsText.setString("fps = " + fpsString);
         fps = 0;
-        timer = sf::Time::Zero;
+        fpsTimer = sf::Time::Zero;
     }
 }
 
-FPS & FPS::operator++() {
+FPS& FPS::operator++() {
     fps++;
     return *this;
 }

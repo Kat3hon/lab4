@@ -1,41 +1,51 @@
 #pragma once
 
+#include "../baseHeaders.h"
+#include "../FPS/FPS.h"
+#include "../IController/IController.h"
+#include "../MainMenu/MainMenu.h"
+
 class Game {
 private:
-    //static Game *instance;
 
-    sf::RenderWindow window;
+    static Game* instance;
+
     sf::Event event;
-    sf::Font font;
     sf::Image icon;
 
-    //std::unique_ptr <IGame> gameController;
-
     sf::Time time;
-    static const sf::Time frameTime;
     sf::Clock clock;
-
-    sf::Time timer;
-    sf::Clock clocker;
+    static const sf::Time frameTime;
 
     FPS fps;
-    sf::Music music;
-    void loadFont();
 
+    std::unique_ptr<IController> currentController;
+
+    //can be made static, so need to change constructors MainMenu, LevelMenu
+    sf::Music music;
+    sf::Font font;
+    sf::RenderWindow window;
 
 public:
+    friend class MainMenu;
+    friend class LevelMenu;
+
+    void setController(std::unique_ptr <IController> newController);
+
     Game();
     ~Game();
 
     void run();
-
-    static Game * getInstance();
-    sf::RenderWindow & getWindow();
-    sf::Font *getFont();
-    sf::Time getTimer() const;
-    void setController(std::unique_ptr <IGame> newController);
     void exit();
-    sf::Music * getMusic();
-    //void boost();
-};
 
+    //void boost();
+
+    //IController classes must use music, font and window
+    //Also they use exit and setMenu()
+    //How to organize their connections?
+    //Friend methods?
+
+    sf::Music* getMusicPtr() { return &music; }
+    sf::Window* getWindowPtr() { return &window; }
+    sf::Font getFont() { return font; }
+};
