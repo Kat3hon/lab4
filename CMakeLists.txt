@@ -9,8 +9,8 @@ set(SOURCE_FILES startup.cpp
         Classes/MenuOption/MenuOption.cpp
         Classes/LevelMenu/LevelMenu.cpp
         Classes/MainGame/MainGame.cpp
-        Classes/TileMap/TileMap.cpp
-        Classes/ObjectXML/ObjectXML.cpp)
+        Classes/Level/Level.cpp
+        Classes/ObjectXML/ObjectXML.cpp Classes/Animation/Animation.cpp Classes/Animation/Animation.h Classes/AnimationManager/AnimationManager.cpp Classes/AnimationManager/AnimationManager.h)
 
 
 #сделать проверку на добавление нужной библиотеки

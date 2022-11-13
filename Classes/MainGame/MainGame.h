@@ -3,7 +3,6 @@
 #include "..\MenuOption\MenuOption.h"
 #include "..\LevelMenu\LevelMenu.h"
 #include "..\Game\Game.h"
-#include "..\TileMap\TileMap.h"
 
 class MainGame: public IController {
 private:
@@ -11,6 +10,5 @@ private:
     //
 
 public:
-    MainGame();
 
 };

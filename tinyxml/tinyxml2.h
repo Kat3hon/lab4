@@ -33,7 +33,7 @@ distribution.
 #   include <cstdlib>
 #   include <cstring>
 #endif
-#include <сstdint>
+#include <stdint.h>
 /*
 TODO: intern strings instead of allocation.
 */
