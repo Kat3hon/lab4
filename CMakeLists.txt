@@ -6,7 +6,11 @@ set(SOURCE_FILES startup.cpp
         Classes/Game/Game.cpp
         Classes/FPS/FPS.cpp
         Classes/MainMenu/MainMenu.cpp
-        Classes/MenuOption/MenuOption.cpp Classes/LevelMenu/LevelMenu.cpp Classes/LevelMenu/LevelMenu.h)
+        Classes/MenuOption/MenuOption.cpp
+        Classes/LevelMenu/LevelMenu.cpp
+        Classes/MainGame/MainGame.cpp
+        Classes/TileMap/TileMap.cpp
+        Classes/ObjectXML/ObjectXML.cpp)
 
 
 #сделать проверку на добавление нужной библиотеки

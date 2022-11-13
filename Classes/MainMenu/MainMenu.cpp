@@ -10,7 +10,7 @@ MainMenu::MainMenu():buttonPressed(0) {
     // его адрес изменяется при воздействии другой текстуры,
     // поэтому некоторые спрайты «теряют» свою текстуру.
 
-    option.resize(3);
+    option.resize(3); //кол-во пунктов меню
     if (Game::instance->getMusicPtr()->getStatus() == sf::Music::Stopped)
         Game::instance->getMusicPtr()->play();
 
