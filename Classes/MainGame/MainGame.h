@@ -1,14 +1,16 @@
 #include "..\baseHeaders.h"
 #include "..\IController\IController.h"
-#include "..\MenuOption\MenuOption.h"
-#include "..\LevelMenu\LevelMenu.h"
 #include "..\Game\Game.h"
+#include "..\Level\Level.h"
 
 class MainGame: public IController {
 private:
-    //таблица уровней
-    //
 
 public:
+    Level lvl;
+    MainGame(const std::string& level_filename);
+    ~MainGame();
 
+    void update() override;
+    void draw(sf::RenderWindow &window) override;
 };

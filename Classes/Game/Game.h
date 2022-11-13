@@ -29,6 +29,7 @@ private:
 public:
     friend class MainMenu;
     friend class LevelMenu;
+    friend class MainGame;
 
     void setController(std::unique_ptr <IController> newController);
 

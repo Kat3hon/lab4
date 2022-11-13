@@ -30,8 +30,6 @@ bool Level::LoadFromFile(std::string filename)
     TiXmlElement *map;
     map = levelFile.FirstChildElement("map");
 
-    // Пример карты: <map version="1.0" orientation="orthogonal"
-    // width="10" height="10" tilewidth="34" tileheight="34">
     width = atoi(map->Attribute("width"));
     height = atoi(map->Attribute("height"));
     tileWidth = atoi(map->Attribute("tilewidth"));
