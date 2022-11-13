@@ -1,30 +1,29 @@
 #include "MenuOption.h"
 
-//sf::Texture MenuOption::getTexture() const {
-//    return texture;
+//MenuOption::MenuOption(const std::string& filename, float width, float height, size_t size, sf::Texture texture) {
+//    sprite.setTexture(texture);
+//    width = width;
+//    height = height;
+//    sprite.setPosition(width, height);
+//    id = size;
 //}
-//void MenuOption::setTexture(sf::Texture t) {
-//    texture = t;
-//}
-//
-//sf::Sprite MenuOption::getSprite() const {
-//    return sprite;
-//}
-//
-//void MenuOption::setSprite(sf::Sprite s) {
-//    sprite = s;
-//}
-//
-//float MenuOption::getWidth() const {
-//    return width;
-//}
-//void MenuOption::setWidth(float w) {
-//    width = w;
-//}
-//
-//float MenuOption::getHeight() const {
-//    return heigth;
-//}
-//void MenuOption::setHeight(float h) {
-//    heigth = h;
-//}
+
+sf::Sprite MenuOption::getSprite() const {
+    return sprite;
+}
+
+float MenuOption::getWidth() const {
+    return width;
+}
+
+float MenuOption::getHeight() const {
+    return height;
+}
+
+size_t MenuOption::getID() const {
+    return id;
+}
+
+void MenuOption::setColor(sf::Color color) {
+    sprite.setColor(color);
+}

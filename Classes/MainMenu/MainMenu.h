@@ -5,12 +5,10 @@
 #include "..\MenuOption\MenuOption.h"
 #include "..\LevelMenu\LevelMenu.h"
 #include "..\Game\Game.h"
-#include <iostream>
 
 class MainMenu: public IController {
 private:
     std::vector <MenuOption> option;
-
     size_t buttonPressed;
 
 public:

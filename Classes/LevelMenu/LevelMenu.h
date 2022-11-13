@@ -8,7 +8,6 @@ class LevelMenu: public IController {
 private:
     //sf::Thread loadingThread;
     std::vector <MenuOption> option;
-
     size_t buttonPressed;
 
 public:
