@@ -10,7 +10,7 @@ set(SOURCE_FILES startup.cpp
         Classes/LevelMenu/LevelMenu.cpp
         Classes/MainGame/MainGame.cpp
         Classes/Level/Level.cpp
-        Classes/ObjectXML/ObjectXML.cpp Classes/Animation/Animation.cpp Classes/Animation/Animation.h Classes/AnimationManager/AnimationManager.cpp Classes/AnimationManager/AnimationManager.h)
+        Classes/ObjectXML/ObjectXML.cpp Classes/Animation/Animation.cpp Classes/Animation/Animation.h Classes/AnimationManager/AnimationManager.cpp Classes/AnimationManager/AnimationManager.h Classes/DynamicEntity/Entity.cpp Classes/DynamicEntity/Entity.h Classes/Enemy/Enemy.cpp Classes/Enemy/Enemy.h Classes/Projectile/Projectile.cpp Classes/Projectile/Projectile.h)
 
 
 #сделать проверку на добавление нужной библиотеки
