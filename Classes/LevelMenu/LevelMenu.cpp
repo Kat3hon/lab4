@@ -56,7 +56,7 @@ void LevelMenu::update() {
     for (auto & item : option) {
         auto x = WIDTH / 2.;
         //почему то при изменении размеров экрана ничего не меняется, то есть надо водить мышкой вне окна для изменения цвета
-        if (item.id != 0 && IntRect(0, item.height, Game::instance->getWindowPtr()->getSize().x, 0.1*Game::instance->getWindowPtr()->getSize().y).contains(Mouse::getPosition(*Game::instance->getWindowPtr()))) {
+        if (item.id != 0 && IntRect(0, Game::instance->getWindowPtr()->getSize().y*item.getHeight()/HEIGHT, Game::instance->getWindowPtr()->getSize().x, 0.1*Game::instance->getWindowPtr()->getSize().y).contains(Mouse::getPosition(*Game::instance->getWindowPtr()))) {
             item.sprite.setColor(Color::Yellow);
             buttonPressed = item.id;
         }
@@ -68,7 +68,7 @@ void LevelMenu::update() {
             case 1: {
                 sf::Vector2 pos = {0, 0};
                 Mouse::setPosition(pos);
-                //setController(std::make_unique<MainGame>());
+                Game::instance->setController(std::make_unique<MainGame>("../Storage/Textures/Landscape/Level1/level1map.tmx"));
             } break;
             case 2: {
                 sf::Vector2 pos = {0, 0};

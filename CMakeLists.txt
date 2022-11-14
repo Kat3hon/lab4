@@ -10,12 +10,13 @@ set(SOURCE_FILES startup.cpp
         Classes/LevelMenu/LevelMenu.cpp
         Classes/MainGame/MainGame.cpp
         Classes/Level/Level.cpp
-        Classes/ObjectXML/ObjectXML.cpp
         Classes/Animation/Animation.cpp
         Classes/AnimationManager/AnimationManager.cpp
         Classes/DynamicEntity/Entity.cpp
         Classes/Enemy/Enemy.cpp
-        Classes/Projectile/Projectile.cpp)
+        Classes/Projectile/Projectile.cpp
+        Storage/tinyxml/tinyxml2.cpp
+        Classes/Wallet/Wallet.cpp Classes/Wallet/Wallet.h)
 
 
 #сделать проверку на добавление нужной библиотеки

@@ -1,5 +1,15 @@
 #include "AnimationManager.h"
 
+// On Windows, backslash '\\' is directory separator in paths
+// On UNIX paths separated with slash '/'.
+#if defined(_WIN32)
+const char DIR_SEPARATOR = '\\';
+#else
+const char DIR_SEPARATOR = '/';
+#endif
+
+using namespace tinyxml2;
+
 AnimationManager::~AnimationManager() {
     animList.clear();
 }
@@ -21,23 +31,23 @@ void AnimationManager::create(const std::string& name, Texture &texture, int x, 
 }
 
 void AnimationManager::loadFromXML(std::string fileName,Texture &t) {
-    TiXmlDocument animFile(fileName.c_str());
+    tinyxml2::XMLDocument animFile;
 
-    animFile.LoadFile();
+    if (animFile.LoadFile(fileName.c_str()) != XML_SUCCESS)
+    {
+        throw std::runtime_error("Loading level \"" + fileName + "\" failed.");
+    }
 
-    TiXmlElement *head;
-    head = animFile.FirstChildElement("sprites");
+    XMLElement *head = animFile.FirstChildElement("sprites");
 
-    TiXmlElement *animElement;
-    animElement = head->FirstChildElement("animation");
+    XMLElement *animElement = head->FirstChildElement("animation");
     while(animElement) {
         Animation anim;
         currentAnim = animElement->Attribute("title");
         int delay = atoi(animElement->Attribute("delay"));
         anim.speed = 1.0/delay; anim.sprite.setTexture(t);
 
-        TiXmlElement *cut;
-        cut = animElement->FirstChildElement("cut");
+        XMLElement *cut = animElement->FirstChildElement("cut");
         while (cut) {
             int x = atoi(cut->Attribute("x"));
             int y = atoi(cut->Attribute("y"));

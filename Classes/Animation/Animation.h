@@ -1,4 +1,5 @@
-#include "..\Storage\tinyxml\tinyxml.h"
+#pragma once
+#include "../Storage/tinyxml/tinyxml2.h"
 #include "../baseHeaders.h"
 
 class Animation {

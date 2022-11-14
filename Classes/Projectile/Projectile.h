@@ -7,7 +7,7 @@ public:
         option("Bullet", 0.3, 10, "move");
 
         if (dir) dx=-0.3;
-        obj = lev.GetObjects("solid");
+        obj = lev.GetAllObjects("solid");
     }
 
     void update(float time);

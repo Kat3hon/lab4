@@ -1,3 +1,4 @@
+#pragma once
 #include "../baseHeaders.h"
 #include "../Animation/Animation.h"
 

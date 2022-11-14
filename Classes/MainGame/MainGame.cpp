@@ -1,6 +1,8 @@
 #include "MainGame.h"
+#include "..\Game\Game.h"
 
 MainGame::MainGame(const std::string& level_filename) {
+    std::cout << "here " << level_filename << std::endl;
     if(!lvl.LoadFromFile(level_filename)){
         MessageBox(nullptr, "Can not load Level file.", "Error!", MB_OK);
         Game::instance->getWindowPtr()->close();

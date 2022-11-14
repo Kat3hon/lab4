@@ -20,7 +20,7 @@ MainMenu::MainMenu():buttonPressed(0) {
         Game::instance->getWindowPtr()->close();
     }
     option[0].sprite.setTexture(option[0].texture);
-    option[0].width = WIDTH / 6.;
+    option[0].width = WIDTH / 24.;
     option[0].height = HEIGHT * 0.25;
     option[0].sprite.setPosition(option[0].width, option[0].height);
     option[0].id = 0;
@@ -55,7 +55,7 @@ void MainMenu::update() {
 
     for (auto & item : option) {
         //почему то при изменении размеров экрана ничего не меняется, то есть надо водить мышкой вне окна для изменения цвета
-        if (item.getID()!= 0 && IntRect(0, item.getHeight(), Game::instance->getWindowPtr()->getSize().x, 0.1*Game::instance->getWindowPtr()->getSize().y).contains(Mouse::getPosition(*Game::instance->getWindowPtr()))) {
+        if (item.getID()!= 0 && IntRect(0, Game::instance->getWindowPtr()->getSize().y*item.getHeight()/HEIGHT, Game::instance->getWindowPtr()->getSize().x, 0.1*Game::instance->getWindowPtr()->getSize().y).contains(Mouse::getPosition(*Game::instance->getWindowPtr()))) {
             item.setColor(Color::Yellow);
             buttonPressed = item.getID();
         }

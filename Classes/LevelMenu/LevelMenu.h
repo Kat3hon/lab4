@@ -2,6 +2,7 @@
 
 #include "..\baseHeaders.h"
 #include "..\MainMenu\MainMenu.h"
+#include "..\MainGame\MainGame.h"
 #include <vector>
 
 class LevelMenu: public IController {
