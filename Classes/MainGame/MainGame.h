@@ -3,10 +3,11 @@
 #include "..\IController\IController.h"
 #include "..\Game\Game.h"
 #include "..\Level\Level.h"
+#include "../Wallet/Wallet.h"
 
 class MainGame: public IController {
 private:
-    //Wallet wallet;
+    Wallet wallet;
 
 public:
     Level lvl;

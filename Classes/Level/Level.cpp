@@ -242,7 +242,6 @@ bool Level::LoadFromFile(const std::string &filepath)
     ///
 
     // If there are object layers.
-    std::cout << "here" << std::endl;
     if (map->FirstChildElement("objectgroup") != nullptr)
     {
         XMLElement *objectGroupElement = map->FirstChildElement("objectgroup");

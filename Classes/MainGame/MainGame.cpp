@@ -1,14 +1,13 @@
 #include "MainGame.h"
-#include "..\Game\Game.h"
 
 MainGame::MainGame(const std::string& level_filename) {
-    std::cout << "here " << level_filename << std::endl;
     if(!lvl.LoadFromFile(level_filename)){
         MessageBox(nullptr, "Can not load Level file.", "Error!", MB_OK);
         Game::instance->getWindowPtr()->close();
     }
-
-
+    wallet.setFont(Game::instance->getFont());
+    wallet.setGoldText();
+    //Shop
 }
 
 void MainGame::update() {
@@ -17,6 +16,7 @@ void MainGame::update() {
 
 void MainGame::draw(sf::RenderWindow &window) {
     lvl.Draw(window);
+    wallet.draw(window);
 }
 
 //void RunGame()

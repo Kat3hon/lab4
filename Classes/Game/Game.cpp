@@ -55,8 +55,8 @@ void Game::run() {
         fps.countTime(dTime);
 
         window.clear(Color::Black);
-        window.draw(fps);
         currentController->draw(window);
+        window.draw(fps);
         window.display();
         ++fps;
     }

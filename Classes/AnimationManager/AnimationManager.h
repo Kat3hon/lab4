@@ -15,7 +15,7 @@ public:
     void create(const std::string& name, Texture &texture, int x, int y, int w, int h, int count, float speed, int step=0, bool Loop=true);
 
     //загрузка из файла XML
-    void loadFromXML(std::string fileName,Texture &t);
+    bool loadFromXML(std::string fileName,Texture &t);
 
     //установить анимацию по названию (например "die")
     void set(std::string name);

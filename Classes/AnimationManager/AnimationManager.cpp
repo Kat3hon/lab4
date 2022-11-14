@@ -30,14 +30,11 @@ void AnimationManager::create(const std::string& name, Texture &texture, int x, 
     currentAnim = name;
 }
 
-void AnimationManager::loadFromXML(std::string fileName,Texture &t) {
+bool AnimationManager::loadFromXML(std::string fileName,Texture &t) {
     tinyxml2::XMLDocument animFile;
 
     if (animFile.LoadFile(fileName.c_str()) != XML_SUCCESS)
-    {
-        throw std::runtime_error("Loading level \"" + fileName + "\" failed.");
-    }
-
+        return false;
     XMLElement *head = animFile.FirstChildElement("sprites");
 
     XMLElement *animElement = head->FirstChildElement("animation");
@@ -64,6 +61,7 @@ void AnimationManager::loadFromXML(std::string fileName,Texture &t) {
         animList[currentAnim] = anim;
         animElement = animElement->NextSiblingElement("animation");
     }
+    return true;
 }
 
 void AnimationManager::set(std::string name) {
@@ -73,7 +71,7 @@ void AnimationManager::set(std::string name) {
 
 void AnimationManager::draw(RenderWindow &window,int x, int y) {
     animList[currentAnim].sprite.setPosition(x,y);
-    window.draw( animList[currentAnim].sprite );
+    window.draw( animList[currentAnim].sprite);
 }
 
 void AnimationManager::flip(bool b) {
