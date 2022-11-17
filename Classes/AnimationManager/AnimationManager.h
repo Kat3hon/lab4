@@ -5,7 +5,7 @@
 class AnimationManager {
 public:
     std::string currentAnim; //текущая анимация
-    std::map<std::string, Animation> animList; //таблица анимаций
+    std::map<std::string, Animation> animMap; //таблица анимаций
 
     AnimationManager() = default;
     ~AnimationManager();

@@ -11,7 +11,7 @@ const char DIR_SEPARATOR = '/';
 using namespace tinyxml2;
 
 AnimationManager::~AnimationManager() {
-    animList.clear();
+    animMap.clear();
 }
 
 void AnimationManager::create(const std::string& name, Texture &texture, int x, int y, int w, int h, int count, float speed, int step, bool Loop) {
@@ -26,7 +26,7 @@ void AnimationManager::create(const std::string& name, Texture &texture, int x, 
         a.frames.emplace_back( IntRect(x+i*step, y, w, h)  );
         a.frames_flip.emplace_back( IntRect(x+i*step+w, y, -w, h)  );
     }
-    animList[name] = a;
+    animMap[name] = a;
     currentAnim = name;
 }
 
@@ -42,7 +42,8 @@ bool AnimationManager::loadFromXML(std::string fileName,Texture &t) {
         Animation anim;
         currentAnim = animElement->Attribute("title");
         int delay = atoi(animElement->Attribute("delay"));
-        anim.speed = 1.0/delay; anim.sprite.setTexture(t);
+        anim.speed = 1.0/delay;
+        anim.sprite.setTexture(t);
 
         XMLElement *cut = animElement->FirstChildElement("cut");
         while (cut) {
@@ -58,7 +59,7 @@ bool AnimationManager::loadFromXML(std::string fileName,Texture &t) {
 
         anim.sprite.setOrigin(0,anim.frames[0].height);
 
-        animList[currentAnim] = anim;
+        animMap[currentAnim] = anim;
         animElement = animElement->NextSiblingElement("animation");
     }
     return true;
@@ -66,42 +67,42 @@ bool AnimationManager::loadFromXML(std::string fileName,Texture &t) {
 
 void AnimationManager::set(std::string name) {
     currentAnim = name;
-    animList[currentAnim].flip=0;
+    animMap[currentAnim].flip=0;
 }
 
 void AnimationManager::draw(RenderWindow &window,int x, int y) {
-    animList[currentAnim].sprite.setPosition(x,y);
-    window.draw( animList[currentAnim].sprite);
+    animMap[currentAnim].sprite.setPosition(x, y);
+    window.draw(animMap[currentAnim].sprite);
 }
 
 void AnimationManager::flip(bool b) {
-    animList[currentAnim].flip = b;
+    animMap[currentAnim].flip = b;
 }
 
 void AnimationManager::tick(float time) {
-    animList[currentAnim].tick(time);
+    animMap[currentAnim].tick(time);
 }
 
 void AnimationManager::pause() {
-    animList[currentAnim].isPlaying=false;
+    animMap[currentAnim].isPlaying=false;
 }
 
 void AnimationManager::play() {
-    animList[currentAnim].isPlaying=true;
+    animMap[currentAnim].isPlaying=true;
 }
 
 void AnimationManager::play(const std::string& name) {
-    animList[name].isPlaying=true;
+    animMap[name].isPlaying=true;
 }
 
 bool AnimationManager::isPlaying() {
-    return animList[currentAnim].isPlaying;
+    return animMap[currentAnim].isPlaying;
 }
 
 float AnimationManager::getH() {
-    return animList[currentAnim].frames[0].height;
+    return animMap[currentAnim].frames[0].height;
 }
 
 float AnimationManager::getW() {
-    return animList[currentAnim].frames[0].width;
+    return animMap[currentAnim].frames[0].width;
 }

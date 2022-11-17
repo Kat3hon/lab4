@@ -7,7 +7,7 @@ class Wallet {
 private:
     int gold; //текущее золото
     sf::Text goldText;
-    sf::Sprite coin;
+    //sf::Sprite coin;
     sf::Texture texture;
     AnimationManager anim;
     sf::Font font;

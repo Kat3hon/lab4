@@ -20,6 +20,7 @@ public:
     void draw(RenderWindow &window);
     FloatRect getRect(); //получение размеров прямоугольника - хитбокса объекта (x,y,w,h)
     void option(std::string NAME, float SPEED=0, int HEALTH=10, std::string FIRST_ANIM="");
+    virtual bool isDead(); //проверяет мертв ли объект
 };
 
 

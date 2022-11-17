@@ -16,7 +16,7 @@ set(SOURCE_FILES startup.cpp
         Classes/Enemy/Enemy.cpp
         Classes/Projectile/Projectile.cpp
         Storage/tinyxml/tinyxml2.cpp
-        Classes/Wallet/Wallet.cpp)
+        Classes/Wallet/Wallet.cpp Classes/Wave/Wave.cpp Classes/Wave/Wave.h Classes/Tower/Tower.cpp Classes/Tower/Tower.h)
 
 
 #сделать проверку на добавление нужной библиотеки

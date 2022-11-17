@@ -7,7 +7,8 @@ MainGame::MainGame(const std::string& level_filename) {
     }
     wallet.setFont(Game::instance->getFont());
     wallet.setGoldText();
-    //Shop
+
+
 }
 
 void MainGame::update() {
@@ -39,7 +40,7 @@ void MainGame::draw(sf::RenderWindow &window) {
 //
 //    AnimationManager anim;
 //    anim.loadFromXML("files/anim_megaman.xml",megaman_t);
-//    anim.animList["jump"].loop = 0;
+//    anim.animMap["jump"].loop = 0;
 //
 //    AnimationManager anim2;
 //    anim2.create("move",bullet_t,7,10,8,8,1,0);

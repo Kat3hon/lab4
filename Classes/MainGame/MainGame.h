@@ -1,4 +1,5 @@
 #pragma once
+#include <queue>
 #include "..\baseHeaders.h"
 #include "..\IController\IController.h"
 #include "..\Game\Game.h"
@@ -8,6 +9,7 @@
 class MainGame: public IController {
 private:
     Wallet wallet;
+    std::queue <Wave> waves;
 
 public:
     Level lvl;

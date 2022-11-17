@@ -7,5 +7,7 @@ public:
         option("Enemy", 0.01, 15, "move");
     }
 
-    void update(float time);
+    bool isDead() override; //проверяет умер ли враг
+
+    void update(float time) override;
 };
