@@ -1,0 +1,50 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "level1map.tmx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "fileStates": {
+        "AllAssetsPreview.tsx": {
+            "scaleInDock": 2,
+            "scaleInEditor": 2
+        },
+        "level1map.tmx": {
+            "scale": 2,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 306.5,
+                "y": 159.75
+            }
+        },
+        "level1map.tmx#AllAssetsPreview": {
+            "scaleInDock": 2
+        },
+        "level1map.tsx": {
+            "scaleInDock": 0.75,
+            "scaleInEditor": 1
+        }
+    },
+    "last.imagePath": "D:/prog/c++/lab4/Storage/Textures/Landscape/Level1",
+    "map.height": 30,
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "openFiles": [
+        "level1map.tmx"
+    ],
+    "project": "level1map.tiled-project",
+    "recentFiles": [
+        "level1map.tmx",
+        "AllAssetsPreview.tsx",
+        "level1map.tsx"
+    ],
+    "tileset.embedInMap": true,
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    }
+}
