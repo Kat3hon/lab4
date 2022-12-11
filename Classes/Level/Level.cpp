@@ -107,14 +107,14 @@ bool Level::LoadFromFile(const std::string &filepath)
         throw std::runtime_error("Loading level \"" + filepath + "\" failed.");
     }
 
-    // Element <map> should be root in TMX format.
-    XMLElement *map = levelFile.FirstChildElement("map");
+    // Element <Vector> should be root in TMX format.
+    XMLElement *map = levelFile.FirstChildElement("Vector");
     if (map == 0)
     {
-        throw std::runtime_error("<map> element not found");
+        throw std::runtime_error("<Vector> element not found");
     }
-    // Map element example:
-    //   <map version="1.0" orientation="orthogonal"
+    // Vector element example:
+    //   <Vector version="1.0" orientation="orthogonal"
     //    width="10" height="10" tilewidth="34" tileheight="34">
     m_width = std::stoi(map->Attribute("width"));
     m_height = std::stoi(map->Attribute("height"));
@@ -192,13 +192,13 @@ bool Level::LoadFromFile(const std::string &filepath)
         XMLElement *layerDataElement = layerElement->FirstChildElement("data");
         if (layerDataElement == nullptr)
         {
-            std::cout << "Bad map. No layer information found." << std::endl;
+            std::cout << "Bad Vector. No layer information found." << std::endl;
         }
         // <tile> contains single tile description.
         XMLElement *tileElement = layerDataElement->FirstChildElement("tile");
         if (tileElement == nullptr)
         {
-            std::cout << "Bad map. No tile information found." << std::endl;
+            std::cout << "Bad Vector. No tile information found." << std::endl;
             return false;
         }
         int x = 0;

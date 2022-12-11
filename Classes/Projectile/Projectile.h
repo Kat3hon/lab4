@@ -2,7 +2,7 @@
 
 class Projectile: public Entity {
 private:
-    ELEMENT element; //вид элемента снаряда
+    //ELEMENT element; //вид элемента снаряда
 
 public:
 
@@ -13,7 +13,7 @@ public:
         obj = lev.GetAllObjects("solid");
     }
 
-    bool isDead() override;
+    //bool isDead() override;
 
     void update(float time) override;
 

@@ -14,10 +14,10 @@
         },
         "level1map.tmx": {
             "scale": 2,
-            "selectedLayer": 2,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 306.5,
-                "y": 159.75
+                "x": 252.75,
+                "y": 160.75
             }
         },
         "level1map.tmx#AllAssetsPreview": {

@@ -16,7 +16,23 @@ set(SOURCE_FILES startup.cpp
         Classes/Enemy/Enemy.cpp
         Classes/Projectile/Projectile.cpp
         Storage/tinyxml/tinyxml2.cpp
-        Classes/Wallet/Wallet.cpp Classes/Wave/Wave.cpp Classes/Wave/Wave.h Classes/Tower/Tower.cpp Classes/Tower/Tower.h)
+        Classes/Wallet/Wallet.cpp
+        Classes/Wave/Wave.cpp
+        Classes/Wave/Wave.h
+        Classes/Tower/Tower.cpp
+        Classes/Tower/Tower.h
+        Classes/Weapon/Weapon.cpp
+        Classes/Weapon/Weapon.h
+        Classes/HydroTower/HydroTower.cpp
+        Classes/HydroTower/HydroTower.h
+        Classes/HydroTrap/HydroTrap.cpp
+        Classes/HydroTrap/HydroTrap.h
+        Classes/PyroTower/PyroTower.cpp
+        Classes/PyroTower/PyroTower.h
+        Classes/PyroTrap/PyroTrap.cpp
+        Classes/PyroTrap/PyroTrap.h
+        Classes/Trap/Trap.cpp
+        Classes/Trap/Trap.h Classes/Vector/Vector.cpp Classes/Vector/Vector.h Classes/GUI/SceneManager.cpp Classes/GUI/SceneManager.h Classes/GUI/EventManager.cpp Classes/GUI/EventManager.h Classes/GUI/EventBag.cpp Classes/GUI/EventBag.h Classes/GUI/GUI_Manager.cpp Classes/GUI/GUI_Manager.h Classes/GUI/Scene.cpp Classes/GUI/Scene.h Classes/GUI/GUI_Element.cpp Classes/GUI/GUI_Element.h Classes/GUI/ShopElement.cpp Classes/GUI/ShopElement.h Classes/GUI/cantBeDrawnException.h Classes/GUI/noSceneSetException.h Classes/GameLogic/MainGame.cpp Classes/GameLogic/MainGame.h Classes/GameLogic/GameObject.cpp Classes/GameLogic/GameObject.h Classes/GameLogic/Wave.cpp Classes/GameLogic/Wave.h Classes/GameLogic/WaveManager.cpp Classes/GameLogic/WaveManager.h Classes/GameLogic/Tower.cpp Classes/GameLogic/Tower.h Classes/GameLogic/TowerManager.cpp Classes/GameLogic/TowerManager.h Classes/GameLogic/TowerType.h Classes/GameLogic/ITower.cpp Classes/GameLogic/ITower.h Classes/GameLogic/Enemy.cpp Classes/GameLogic/Enemy.h Classes/GameLogic/EnemyManager.cpp Classes/GameLogic/EnemyManager.h Classes/GameLogic/EnemyType.h)
 
 
 #сделать проверку на добавление нужной библиотеки
