@@ -2,34 +2,35 @@
 
 #include <iostream>
 
-void GUI_Manager::registerElement(GUI_Element *element) {
-    m_elements.push_back(element);
+void GUI_Manager::push_back(GUI_Element *element) {
+    gui_elements.push_back(element);
 }
 
-void GUI_Manager::resolveClick(sf::Vector2i position) {
+void GUI_Manager::checkClick(sf::Vector2i position) {
 
-    if (position.x == 0 && position.y == 0) return; // We have to do this, window::isOpen does not work?
+    // Checks if window is open
+    if (position.x == 0 && position.y == 0) return; // window::isOpen does not work?
 
-    // we use a reverse iterator here, because it could be that at some point
-    // ui elements need to be rendered on top of each other
-    // e.g. if there's an overlay. you would still be clicking on
-    // elements underneath the overlay, we don't want that.
-    for (auto it = m_elements.rbegin(); it != m_elements.rend(); it++) {
+    // If the elements are superimposed on each other, we should click on the one at the top
+    // Therefore we should use reverse iterator
+    for (auto it = gui_elements.rbegin(); it != gui_elements.rend(); it++) {
 
+        // Current gui element
         GUI_Element *element = *it;
 
-        // Since these are not shapes, we have to implement our own 'contains' method.
+        // A current element's position on a window
         const float x = element->getPosition().x;
         const float y = element->getPosition().y;
 
+        // Characteristics of a current element, width (x-axis) and height (reversed y-axis)
         const float width = element->getWidth();
         const float height = element->getHeight();
 
-        if (position.x >= x && position.x <= x + width) {
-            if (position.y >= y && position.y <= y + height) {
-                // we are not going to click on underlying elements.
-                return element->onClick();
-            }
-        }
+        // Checks if all params are not in controversial and chooses the right element
+        if (position.x >= x && position.x <= x + width &&
+            position.y >= y && position.y <= y + height)
+                // OK, let's click on that element
+                return element->click();
+
     }
 }

@@ -1,5 +1,5 @@
 #include "GUI_Element.h"
-#include "../../game/tower/tower.hpp"
+#include "../GameLogic/Tower.h"
 
 #include <memory>
 #include <string>
@@ -10,21 +10,32 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 
-class Shop : public GUI_Element, public sf::Drawable {
-public:
-    Shop(TowerType towerType, sf::Text towerText, sf::Text goldText);
-    Shop();
+/// An element of a in-game shop.
+class ShopElement: public GUI_Element, public sf::Drawable {
 
+    /// Name of a tower to buy.
+    sf::Text tower_name;
+
+    /// Price of a tower.
+    sf::Text gold_text;
+
+    /// Type of tower.
+    TowerType tower_type;
+
+    /// Tower texture.
+    sf::RectangleShape background;
+
+public:
+
+    /// Needs for explicit constructor in GameMenu.
+    ShopElement() = default;
+
+    /// Sets a shop element characteristics to render.
+    ShopElement(TowerType towerType, sf::Text towerText, sf::Text goldText);
+
+    /// Draws a shop element
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
-    std::shared_ptr<Tower> getTower();
-
-private:
-    sf::Text m_towerName;
-
-    sf::Text m_goldText;
-
-    TowerType m_towerType;
-
-    sf::RectangleShape m_background;
+    /// Gets a shop element
+    std::shared_ptr<Tower> getElement(); //Maybe const?
 };

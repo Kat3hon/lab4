@@ -1,31 +1,37 @@
 #include "SceneManager.h"
 #include <iostream>
+#include <windows.h>
 
-void SceneManager::update(EventBag *events) {
-    if (m_scene == nullptr) {
-        throw NoSceneSetException();
+void SceneManager::update(EventStorage *events) {
+
+    if (current_scene == nullptr) {
+        MessageBox(nullptr, "There is no scene to be updated!", "Error!", MB_OK);
+        return;
     }
 
-    m_scene->update(game, events);
+    current_scene->update(game, events);
 }
 
 void SceneManager::draw(sf::RenderWindow &window) const {
-    if (m_scene == nullptr) {
-        throw NoSceneSetException();
+
+    if (current_scene == nullptr) {
+        MessageBox(nullptr, "There is no scene to be drawn!", "Error!", MB_OK);
+        return;
     }
 
-    m_scene->draw(window);
+    current_scene->draw(window);
 }
 
-void SceneManager::fixedUpdate(EventBag *events) {
+void SceneManager::fixedUpdate(EventStorage *events) {
 
-    if (m_scene == nullptr) {
-        throw NoSceneSetException();
+    if (current_scene == nullptr) {
+        MessageBox(nullptr, "There is no any scene to be fixed updated!", "Error!", MB_OK);
+        return;
     }
 
-    m_scene->fixedUpdate(game, events);
+    current_scene->fixedUpdate(game, events);
 }
 
-void SceneManager::setEngineContext(Game *game_var) {
+void SceneManager::setGameInstance(Game *game_var) {
     game = game_var;
 }

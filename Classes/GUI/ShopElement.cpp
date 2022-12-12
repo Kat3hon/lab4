@@ -3,35 +3,31 @@
 #include <utility>
 
 
-Shop::ShopItem(TowerType towerType, sf::Text towerName, sf::Text goldText) : UIElement({100.f, 100.f}),
-                                                                                 m_towerType(towerType),
-                                                                                 m_towerName(std::move(towerName)),
-                                                                                 m_goldText(std::move(goldText)) {
-    m_background.setSize({100.f, 100.f});
-    m_background.setFillColor(sf::Color{128, 128, 128, 64});
+ShopElement::ShopElement(TowerType towerType, sf::Text towerName, sf::Text goldText) : GUI_Element({100.f, 100.f}),
+                                                                                 tower_type(towerType),
+                                                                                 tower_name(std::move(towerName)),
+                                                                                 gold_text(std::move(goldText)) {
+    background.setSize({100.f, 100.f});
+    background.setFillColor(sf::Color{128, 128, 128, 64});
 
-    m_background.setPosition(10.f, 10.f);
+    background.setPosition(10.f, 10.f);
 
-    m_towerName.setCharacterSize(15);
-    m_goldText.setCharacterSize(13);
+    tower_name.setCharacterSize(15);
+    gold_text.setCharacterSize(13);
 
-    m_towerName.setPosition(20.f, 50.f);
-    m_goldText.setPosition(20.f, 80.f);
-}
-
-Shop::Shop() {
-
+    tower_name.setPosition(20.f, 50.f);
+    gold_text.setPosition(20.f, 80.f);
 }
 
 
-std::shared_ptr<Tower> Shop::getTower() {
-    return std::make_shared<Tower>(m_towerType);
+std::shared_ptr<Tower> ShopElement::getElement() {
+    return std::make_shared<Tower>(tower_type);
 }
 
-void Shop::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+void ShopElement::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     states.transform *= getTransform();
 
-    target.draw(m_background, states);
-    target.draw(m_towerName, states);
-    target.draw(m_goldText, states);
+    target.draw(background, states);
+    target.draw(tower_name, states);
+    target.draw(gold_text, states);
 }

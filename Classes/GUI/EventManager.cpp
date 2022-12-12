@@ -1,16 +1,18 @@
 #include "EventManager.h"
 #include <SFML/Window/Event.hpp>
 
-EventBag *EventManager::checkForEvents(sf::RenderWindow &window) {
-    sf::Event theEvent{};
+EventStorage *EventManager::checkForEvents(sf::RenderWindow &window) {
+    sf::Event currentEvent{};
 
-    while (window.pollEvent(theEvent)) {
-        bag.add(theEvent.type, theEvent);
-    }
+    // Pop the event on top of the event queue, if any, and return it;
+    // False if queue is empty
+    while (window.pollEvent(currentEvent))
+        storage.add(currentEvent.type, currentEvent);
 
-    return &bag;
+    // We need to return a reference just because EventStorage is a big object
+    return &storage;
 }
 
 void EventManager::clear() {
-    bag.clear();
+    storage.clear();
 }

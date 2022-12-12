@@ -1,7 +1,7 @@
-#include "../gameObject.hpp"
-#include "towerType.hpp"
-#include "../enemy/enemy.hpp"
-#include "component/towerComponent.hpp"
+#include "GameObject.h"
+#include "TowerType.h"
+#include "Enemy.h"
+#include "ITower.h"
 
 #include <memory>
 #include <vector>
@@ -78,7 +78,7 @@ private:
     // Type of tower
     TowerType m_type;
 
-    std::vector<TowerComponent> m_components;
+    std::vector<ITower> m_components;
 
     // Currently focused enemy
     std::weak_ptr<Enemy> m_focussedEnemy;
