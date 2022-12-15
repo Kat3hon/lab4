@@ -12,13 +12,21 @@
 #include <SFML/Graphics/Texture.hpp>
 
 class EnemyManager : public sf::Drawable {
+
+    void cleanUp();
+
+    std::vector<Enemy::Ptr> enemies;
+    std::vector<Enemy::Ptr> enemies_after_step;
+    std::unordered_map<std::string, sf::Rect<int>> enemy_textures_coords;
+    sf::Texture enemy_tileset;
+
 public:
+
+    EnemyManager();
 
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
-    void tick();
-
-    void initialize();
+    void update();
 
     void removeEnemy(const Enemy::Ptr &enemy);
 
@@ -32,13 +40,4 @@ public:
     void handleEnemyPathing(const Grid& grid);
 
     void tryGetLockOn(const Tower::Ptr& tower);
-
-private:
-
-    void cleanUp();
-
-    std::vector<Enemy::Ptr> m_enemies;
-    std::vector<Enemy::Ptr> m_enemiesToCleanUp;
-    std::unordered_map<EnemyType, sf::Rect<int>> m_enemyTexCoords;
-    sf::Texture m_enemyTextureAtlas;
 };

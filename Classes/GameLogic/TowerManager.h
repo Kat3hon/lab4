@@ -1,9 +1,10 @@
 #include "Tower.h"
 #include "TowerType.h"
-#include "../enemy/enemyManager.hpp"
+#include "EnemyManager.h"
 
 #include <vector>
 #include <unordered_map>
+#include <windows.h>
 
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Rect.hpp>
@@ -12,21 +13,21 @@
 #include <SFML/Graphics/RenderStates.hpp>
 
 class TowerManager : public sf::Drawable {
+
+    std::vector<Tower::Ptr> towers;
+    std::unordered_map<TowerType, sf::Rect<int>> towers_textures_coords;
+    sf::Texture towers_tileset;
+
 public:
-    void initialize();
+    TowerManager();
 
-    void tick();
+    void update();
 
-    void addTower(const Tower::Ptr &tower);
+    void push(const Tower::Ptr &tower);
 
-    void removeTower(const Tower::Ptr &tower);
+    void pop(const Tower::Ptr &tower);
 
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
     void handleEnemyLockOn(EnemyManager* enemyManager);
-private:
-
-    std::vector<Tower::Ptr> m_towers;
-    std::unordered_map<TowerType, sf::Rect<int>> m_towerTexCoords;
-    sf::Texture m_towersTexture;
 };

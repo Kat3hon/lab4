@@ -1,3 +1,5 @@
+#pragma once
+
 #include "GUI_Element.h"
 #include "../GameLogic/Tower.h"
 
@@ -27,15 +29,14 @@ class ShopElement: public GUI_Element, public sf::Drawable {
 
 public:
 
-    /// Needs for explicit constructor in GameMenu.
     ShopElement() = default;
 
-    /// Sets a shop element characteristics to render.
+    /// Sets that shop element characteristics to render.
     ShopElement(TowerType towerType, sf::Text towerText, sf::Text goldText);
 
-    /// Draws a shop element
+    /// Draws that shop element
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
-    /// Gets a shop element
-    std::shared_ptr<Tower> getElement(); //Maybe const?
+    /// Gets that shop element
+    std::shared_ptr<Tower> get() const;
 };

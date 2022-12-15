@@ -1,52 +1,47 @@
 #include "EnemyManager.h"
 
-void EnemyManager::initialize() {
-    m_enemyTextureAtlas.loadFromFile("asset/texture/enemies.png");
-
-    m_enemyTexCoords[EnemyType::GroundEnemy] = {0, 0, 35, 35};
-    m_enemyTexCoords[EnemyType::AirEnemy] = {36, 0, 35, 35};
+EnemyManager::EnemyManager() {
+    enemy_textures_coords["Slime"] = {0, 0, 35, 35};
+    enemy_tileset.loadFromFile("asset/texture/enemies.png");
 }
 
 void EnemyManager::removeEnemy(const Enemy::Ptr &enemy) {
     // we add the enemy to the queue,
     // so we can remove it safely after everything is done :)
-    m_enemiesToCleanUp.push_back(enemy);
+    enemies_after_step.push_back(enemy);
 }
 
 void EnemyManager::addEnemy(const Enemy::Ptr &enemy) {
-    enemy->setTexture(m_enemyTextureAtlas, m_enemyTexCoords[enemy->getType()]);
-    m_enemies.push_back(enemy);
+    enemy->setTexture(enemy_tileset, enemy_textures_coords[enemy->getType()]);
+    enemies.push_back(enemy);
 }
 
 Enemy::Ptr EnemyManager::getMostProgressedEnemy() {
-    return *std::max_element(m_enemies.begin(), m_enemies.end(), [](const Enemy::Ptr &lhs, const Enemy::Ptr &rhs) {
+    return *std::max_element(enemies.begin(), enemies.end(), [](const Enemy::Ptr &lhs, const Enemy::Ptr &rhs) {
         return lhs->getProgress() < rhs->getProgress();
     });
 }
 
 void EnemyManager::draw(sf::RenderTarget &target, sf::RenderStates states) const {
-    for (const auto &enemy : m_enemies) {
+    for (const auto &enemy : enemies)
         target.draw(*enemy, states);
-    }
 }
 
-void EnemyManager::tick() {
-    for (const auto &enemy : m_enemies) {
+void EnemyManager::update() {
+    for (const auto &enemy : enemies)
         enemy->step();
-    }
 
     cleanUp();
 }
 
 std::size_t EnemyManager::getEnemyCount() {
-    return m_enemies.size();
+    return enemies.size();
 }
 
 void EnemyManager::handleEnemyPathing(const Grid &grid) {
-    for (const auto &enemy : m_enemies) {
-        if (!enemy->needsNewPath()) {
+    for (const auto &enemy : enemies) {
+        if (!enemy->needsNewPath())
             continue;
-        }
 
         // to align stuff, we need to add 25 to x and y of the tile target position (since it's origin is in the left top)
         // needs to be changed at some point..
@@ -68,25 +63,23 @@ void EnemyManager::handleEnemyPathing(const Grid &grid) {
 
 void EnemyManager::cleanUp() {
 
-    m_enemies.erase(std::remove_if(m_enemies.begin(), m_enemies.end(), [this](const Enemy::Ptr &enemy) {
-        return std::find(m_enemiesToCleanUp.begin(), m_enemiesToCleanUp.end(), enemy) != m_enemiesToCleanUp.end();
-    }), m_enemies.end());
+    enemies.erase(std::remove_if(enemies.begin(), enemies.end(), [this](const Enemy::Ptr &enemy) {
+        return std::find(enemies_after_step.begin(), enemies_after_step.end(), enemy) != enemies_after_step.end();
+    }), enemies.end());
 
-    m_enemiesToCleanUp.clear();
+    enemies_after_step.clear();
 }
 
 void EnemyManager::tryGetLockOn(const Tower::Ptr &tower) {
-    if (tower->hasLockOn()) {
+    if (tower->hasLockOn())
         return;
-    }
 
-    auto it = std::find_if(m_enemies.begin(), m_enemies.end(), [tower](const Enemy::Ptr& enemy) {
+    auto it = std::find_if(enemies.begin(), enemies.end(), [tower](const Enemy::Ptr& enemy) {
         return tower->isInRange(enemy);
     });
 
-    if (it == m_enemies.end()) {
+    if (it == enemies.end())
         return;
-    }
 
     tower->lockOn(*it);
 }

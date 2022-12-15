@@ -1,8 +1,10 @@
-#include "grid.hpp"
-#include "tower/tower.hpp"
-#include "tower/towerManager.hpp"
-#include "wave/waveManager.hpp"
-#include "enemy/enemyManager.hpp"
+#pragma once
+
+#include "Tower.h"
+#include "TowerManager.h"
+#include "WaveManager.h"
+#include "Enemy.h"
+#include "EnemyManager.h"
 
 #include <memory>
 #include <functional>
@@ -20,18 +22,18 @@ class MainGame : public sf::Drawable, public sf::NonCopyable {
 
     void spawnEnemy(const Enemy::Ptr& enemy);
 
-    unsigned int m_health;
-    unsigned int m_gold;
+    unsigned int health;
+    unsigned int gold;
 
     Grid m_grid;
 
-    TowerManager m_towerManager;
-    WaveManager m_waveManager;
-    EnemyManager m_enemyManager;
+    TowerManager tower_manager;
+    WaveManager wave_manager;
+    EnemyManager enemy_manager;
 
-    Tower::Ptr m_currentSelectedTower;
+    Tower::Ptr current_tower;
 
-    sf::Clock m_lastEnemySpawned;
+    sf::Clock last_enemy_spawned;
 
 public:
 
@@ -47,7 +49,7 @@ public:
 
     void setGold(unsigned int amount);
 
-    unsigned int getGold();
+    unsigned int getGold() const;
 
     void addHealth(unsigned int health);
 
@@ -55,7 +57,7 @@ public:
 
     void setHealth(unsigned int health);
 
-    unsigned int getHealth();
+    unsigned int getHealth() const;
 
     void nextWave();
 
@@ -73,12 +75,12 @@ public:
 
     void onEnemyKilled(const Enemy::Ptr& enemy);
 
-    Tower::Ptr getSelectedTower();
+    Tower::Ptr getSelectedTower() const;
 
-    TowerManager *getTowerManager();
+    TowerManager *getTowerManager() const;
 
-    WaveManager *getWaveManager();
+    WaveManager *getWaveManager() const;
 
-    EnemyManager *getEnemyManager();
+    EnemyManager *getEnemyManager() const;
 };
 

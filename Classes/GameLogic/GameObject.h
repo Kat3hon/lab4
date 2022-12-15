@@ -4,22 +4,25 @@
 #include <SFML/Graphics/RenderStates.hpp>
 
 class GameObject : public sf::Transformable, public sf::Drawable {
+
+    float width;
+    float height;
+
 public:
-    GameObject();
+    GameObject() = default;
 
-    void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
-
+    /// Checks if current Objects collides with gameObject variable or not.
     bool collidesWith(GameObject *gameObject);
 
+    /// Sets object's height.
     void setHeight(float height);
 
+    /// Sets object's width.
     void setWidth(float width);
 
-    float getHeight();
+    //Gets object's height.
+    float getHeight() const;
 
-    float getWidth();
-
-private:
-    float m_width;
-    float m_height;
+    //Gets object's width.
+    float getWidth() const;
 };

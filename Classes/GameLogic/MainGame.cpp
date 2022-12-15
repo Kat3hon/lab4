@@ -2,18 +2,17 @@
 
 #include <functional>
 
-MainGame::MainGame() : m_health(100), m_gold(1000) {
+MainGame::MainGame() : health(100), gold(1000) {
     m_grid.initialize();
-    m_towerManager.initialize();
-    m_enemyManager.initialize();
+    enemy_manager.initialize();
 }
 
 void MainGame::tick() {
-    m_enemyManager.tick();
-    m_towerManager.tick();
+    enemy_manager.update();
+    tower_manager.update();
 
-    m_enemyManager.handleEnemyPathing(m_grid);
-    m_towerManager.handleEnemyLockOn(&m_enemyManager);
+    enemy_manager.handleEnemyPathing(m_grid);
+    tower_manager.handleEnemyLockOn(&enemy_manager);
     spawnEnemies();
 }
 
@@ -22,52 +21,52 @@ void MainGame::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     target.draw(m_grid, states);
 
     // enemy layer
-    target.draw(m_enemyManager, states);
+    target.draw(enemy_manager, states);
 
     // tower layer
-    target.draw(m_towerManager, states);
+    target.draw(tower_manager, states);
 }
 
 void MainGame::addGold(unsigned int amount) {
-    m_gold += amount;
+    gold += amount;
 }
 
 void MainGame::substractGold(unsigned int amount) {
-    if (amount > m_gold) {
-        m_gold = 0;
+    if (amount > gold) {
+        gold = 0;
         return;
     }
 
-    m_gold -= amount;
+    gold -= amount;
 }
 
 void MainGame::setGold(unsigned int amount) {
-    m_gold = amount;
+    gold = amount;
 }
 
-unsigned int MainGame::getGold() {
-    return m_gold;
+unsigned int MainGame::getGold() const {
+    return gold;
 }
 
-void MainGame::addHealth(unsigned int health) {
-    m_health += health;
+void MainGame::addHealth(unsigned int health_var) {
+    health += health_var;
 }
 
-void MainGame::substractHealth(unsigned int health) {
-    if (health > m_health) {
-        m_health = 0;
+void MainGame::substractHealth(unsigned int health_var) {
+    if (health_var > health) {
+        health = 0;
         return;
     }
 
-    m_health -= health;
+    health -= health;
 }
 
-unsigned int MainGame::getHealth() {
-    return m_health;
+unsigned int MainGame::getHealth() const {
+    return health;
 }
 
 void MainGame::setHealth(unsigned int health) {
-    m_health = health;
+    health = health;
 }
 
 MainGame *MainGame::getGrid() {
@@ -76,37 +75,36 @@ MainGame *MainGame::getGrid() {
 
 void MainGame::handleTileClick(const Tile::Ptr &tile) {
 
-    if(hasTowerSelected()) {
+    if(hasTowerSelected())
         getSelectedTower()->setSelected(false);
-    }
 
     // we have nothing to do here
     if (!tile->isBuildable()) {
-        m_currentSelectedTower.reset();
+        current_tower.reset();
         return;
     }
 
-//    m_currentSelectedTower = std::make_shared<Tower>(TowerType::ElectricityTower);
+//    current_tower = std::make_shared<Tower>(TowerType::ElectroTower);
 
-    if (!tile->hasTower() && hasTowerSelected() && !m_currentSelectedTower->isBuilt()) {
+    if (!tile->hasTower() && hasTowerSelected() && !current_tower->isBuilt()) {
 
         // for now let each tower cost a 100
         if (getGold() < 100) {
-            m_currentSelectedTower.reset();
+            current_tower.reset();
             return;
         }
 
         substractGold(100);
 
-        tile->setTower(m_currentSelectedTower);
-        m_towerManager.addTower(m_currentSelectedTower);
+        tile->setTower(current_tower);
+        tower_manager.push(current_tower);
 
         // Since the tower is bigger than the actual tile. A tower equals to 70 pixels on the Y axis. Time to substract that
         // So it actually looks that the tower is on the tile.
         sf::Vector2<float> towerPosition = m_grid.getTileWindowPosition(tile);
-        m_currentSelectedTower->setPosition(towerPosition.x, towerPosition.y - (70 - TILE_SIZE));
-        m_currentSelectedTower->setSelected(true);
-        m_currentSelectedTower->build();
+        current_tower->setPosition(towerPosition.x, towerPosition.y - (70 - TILE_SIZE));
+        current_tower->setSelected(true);
+        current_tower->build();
 
         return;
     }
@@ -120,44 +118,44 @@ void MainGame::handleTileClick(const Tile::Ptr &tile) {
             deselectTower();
         }
 
-        m_currentSelectedTower = tile->getTower();
-        m_currentSelectedTower->setSelected(true);
+        current_tower = tile->getTower();
+        current_tower->setSelected(true);
         return;
     }
 }
 
 bool MainGame::hasTowerSelected() {
-    return m_currentSelectedTower != nullptr;
+    return current_tower != nullptr;
 }
 
-Tower::Ptr MainGame::getSelectedTower() {
-    return m_currentSelectedTower;
+Tower::Ptr MainGame::getSelectedTower() const {
+    return current_tower;
 }
 
-TowerManager *MainGame::getTowerManager() {
-    return &m_towerManager;
+TowerManager *MainGame::getTowerManager() const {
+    return &tower_manager;
 }
 
-WaveManager *MainGame::getWaveManager() {
-    return &m_waveManager;
+WaveManager *MainGame::getWaveManager() const {
+    return &wave_manager;
 }
 
 void MainGame::nextWave() {
-    m_waveManager.forceWave();
+    wave_manager.forceWave();
 }
 
-EnemyManager *MainGame::getEnemyManager() {
-    return &m_enemyManager;
+EnemyManager *MainGame::getEnemyManager() const {
+    return &enemy_manager;
 }
 
 void MainGame::spawnEnemies() {
     // We need to check if we are eligible to spawn enemies or not.
-    Wave *wave = m_waveManager.getCurrentWave();
+    Wave *wave = wave_manager.getCurrentWave();
     const unsigned int spawnInterval = wave->getEnemySpawnInterval();
 
-    if (m_lastEnemySpawned.getElapsedTime().asMilliseconds() >= spawnInterval && wave->getEnemyCount() > 0) {
+    if (last_enemy_spawned.getElapsedTime().asMilliseconds() >= spawnInterval && wave->getEnemyCount() > 0) {
         wave->enemyGotSpawned();
-        m_lastEnemySpawned.restart();
+        last_enemy_spawned.restart();
 
         // other wave will just be a regular ground enemies
         // also, we don't seed the random
@@ -165,24 +163,24 @@ void MainGame::spawnEnemies() {
 
         EnemyType enemyType = EnemyType::GroundEnemy;
 
-        if (m_waveManager.getCurrentWaveNo() % 3 == 0) {
+        if (wave_manager.getCurrentWaveNo() % 3 == 0) {
             // flying wave, spawn flying enemy
             enemyType = EnemyType::AirEnemy;
         }
 
-        if (m_waveManager.getCurrentWaveNo() % 10 == 0) {
+        if (wave_manager.getCurrentWaveNo() % 10 == 0) {
             // boss wave, spawn random enemies, with a boss.
             // we mod it by 2, because we only have 2 enemy types (for now)
             enemyType = rand() % 2 == 0 ? EnemyType::GroundEnemy : EnemyType::AirEnemy;
         }
 
         // Each wave, our enemies will have 5 more health.
-        spawnEnemy(std::make_shared<Enemy>(m_waveManager.getCurrentWaveNo() * 5 + 30, enemyType));
+        spawnEnemy(std::make_shared<Enemy>(wave_manager.getCurrentWaveNo() * 5 + 30, enemyType));
     }
 }
 
 void MainGame::spawnEnemy(const Enemy::Ptr &enemy) {
-    m_enemyManager.addEnemy(enemy);
+    enemy_manager.addEnemy(enemy);
 
     const sf::Vector2i spawnLocation = m_grid.getEnemySpawnTileCoordinate();
     const sf::Vector2f windowPosition = m_grid.getTileWindowPositionFromTileCoordinate(spawnLocation);
@@ -199,21 +197,21 @@ void MainGame::spawnEnemy(const Enemy::Ptr &enemy) {
 }
 
 void MainGame::onEnemyDestination(const Enemy::Ptr &enemy) {
-    substractHealth(1);
-    m_enemyManager.removeEnemy(enemy);
+    substractHealth(enemy->getHealth());
+    enemy_manager.removeEnemy(enemy);
 }
 
 void MainGame::deselectTower() {
-    m_currentSelectedTower->setSelected(false);
-    m_currentSelectedTower.reset();
+    current_tower->setSelected(false);
+    current_tower.reset();
 }
 
 void MainGame::onEnemyKilled(const Enemy::Ptr &enemy) {
-    m_enemyManager.removeEnemy(enemy);
+    enemy_manager.removeEnemy(enemy);
 
-    addGold(m_waveManager.getCurrentWaveNo() * 5 + 5);
+    addGold(wave_manager.getCurrentWaveNo() * 5 + 5);
 }
 
 void MainGame::selectTower(const Tower::Ptr &tower) {
-    m_currentSelectedTower = tower;
+    current_tower = tower;
 }

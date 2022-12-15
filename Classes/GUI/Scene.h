@@ -1,8 +1,12 @@
+#pragma once
+
 #include "GUI_Manager.h"
 #include "GUI_Element.h"
 #include "EventStorage.h"
+#include "GameMenu.h"
 
 #include <functional>
+#include <windows.h>
 
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
@@ -25,7 +29,7 @@ protected:
 
 public:
 
-    explicit Scene() {
+    Scene() {
         // Set font
         if (!font.loadFromFile("assets/Comfortaa.ttf"))
             MessageBox(nullptr, "Can not load a font Comfortaa.ttf", "Error!", MB_OK);
@@ -34,34 +38,33 @@ public:
     //todo: do this "needed to be..." methods pure virtual or not?
 
     /// This method is always called 60 times a second. Needed to be described by inheritors.
-    virtual void fixedUpdate(Game *game, EventStorage *events) {};
+    virtual void fixedUpdate(Game *game, EventStorage *events) = 0;
 
-    /// This method should always be called, if inherited. Since this will listen to events and UI states.
+    /// This method should always be called, if inherited. Since this will listen to events and GUI states.
     virtual void update(Game *game, EventStorage *events);
 
     /// Callback for making drawings to the screen. Needed to be described by inheritors.
-    virtual void draw(sf::RenderWindow &window) const;
+    virtual void draw(sf::RenderWindow &window) const = 0;
 
     /// Callback before an actual update or draw startLoop will happen. Needed to be described by inheritors.
-    virtual void cbEnter(Game *game) {};
+    virtual void enter(Game *game) = 0;
 
     /// Callback just before this scene will get destroyed by the manager. Needed to be described by inheritors.
-    virtual void cbLeave(Game *game) {};
+    virtual void leave(Game *game) = 0;
 
     /// Callback whenever the window loses focus or user presses a button. Needed to be described by inheritors.
-    virtual void cbPause(Game *game) {};
+    virtual void pause(Game *game) = 0;
 
-    /// Callback used for setting up the GUI, always gets called before `cbEnter`. Needed to be described by inheritors.
-    virtual void cbGUI(Game *game) {};
+    /// Callback used for setting up the GUI, always gets called before `enter`. Needed to be described by inheritors.
+    virtual void setGUI(Game *game) = 0;
 
-    // This is just a fancy, totally unnecessary ctor
-    // But it is used to make instantiating UI elements look standard.
+    /// Sets a GUI element.
     template<class T, class ...Args>
     T createElement(Args... args) {
         return T(args...);
     }
 
     /// Registers the element to the GUI manager.
-    void registerElement(GUI_Element *element);
+    void pushElement(GUI_Element *element);
 
 };

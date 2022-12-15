@@ -19,15 +19,14 @@ ShopElement::ShopElement(TowerType towerType, sf::Text towerName, sf::Text goldT
     gold_text.setPosition(20.f, 80.f);
 }
 
-
-std::shared_ptr<Tower> ShopElement::getElement() {
-    return std::make_shared<Tower>(tower_type);
-}
-
 void ShopElement::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     states.transform *= getTransform();
 
     target.draw(background, states);
     target.draw(tower_name, states);
     target.draw(gold_text, states);
+}
+
+std::shared_ptr<Tower> ShopElement::get() const{
+    return std::make_shared<Tower>(tower_type);
 }

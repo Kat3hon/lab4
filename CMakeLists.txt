@@ -30,7 +30,6 @@ set(SOURCE_FILES startup.cpp
         Classes/GUI/ShopElement.cpp
         Classes/GUI/ShopElement.h
         Classes/GUI/cantBeDrawnException.h
-        Classes/GUI/noSceneSetException.h
         Classes/GameLogic/MainGame.cpp
         Classes/GameLogic/MainGame.h
         Classes/GameLogic/GameObject.cpp
@@ -44,13 +43,12 @@ set(SOURCE_FILES startup.cpp
         Classes/GameLogic/TowerManager.cpp
         Classes/GameLogic/TowerManager.h
         Classes/GameLogic/TowerType.h
-        Classes/GameLogic/ITower.cpp
         Classes/GameLogic/ITower.h
         Classes/GameLogic/Enemy.cpp
         Classes/GameLogic/Enemy.h
         Classes/GameLogic/EnemyManager.cpp
         Classes/GameLogic/EnemyManager.h
-        Classes/GameLogic/EnemyType.h)
+        )
 
 
 #сделать проверку на добавление нужной библиотеки

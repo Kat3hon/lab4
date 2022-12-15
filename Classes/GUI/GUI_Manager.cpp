@@ -13,6 +13,9 @@ void GUI_Manager::checkClick(sf::Vector2i position) {
 
     // If the elements are superimposed on each other, we should click on the one at the top
     // Therefore we should use reverse iterator
+
+    //todo: can I make it more effective? O(1)?
+    //todo: why range-based loop in not working?
     for (auto it = gui_elements.rbegin(); it != gui_elements.rend(); it++) {
 
         // Current gui element
@@ -31,6 +34,5 @@ void GUI_Manager::checkClick(sf::Vector2i position) {
             position.y >= y && position.y <= y + height)
                 // OK, let's click on that element
                 return element->click();
-
     }
 }

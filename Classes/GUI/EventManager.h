@@ -1,3 +1,5 @@
+#pragma once
+
 #include "EventStorage.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 

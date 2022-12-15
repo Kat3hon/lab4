@@ -2,60 +2,48 @@
 #include <cmath>
 #include <utility>
 
-Enemy::Enemy(unsigned int health, EnemyType type, unsigned int goldWorth, bool isBoss)
-        : GameObject(), m_type(type), m_health(health), m_goldWorth(goldWorth), m_isBoss(isBoss), m_progress(0),
+Enemy::Enemy(unsigned int health, unsigned int goldWorth, bool isBoss)
+        : GameObject(), health(health), m_goldWorth(goldWorth), m_isBoss(isBoss), m_progress(0),
           m_pathingIndex(0),
           m_moveX(0.f), m_moveY(0.f), m_distance(0.f) {
     m_initialHealth = health;
 
-    m_foreGroundHealthbar.setFillColor(sf::Color::Green);
-    m_backGroundHealthbar.setFillColor(sf::Color::Red);
+    fore_ground_healthbar.setFillColor(sf::Color::Green);
+    back_ground_healthbar.setFillColor(sf::Color::Red);
 
-    m_foreGroundHealthbar.setSize({HEALTH_BAR_LENGTH, HEALTH_BAR_HEIGHT});
-    m_backGroundHealthbar.setSize({HEALTH_BAR_LENGTH, HEALTH_BAR_HEIGHT});
+    fore_ground_healthbar.setSize({HEALTH_BAR_LENGTH, HEALTH_BAR_HEIGHT});
+    back_ground_healthbar.setSize({HEALTH_BAR_LENGTH, HEALTH_BAR_HEIGHT});
 
-    m_foreGroundHealthbar.setPosition(-HEALTH_BAR_LENGTH / 2.f, -20.f);
-    m_backGroundHealthbar.setPosition(-HEALTH_BAR_LENGTH / 2.f, -20.f);
+    fore_ground_healthbar.setPosition(-HEALTH_BAR_LENGTH / 2.f, -20.f);
+    back_ground_healthbar.setPosition(-HEALTH_BAR_LENGTH / 2.f, -20.f);
 }
 
 void Enemy::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     states.transform *= getTransform();
 
-    target.draw(m_sprite, states);
+    target.draw(sprite, states);
 
-    if (m_initialHealth > m_health) {
-        target.draw(m_backGroundHealthbar, states);
-        target.draw(m_foreGroundHealthbar, states);
+    if (m_initialHealth > health) {
+        target.draw(back_ground_healthbar, states);
+        target.draw(fore_ground_healthbar, states);
     }
 }
 
 void Enemy::takeDamage(unsigned int damage) {
-    if (damage >= m_health) {
-        m_health = 0;
+    if (damage >= health) {
+        health = 0;
         return kill();
     }
 
-    m_health -= damage;
+    health -= damage;
 
-    const float healthPercentage = 100.f / static_cast<float>(m_initialHealth) * static_cast<float>(m_health);
-    m_foreGroundHealthbar.setSize(
+    const float healthPercentage = 100.f / static_cast<float>(m_initialHealth) * static_cast<float>(health);
+    fore_ground_healthbar.setSize(
             {HEALTH_BAR_LENGTH / 100.f * healthPercentage, HEALTH_BAR_HEIGHT});
 }
 
-unsigned int Enemy::getHealth() {
-    return m_health;
-}
-
-bool Enemy::isAir() {
-    return m_type == EnemyType::AirEnemy;
-}
-
-bool Enemy::isGrounded() {
-    return m_type == EnemyType::GroundEnemy;
-}
-
-bool Enemy::isBoss() {
-    return m_isBoss;
+unsigned int Enemy::getHealth() const {
+    return health;
 }
 
 unsigned int Enemy::getProgress() {
@@ -63,16 +51,12 @@ unsigned int Enemy::getProgress() {
 }
 
 void Enemy::setTexture(const sf::Texture &texture, const sf::Rect<int> &texCoords) {
-    m_sprite.setTexture(texture);
-    m_sprite.setTextureRect(texCoords);
+    sprite.setTexture(texture);
+    sprite.setTextureRect(texCoords);
 
     // Set the origin to the center of the sprite
     // Since that's more convenient for us.
-    m_sprite.setOrigin(texCoords.width / 2.f, texCoords.height / 2.f);
-}
-
-EnemyType Enemy::getType() {
-    return m_type;
+    sprite.setOrigin(texCoords.width / 2.f, texCoords.height / 2.f);
 }
 
 void Enemy::step() {
@@ -106,7 +90,7 @@ void Enemy::setDirection(Direction direction, sf::Vector2<float> targetPosition)
         m_moveX = 0.f;
         m_moveY = -1.f;
 
-        m_sprite.setRotation(180);
+        sprite.setRotation(180);
 
         return;
     }
@@ -115,7 +99,7 @@ void Enemy::setDirection(Direction direction, sf::Vector2<float> targetPosition)
         m_moveX = 1.f;
         m_moveY = 0.f;
 
-        m_sprite.setRotation(270);
+        sprite.setRotation(270);
 
         return;
     }
@@ -124,7 +108,7 @@ void Enemy::setDirection(Direction direction, sf::Vector2<float> targetPosition)
         m_moveX = 0.f;
         m_moveY = 1.f;
 
-        m_sprite.setRotation(0);
+        sprite.setRotation(0);
 
         return;
     }
@@ -133,13 +117,13 @@ void Enemy::setDirection(Direction direction, sf::Vector2<float> targetPosition)
         m_moveX = -1.f;
         m_moveY = 0.f;
 
-        m_sprite.setRotation(90);
+        sprite.setRotation(90);
 
         return;
     }
 }
 
-bool Enemy::needsNewPath() {
+bool Enemy::needsNewPath() const {
     return m_distance <= 0.f;
 }
 

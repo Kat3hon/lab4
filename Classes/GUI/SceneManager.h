@@ -1,6 +1,5 @@
 #pragma once
 #include "Scene.h"
-#include "noSceneSetException.h"
 #include "EventStorage.h"
 #include <memory>
 
@@ -23,7 +22,7 @@ public:
 
         // Checks if there is another running screen
         if (current_scene != nullptr) {
-            current_scene->cbLeave(game);
+            current_scene->leave(game);
         }
 
         // Reset a current scene
@@ -31,10 +30,10 @@ public:
         current_scene = std::make_unique<SceneClass>(args...);
 
         // Sets up GUI of a scene
-        current_scene->cbGUI(game);
+        current_scene->setGUI(game);
 
         //
-        current_scene->cbEnter(game);
+        current_scene->enter(game);
     }
 
     /// Fixed updates a current screen.

@@ -2,18 +2,10 @@
 
 #include <SFML/Graphics/Rect.hpp>
 
-GameObject::GameObject() {
-
-}
-
-void GameObject::draw(sf::RenderTarget &target, sf::RenderStates states) const {
-
-}
-
 bool GameObject::collidesWith(GameObject *gameObject) {
     sf::Rect<float> currentRect(getPosition(), {
-            m_width,
-            m_height
+            width,
+            height
     });
 
     sf::Rect<float> targetRect(gameObject->getPosition(), {
@@ -24,18 +16,18 @@ bool GameObject::collidesWith(GameObject *gameObject) {
     return currentRect.intersects(targetRect);
 }
 
-void GameObject::setHeight(float height) {
-    m_height = height;
+void GameObject::setHeight(float height_v) {
+    height = height_v;
 }
 
-void GameObject::setWidth(float width) {
-    m_width = width;
+void GameObject::setWidth(float width_v) {
+    width = width_v;
 }
 
-float GameObject::getHeight() {
-    return m_height;
+float GameObject::getHeight() const {
+    return height;
 }
 
-float GameObject::getWidth() {
-    return m_width;
+float GameObject::getWidth() const {
+    return width;
 }

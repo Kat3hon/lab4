@@ -1,3 +1,5 @@
+#pragma once
+
 #include <SFML/Window/Event.hpp>
 #include <unordered_map>
 

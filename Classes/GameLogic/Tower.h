@@ -12,6 +12,40 @@
 #include <SFML/System/Clock.hpp>
 
 class Tower : public GameObject {
+
+    bool is_built;
+
+    /// Range of the tower. Attack radius.
+    unsigned int range;
+
+    /// Damage of the tower.
+    unsigned int damage;
+
+    /// Fire rate of the tower, in milliseconds.
+    /// 1000 means 1 projectile a second
+    /// 500 means 2 projectiles a second...
+    unsigned int fire_rate;
+
+    /// Sprite of the tower.
+    sf::Sprite sprite;
+
+    /// Since tower is selected, its radius will be rendered.
+    sf::CircleShape radius_shape;
+
+    /// Checks tower is selected or not.
+    bool selected;
+
+    /// Type of tower: Hydro, Dendro, Cryo, Pyro or Electro.
+    TowerType type;
+
+    std::vector<ITower> interfaces;
+
+    /// Currently focused enemy
+    std::weak_ptr<Enemy> curr_focussed_enemy;
+
+    // Last time this tower shot
+    sf::Clock timeof_last_shot;
+
 public:
     explicit Tower(TowerType towerType);
 
@@ -23,6 +57,9 @@ public:
 
     bool hasLockOn();
 
+    /// this function will be used
+    /// to check if the enemy is still in range of tower radius.
+    /// if not, deselect the current focused enemy.
     void validateLockOn();
 
     Enemy::Ptr getLockOn();
@@ -33,57 +70,18 @@ public:
 
     void build();
 
-    bool isBuilt();
+    bool isBuilt() const;
 
     bool isInRange(const Enemy::Ptr& enemy);
 
-    unsigned int getRange();
+    unsigned int getRange() const;
 
-    unsigned int getDamage();
+    unsigned int getDamage() const;
 
-    unsigned int getFireRate();
+    unsigned int getFireRate() const;
 
-    TowerType getTowerType();
+    TowerType getTowerType() const;
 
     void setTexture(const sf::Texture &texture, sf::Rect<int> textureCoords);
-
-private:
-
-    bool m_isBuilt;
-
-    // The range of the tower
-    // this will be the radius of a circle
-    unsigned int m_range;
-
-    // Damage the tower will be doing
-    // each shot
-    unsigned int m_damage;
-
-    // FireTower rate of the tower, in milliseconds.
-    // 1000 means 1 bullet a second
-    // 500 means 2 bullets a second.. etc
-    unsigned int m_fireRate;
-
-    // Sprite of the turret.
-    // Texture and texture coords will be provider by tower manager
-    sf::Sprite m_sprite;
-
-    // If this tower is selected, this will be rendered
-    sf::CircleShape m_radiusShape;
-
-    // if the tower is selected or not, if it's selected
-    // it will draw the radius around the tower
-    bool m_selected;
-
-    // Type of tower
-    TowerType m_type;
-
-    std::vector<ITower> m_components;
-
-    // Currently focused enemy
-    std::weak_ptr<Enemy> m_focussedEnemy;
-
-    // Last time this tower shot
-    sf::Clock m_lastShot;
 };
 
