@@ -1,5 +1,7 @@
+#pragma once
+
 #include "Enemy.h"
-#include "../grid.hpp"
+#include "../GUI/Level.h"
 #include "Tower.h"
 
 #include <vector>
@@ -37,7 +39,7 @@ public:
     // Gets the enemy which is most advanced.
     Enemy::Ptr getMostProgressedEnemy();
 
-    void handleEnemyPathing(const Grid& grid);
+    //void handleEnemyPathing(const Level& map);
 
     void tryGetLockOn(const Tower::Ptr& tower);
 };

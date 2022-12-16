@@ -3,7 +3,6 @@
 #include "GUI_Manager.h"
 #include "GUI_Element.h"
 #include "EventStorage.h"
-#include "GameMenu.h"
 
 #include <functional>
 #include <windows.h>
@@ -31,32 +30,32 @@ public:
 
     Scene() {
         // Set font
-        if (!font.loadFromFile("assets/Comfortaa.ttf"))
+        if (!font.loadFromFile("D:/prog/c++/lab4/cmake-build-debug/assets/Comfortaa.ttf"))
             MessageBox(nullptr, "Can not load a font Comfortaa.ttf", "Error!", MB_OK);
     }
 
     //todo: do this "needed to be..." methods pure virtual or not?
 
     /// This method is always called 60 times a second. Needed to be described by inheritors.
-    virtual void fixedUpdate(Game *game, EventStorage *events) = 0;
+    virtual void fixedUpdate(Game *game, EventStorage *events){}
 
     /// This method should always be called, if inherited. Since this will listen to events and GUI states.
     virtual void update(Game *game, EventStorage *events);
 
     /// Callback for making drawings to the screen. Needed to be described by inheritors.
-    virtual void draw(sf::RenderWindow &window) const = 0;
+    virtual void draw(sf::RenderWindow &window) const {}
 
     /// Callback before an actual update or draw startLoop will happen. Needed to be described by inheritors.
-    virtual void enter(Game *game) = 0;
+    virtual void enter(Game *game) {}
 
     /// Callback just before this scene will get destroyed by the manager. Needed to be described by inheritors.
-    virtual void leave(Game *game) = 0;
+    virtual void leave(Game *game) {}
 
     /// Callback whenever the window loses focus or user presses a button. Needed to be described by inheritors.
-    virtual void pause(Game *game) = 0;
+    virtual void pause(Game *game) {}
 
     /// Callback used for setting up the GUI, always gets called before `enter`. Needed to be described by inheritors.
-    virtual void setGUI(Game *game) = 0;
+    virtual void setGUI(Game *game) {}
 
     /// Sets a GUI element.
     template<class T, class ...Args>

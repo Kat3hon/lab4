@@ -12,7 +12,7 @@ void EnemyManager::removeEnemy(const Enemy::Ptr &enemy) {
 }
 
 void EnemyManager::addEnemy(const Enemy::Ptr &enemy) {
-    enemy->setTexture(enemy_tileset, enemy_textures_coords[enemy->getType()]);
+    //enemy->setTexture(enemy_tileset, enemy_textures_coords[enemy->getName()]);
     enemies.push_back(enemy);
 }
 
@@ -22,10 +22,10 @@ Enemy::Ptr EnemyManager::getMostProgressedEnemy() {
     });
 }
 
-void EnemyManager::draw(sf::RenderTarget &target, sf::RenderStates states) const {
-    for (const auto &enemy : enemies)
-        target.draw(*enemy, states);
-}
+//void EnemyManager::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+//    for (const auto &enemy : enemies)
+//        target.draw(*enemy, states);
+//}
 
 void EnemyManager::update() {
     for (const auto &enemy : enemies)
@@ -38,28 +38,28 @@ std::size_t EnemyManager::getEnemyCount() {
     return enemies.size();
 }
 
-void EnemyManager::handleEnemyPathing(const Grid &grid) {
-    for (const auto &enemy : enemies) {
-        if (!enemy->needsNewPath())
-            continue;
-
-        // to align stuff, we need to add 25 to x and y of the tile target position (since it's origin is in the left top)
-        // needs to be changed at some point..
-
-        const sf::Vector2<int> targetTileCoordinate = grid.getEnemyPathTileCoordinate(enemy->getPathingIndex() + 1);
-        const sf::Vector2<float> targetPosition = grid.getTileWindowPositionFromTileCoordinate(targetTileCoordinate);
-
-        if (sf::Vector2<float>({targetPosition.x + 25.f, targetPosition.y + 25.f}) == enemy->getPosition()) {
-            // enemy reached destination
-            enemy->reachGoal();
-        }
-
-        const Direction direction = grid.determineDirection(enemy->getPosition(),
-                                                            {targetPosition.x + 25.f, targetPosition.y + 25.f});
-
-        enemy->setDirection(direction, {targetPosition.x + 25.f, targetPosition.y + 25.f});
-    }
-}
+//void EnemyManager::handleEnemyPathing(const Level &map) {
+//    for (const auto &enemy : enemies) {
+//        if (!enemy->needsNewPath())
+//            continue;
+//
+//        // to align stuff, we need to add 25 to x and y of the tile target position (since it's origin is in the left top)
+//        // needs to be changed at some point..
+//
+//        const sf::Vector2<int> targetTileCoordinate = map.getEnemyPathTileCoordinate(enemy->getPathingIndex() + 1);
+//        const sf::Vector2<float> targetPosition = map.getTileWindowPositionFromTileCoordinate(targetTileCoordinate);
+//
+//        if (sf::Vector2<float>({targetPosition.x + 25.f, targetPosition.y + 25.f}) == enemy->getPosition()) {
+//            // enemy reached destination
+//            enemy->reachGoal();
+//        }
+//
+//        const Direction direction = map.determineDirection(enemy->getPosition(),
+//                                                           {targetPosition.x + 25.f, targetPosition.y + 25.f});
+//
+//        enemy->setDirection(direction, {targetPosition.x + 25.f, targetPosition.y + 25.f});
+//    }
+//}
 
 void EnemyManager::cleanUp() {
 

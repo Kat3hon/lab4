@@ -29,10 +29,10 @@ namespace my {
 
         [[nodiscard]]
         constexpr size_t newCapacity(size_t oldCapacity) {
-            return (oldCapacity == 0) ? 10 : oldCapacity*2;
+            return (oldCapacity == 0) ? 1 : oldCapacity*3/2;
         }
 
-        /*
+
         template<class ForwardIterator, class DestinationIterator>
         DestinationIterator uninitializedMove(ForwardIterator begin, ForwardIterator end, DestinationIterator destinationIt) {
             ForwardIterator it = begin;
@@ -69,12 +69,12 @@ namespace my {
             }
             return current;
         }
-        */
+
 
     public:
         Vector() = default;
 
-        constexpr Vector(size_t length, const Alloc & allocator = std::allocator<T>()) : len(length), alloc(allocator) {
+        constexpr explicit Vector(size_t length, const Alloc & allocator = std::allocator<T>()) : len(length), alloc(allocator) {
             if (length > cap) {
                 arr = AllocTraits::allocate(alloc, length);
                 cap = length;
@@ -326,6 +326,57 @@ namespace my {
         ///agregate
         ///применяем функцию func к текущему и берет прошлое значение
         ///например заполняет строку "" 12231231
+
+        template <bool consted>
+        struct Iterator {
+            std::conditional_t<consted, const T, T> * ptr;
+
+        public:
+            Iterator(T * p) : ptr(p) {}
+
+            T& operator*()
+            { return *ptr; }
+            T* operator->()
+            { return ptr; }
+            Iterator& operator++() {
+                ++ptr;
+                return *this;
+            }
+
+            Iterator operator++(int)
+            { return *this++; }
+
+            bool operator==(const Iterator & i) const
+            { return this->ptr == i.ptr; }
+            bool operator!=(const Iterator & i) const
+            { return this->ptr != i.ptr; }
+        };
+
+        // итераторы
+        using iterator = Iterator<false>;
+        using const_iterator = Iterator<true>;
+
+        iterator begin() const
+        { return iterator(arr); }
+        iterator end() const
+        { return iterator(arr+len); }
+
+        template <typename Type>
+        Type aggregate(Type seed, std::function<Type (Type, const T&)> f) const {
+            Type res = seed;
+            for (auto el: *this)
+                res = f(res, el);
+            return res;
+        }
+
+        iterator insert(iterator position, std::move_iterator<iterator> first, std::move_iterator<iterator> last) {
+            iterator p = position;
+            for (; first != last; ++first) {
+                *position = *first;
+                ++position;
+            }
+            return p;
+        }
     };
 
 

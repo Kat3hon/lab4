@@ -2,7 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include "..\AnimationManager\AnimationManager.h"
-#include "..\Level\Level.h"
+#include "../GUI/Level.h"
 #include "..\baseHeaders.h"
 
 class Entity {

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "GUI_Element.h"
-#include "../GameLogic/Tower.h"
+#include "WeaponGUI.h"
 
 #include <memory>
 #include <string>
@@ -16,13 +16,13 @@
 class ShopElement: public GUI_Element, public sf::Drawable {
 
     /// Name of a tower to buy.
-    sf::Text tower_name;
+    sf::Text weapon_name;
 
-    /// Price of a tower.
+    /// Price of a tower or trap.
     sf::Text gold_text;
 
-    /// Type of tower.
-    TowerType tower_type;
+    /// Type of tower or trap.
+    ElementType weapon_type;
 
     /// Tower texture.
     sf::RectangleShape background;
@@ -32,11 +32,11 @@ public:
     ShopElement() = default;
 
     /// Sets that shop element characteristics to render.
-    ShopElement(TowerType towerType, sf::Text towerText, sf::Text goldText);
+    ShopElement(ElementType weaponType, sf::Text weaponText, sf::Text goldText);
 
     /// Draws that shop element
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
     /// Gets that shop element
-    std::shared_ptr<Tower> get() const;
+    std::shared_ptr<WeaponGUI> get() const;
 };

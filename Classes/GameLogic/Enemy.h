@@ -1,14 +1,15 @@
+#pragma once
 #define HEALTH_BAR_LENGTH 35
 #define HEALTH_BAR_HEIGHT 2
 
-#include "GameObject.h"
-#include "../direction.hpp"
+#include "../GUI/GameObject.h"
 
 #include <memory>
 #include <functional>
 
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
+
 #include <SFML/System/Vector2.hpp>
 
 class Enemy : public GameObject, public std::enable_shared_from_this<Enemy> {
@@ -47,10 +48,10 @@ class Enemy : public GameObject, public std::enable_shared_from_this<Enemy> {
     unsigned int m_goldWorth;
 
     // callback when enemy reaches end of path
-    EnemyGoalHandler m_goalHandler;
+   // EnemyGoalHandler m_goalHandler;
 
     // callback when enemy gets killed by tower
-    EnemyDeadHandler m_enemyDeadHandler;
+    //EnemyDeadHandler m_enemyDeadHandler;
 
 public:
     using Ptr = std::shared_ptr<Enemy>;
@@ -59,7 +60,7 @@ public:
 
     explicit Enemy(unsigned int health, unsigned int goldWorth = 10, bool isBoss = false);
 
-    void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+    void draw(sf::RenderTarget &target, sf::RenderStates states) const; //override
 
     void setGoalHandler(EnemyGoalHandler handler);
 
@@ -71,7 +72,7 @@ public:
 
     void reachGoal();
 
-    void setDirection(Direction direction, sf::Vector2<float> targetPosition);
+    //void setDirection(Direction direction, sf::Vector2<float> targetPosition);
 
     void setTexture(const sf::Texture &texture, const sf::Rect<int> &texCoords);
 

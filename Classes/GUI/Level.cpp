@@ -10,6 +10,8 @@ using namespace tinyxml2;
 //const char DIR_SEPARATOR = '/';
 //#endif
 
+using namespace sf;
+
 const char DIR_SEPARATOR = '/';
 
 // Returns parent directory of given path;
@@ -42,38 +44,6 @@ sf::Color parseColor(const std::string &hexRGB) {
     const auto blue = uint8_t(hexValue % 256);
 
     return {red, green, blue};
-}
-
-float parseFloat(const std::string &str) {
-    char *pEnd = nullptr;
-    const float value = strtof(str.c_str(), &pEnd);
-    if (*pEnd != '\0')
-        throw std::runtime_error("'" + str + "' is not a float number");
-    return value;
-}
-
-int Object::getPropertyInt(const std::string &propertyName) {
-    return std::stoi(properties[propertyName]);
-}
-
-float Object::getPropertyFloat(const std::string &propertyName) {
-    return parseFloat(properties[propertyName]);
-}
-
-std::string Object::getPropertyString(const std::string &propertyName) {
-    return properties[propertyName];
-}
-
-void Object::moveBy(const sf::Vector2f &movement) {
-    rect.left += movement.x;
-    rect.top += movement.y;
-    sprite.move(movement);
-}
-
-void Object::moveTo(const sf::Vector2f &position) {
-    rect.left = position.x;
-    rect.top = position.y;
-    sprite.setPosition(position);
 }
 
 bool Level::loadFromFile(const std::string &filepath) {
@@ -116,7 +86,7 @@ bool Level::loadFromFile(const std::string &filepath) {
     }
 
     // Set tileset matte color, used to composite transparent image on
-    //  background filled with matte color.
+    // background filled with matte color.
     img.createMaskFromColor(matteColor);
     // Load texture from file.
     tileset_texture.loadFromImage(img);
@@ -154,7 +124,7 @@ bool Level::loadFromFile(const std::string &filepath) {
         }
         else layer.opacity = 255;
 
-        // <data> contains multiple tiles description.
+        // <data> contains multiple tiles_sprites description.
         XMLElement *layerDataElement = layerElement->FirstChildElement("data");
 
         if (layerDataElement == nullptr)
@@ -182,7 +152,7 @@ bool Level::loadFromFile(const std::string &filepath) {
                 sprite.setPosition(static_cast<float>(x * tile_width), static_cast<float>(y * tile_height));
                 sprite.setColor(sf::Color(255, 255, 255, layer.opacity));
 
-                layer.tiles.push_back(sprite);
+                layer.tiles_sprites.push_back(sprite);
             }
             tileElement = tileElement->NextSiblingElement("tile");
 
@@ -244,7 +214,7 @@ bool Level::loadFromFile(const std::string &filepath) {
                 }
 
                 // Define object
-                Object object;
+                GameObject object;
                 object.name = objectName;
                 object.type = objectType;
                 object.sprite = sprite;
@@ -284,17 +254,17 @@ bool Level::loadFromFile(const std::string &filepath) {
     return true;
 }
 
-Object Level::getFirstObject(const std::string &name) const {
+GameObject Level::getFirstObject(const std::string &name) const {
     // Only first object with given name
     for (const auto & object : objects)
         if (object.name == name)
             return object;
-    throw std::runtime_error("Object with name " + name + " was not found");
+    throw std::runtime_error("GameObject with name " + name + " was not found");
 }
 
-std::vector<Object> Level::getAllObjects(const std::string &name) const {
+std::vector<GameObject> Level::getAllObjects(const std::string &name) const {
     // All objects with given name
-    std::vector<Object> vec;
+    std::vector<GameObject> vec;
     for (const auto & object : objects)
         if (object.name == name)
             vec.push_back(object);
@@ -320,12 +290,105 @@ sf::Vector2f Level::getTilemapSize() const {
 void Level::draw(sf::RenderTarget &target) const {
     const sf::FloatRect viewportRect = target.getView().getViewport();
 
-    // draw all tiles (and don't draw objects)
+    // draw all tiles_sprites (and don't draw objects)
     for (const auto &layer : layers) {
-        for (const auto &tile : layer.tiles) {
+        for (const auto &tile : layer.tiles_sprites) {
             if (viewportRect.intersects(tile.getLocalBounds())) {
                 target.draw(tile);
             }
         }
     }
 }
+
+void Level::constructGraph() {
+    for (const auto &layer : layers) {
+        for (const auto &tile : layer.tiles_sprites) {
+            for (const auto &object: objects) {
+                if (object.rect.intersects(Rect<float>(tile.getTextureRect())) && object.name == "path") {
+                    std::cout << tile.getTextureRect().top << std::endl;
+                }
+            }
+        }
+    }
+}
+
+//void Level::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+//    states.transform *= getTransform();
+//    states.texture = &m_tileset;
+//
+//    target.draw(m_vertices, states);
+//}
+//
+//Tile::Ptr Level::getTileFromMouse(sf::Vector2<float> vector) const {
+//    sf::Vector2<float> position = getPosition();
+//    const float xRelative = vector.x - position.x;
+//    const float yRelative = vector.y - position.y;
+//
+//    // minus 1 here. Because if the max size is lets say 650
+//    // 650 will be resolved to column 10, and that does not exist.
+//    float xMax = getTilemapWidth() - 1;
+//    float yMax = getTilemapHeight() - 1;
+//
+//    if (xRelative < 0 || yRelative < 0) return nullptr;
+//    if (xRelative > xMax || yRelative > yMax) return nullptr;
+//
+//    auto col = static_cast<unsigned int>(std::floor(xRelative / TILE_SIZE));
+//    auto row = static_cast<unsigned int>(std::floor(yRelative / TILE_SIZE));
+//
+//    return m_tiles[col][row];
+//}
+//
+//sf::Vector2<float> Level::getTileWindowPosition(const Tile::Ptr &tile) const {
+//    // This function is used, to calculate to find the position
+//    // on where to position the enemy and/or weapons.
+//    sf::Vector2<float> gridPosition = getPosition();
+//
+//    const auto yRelative = static_cast<float>(tile->getY() * TILE_SIZE);
+//    const auto xRelative = static_cast<float>(tile->getX() * TILE_SIZE);
+//
+//    return sf::Vector2f{gridPosition.x + xRelative, gridPosition.y + yRelative};
+//}
+//
+//sf::Vector2<int> Level::getEnemySpawnTileCoordinate() const {
+//    if (m_enemyPathingPoints.empty()) {
+//        throw std::logic_error("No enemy spawn point set");
+//    }
+//
+//    return *m_enemyPathingPoints.begin();
+//}
+//
+//sf::Vector2<int> Level::getEnemyTargetTileCoordinate() const {
+//    if (m_enemyPathingPoints.empty()) {
+//        throw std::logic_error("No enemy target point set");
+//    }
+//
+//    return *m_enemyPathingPoints.end();
+//}
+//
+//sf::Vector2<int> Level::getEnemyPathTileCoordinate(unsigned int pathIndex) const {
+//
+//    if(pathIndex >= m_enemyPathingPoints.size()) {
+//        return m_enemyPathingPoints[m_enemyPathingPoints.size() - 1];
+//    }
+//
+//    return m_enemyPathingPoints[pathIndex];
+//}
+//
+//Tile::Ptr Level::getTileFromCoordinate(sf::Vector2<int> vector) const {
+//
+//    if (vector.x >= m_tiles.size() || vector.y >= m_tiles[vector.x].size()) {
+//        return nullptr;
+//    }
+//
+//    return m_tiles[vector.x][vector.y];
+//}
+//
+//sf::Vector2<float> Level::getTileWindowPositionFromTileCoordinate(sf::Vector2<int> coordinate) const {
+//    const Tile::Ptr tile = getTileFromCoordinate(coordinate);
+//
+//    if (tile == nullptr) {
+//        return sf::Vector2<float>{0, 0};
+//    }
+//
+//    return getTileWindowPosition(tile);
+//}

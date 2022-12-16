@@ -3,8 +3,8 @@
 
 //Game* Game::instance = nullptr;
 
-
-Game::Game(): window(sf::VideoMode(WIDTH, HEIGHT), "MYFAROG") {
+//todo: maybe use 1920 1080 or make all GUI sizes non constant?
+Game::Game(): window(sf::VideoMode(800, 800), "MYFAROG", sf::Style::Titlebar | sf::Style::Close) {
 
     scene_manager.setGameInstance(this);
 
@@ -12,7 +12,7 @@ Game::Game(): window(sf::VideoMode(WIDTH, HEIGHT), "MYFAROG") {
     window.setFramerateLimit(120);
 
     //set music of the application
-    if (!music.openFromFile("assets/mainMenuTheme.wav")) {
+    if (!music.openFromFile("D:/prog/c++/lab4/cmake-build-debug/assets/mainMenuTheme.wav")) {
         MessageBox(nullptr, "Can not load mainMenuTheme.wav", "Error!", MB_OK);
         window.close();
     }
@@ -20,7 +20,7 @@ Game::Game(): window(sf::VideoMode(WIDTH, HEIGHT), "MYFAROG") {
     music.setLoop(true);
 
     //set icon of the application
-    if (!icon.loadFromFile("assets/icon.png")) {
+    if (!icon.loadFromFile("D:/prog/c++/lab4/cmake-build-debug/assets/icon.png")) {
         MessageBox(nullptr, "Can not load icon.png", "Error!", MB_OK);
         exit();
     }
@@ -29,7 +29,6 @@ Game::Game(): window(sf::VideoMode(WIDTH, HEIGHT), "MYFAROG") {
     //set the first scene, main menu
     scene_manager.setScene<MainMenu>();
 
-    is_running = true;
 }
 
 void Game::run() {
@@ -39,7 +38,7 @@ void Game::run() {
     constexpr unsigned int TIME_BETWEEN_UPDATED = 1000 / DELTA_TICKS;
 
     // Main loop of the game, used for checking events (e.g. clicking on buttons)
-    while (is_running) {
+    while (window.isOpen()) {
 
         // Clears all previous events to check new ones
         event_manager.clear();
@@ -77,6 +76,5 @@ SceneManager *Game::getSceneManager() {
 
 void Game::exit() {
     window.close();
-    is_running = false;
 }
 

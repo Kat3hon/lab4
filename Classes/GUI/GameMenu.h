@@ -5,6 +5,8 @@
 #include "../GameLogic/MainGame.h"
 #include "Game.h"
 #include "ShopElement.h"
+#include "Level.h"
+#include "WeaponGUI.h"
 
 #include <string>
 #include <memory>
@@ -12,7 +14,9 @@
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 
-class GameMenu: public Scene {
+class GameMenu : public Scene {
+
+    const unsigned int TOWER_COST = 100;
 
     sf::Text wave_text;
     sf::Text health_text;
@@ -51,11 +55,23 @@ class GameMenu: public Scene {
     sf::Text pyro_tower_name;
     sf::Text pyro_tower_gold_text;
 
+    ShopElement hydro_trap_item;
+    sf::Text hydro_trap_name;
+    sf::Text hydro_trap_gold_text;
+
+    Level map;
+
+    WeaponGUI::Ptr current_weapon;
+
     void updateBindings();
 
 public:
 
-    explicit GameMenu(std::string levelName): Scene(), level_name(std::move(levelName)) {}
+    explicit GameMenu(std::string levelName)
+            : Scene(), level_name(std::move(levelName)) {
+        if(!map.loadFromFile("Storage/Textures/Landscape/"+level_name))
+            MessageBox(nullptr, "Can not load that level!", "Error!", MB_OK);
+    }
 
     void fixedUpdate(Game *game, EventStorage *events) override;
 
@@ -66,5 +82,13 @@ public:
     void setGUI(Game *game) override;
 
     void draw(sf::RenderWindow &window) const override;
+
+    WeaponGUI::Ptr getSelectedWeapon() const;
+
+    bool hasWeaponSelected();
+
+    void deselectWeapon();
+
+    void selectWeapon(const WeaponGUI::Ptr &weapon);
 };
 

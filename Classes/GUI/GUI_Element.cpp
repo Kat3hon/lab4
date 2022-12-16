@@ -1,7 +1,5 @@
 #include "GUI_Element.h"
 
-#include "cantBeDrawnException.h"
-
 GUI_Element::GUI_Element(sf::Vector2f vector):vector(vector) {
 }
 

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Tower.h"
-#include "TowerManager.h"
+#include "WeaponManager.h"
 #include "WaveManager.h"
 #include "Enemy.h"
 #include "EnemyManager.h"
@@ -22,26 +22,22 @@ class MainGame : public sf::Drawable, public sf::NonCopyable {
 
     void spawnEnemy(const Enemy::Ptr& enemy);
 
-    unsigned int health;
-    unsigned int gold;
+    unsigned int health = 1000;
+    unsigned int gold = 1000;
 
-    Grid m_grid;
-
-    TowerManager tower_manager;
+    WeaponManager weapon_manager;
     WaveManager wave_manager;
     EnemyManager enemy_manager;
-
-    Tower::Ptr current_tower;
 
     sf::Clock last_enemy_spawned;
 
 public:
 
-    MainGame();
+    MainGame() = default;
 
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
-    void tick();
+    void update();
 
     void addGold(unsigned int amount);
 
@@ -61,26 +57,14 @@ public:
 
     void nextWave();
 
-    Grid *getGrid();
-
-    void selectTower(const Tower::Ptr& tower);
-
-    void handleTileClick(const Tile::Ptr &tile);
-
-    void deselectTower();
-
-    bool hasTowerSelected();
-
     void onEnemyDestination(const Enemy::Ptr& enemy);
 
     void onEnemyKilled(const Enemy::Ptr& enemy);
 
-    Tower::Ptr getSelectedTower() const;
+    WeaponManager *getWeaponManager();
 
-    TowerManager *getTowerManager() const;
+    WaveManager *getWaveManager();
 
-    WaveManager *getWaveManager() const;
-
-    EnemyManager *getEnemyManager() const;
+    EnemyManager *getEnemyManager();
 };
 

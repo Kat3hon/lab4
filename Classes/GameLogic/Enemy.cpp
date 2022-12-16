@@ -3,7 +3,7 @@
 #include <utility>
 
 Enemy::Enemy(unsigned int health, unsigned int goldWorth, bool isBoss)
-        : GameObject(), health(health), m_goldWorth(goldWorth), m_isBoss(isBoss), m_progress(0),
+        : GameObject(), health(health), m_goldWorth(goldWorth), m_progress(0),
           m_pathingIndex(0),
           m_moveX(0.f), m_moveY(0.f), m_distance(0.f) {
     m_initialHealth = health;
@@ -19,7 +19,7 @@ Enemy::Enemy(unsigned int health, unsigned int goldWorth, bool isBoss)
 }
 
 void Enemy::draw(sf::RenderTarget &target, sf::RenderStates states) const {
-    states.transform *= getTransform();
+    //states.transform *= getTransform();
 
     target.draw(sprite, states);
 
@@ -71,76 +71,76 @@ void Enemy::step() {
         m_distance -= std::abs(m_moveY + m_moveX);
     } else m_distance = 0;
 
-    move(m_moveX, m_moveY);
+    //move(m_moveX, m_moveY);
 }
 
 unsigned int Enemy::getPathingIndex() {
     return m_pathingIndex;
 }
 
-void Enemy::setDirection(Direction direction, sf::Vector2<float> targetPosition) {
-    m_pathingIndex++;
-
-    float leftOverX = targetPosition.x - getPosition().x;
-    float leftOverY = targetPosition.y - getPosition().y;
-
-    m_distance = std::abs(leftOverX + leftOverY);
-
-    if (direction == Direction::North) {
-        m_moveX = 0.f;
-        m_moveY = -1.f;
-
-        sprite.setRotation(180);
-
-        return;
-    }
-
-    if (direction == Direction::East) {
-        m_moveX = 1.f;
-        m_moveY = 0.f;
-
-        sprite.setRotation(270);
-
-        return;
-    }
-
-    if (direction == Direction::South) {
-        m_moveX = 0.f;
-        m_moveY = 1.f;
-
-        sprite.setRotation(0);
-
-        return;
-    }
-
-    if (direction == Direction::West) {
-        m_moveX = -1.f;
-        m_moveY = 0.f;
-
-        sprite.setRotation(90);
-
-        return;
-    }
-}
+//void Enemy::setDirection(Direction direction, sf::Vector2<float> targetPosition) {
+//    m_pathingIndex++;
+//
+//    float leftOverX = targetPosition.x - getPosition().x;
+//    float leftOverY = targetPosition.y - getPosition().y;
+//
+//    m_distance = std::abs(leftOverX + leftOverY);
+//
+//    if (direction == Direction::North) {
+//        m_moveX = 0.f;
+//        m_moveY = -1.f;
+//
+//        sprite.setRotation(180);
+//
+//        return;
+//    }
+//
+//    if (direction == Direction::East) {
+//        m_moveX = 1.f;
+//        m_moveY = 0.f;
+//
+//        sprite.setRotation(270);
+//
+//        return;
+//    }
+//
+//    if (direction == Direction::South) {
+//        m_moveX = 0.f;
+//        m_moveY = 1.f;
+//
+//        sprite.setRotation(0);
+//
+//        return;
+//    }
+//
+//    if (direction == Direction::West) {
+//        m_moveX = -1.f;
+//        m_moveY = 0.f;
+//
+//        sprite.setRotation(90);
+//
+//        return;
+//    }
+//}
 
 bool Enemy::needsNewPath() const {
     return m_distance <= 0.f;
 }
 
-void Enemy::setGoalHandler(Enemy::EnemyGoalHandler handler) {
-    m_goalHandler = std::move(handler);
-}
-
-void Enemy::reachGoal() {
-    m_goalHandler(shared_from_this());
-}
-
-void Enemy::setEnemyDeadHandler(Enemy::EnemyDeadHandler handler) {
-    m_enemyDeadHandler = std::move(handler);
-}
+//void Enemy::setGoalHandler(Enemy::EnemyGoalHandler handler) {
+//    m_goalHandler = std::move(handler);
+//}
+//
+//void Enemy::reachGoal() {
+//    m_goalHandler(shared_from_this());
+//}
+//
+//void Enemy::setEnemyDeadHandler(Enemy::EnemyDeadHandler handler) {
+//    m_enemyDeadHandler = std::move(handler);
+//}
 
 void Enemy::kill() {
-    m_enemyDeadHandler(shared_from_this());
+    //m_enemyDeadHandler(shared_from_this());
 }
 
 unsigned int Enemy::getGoldWorth() {

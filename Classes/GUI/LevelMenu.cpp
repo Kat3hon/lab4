@@ -1,7 +1,7 @@
 #include "LevelMenu.h"
 #include "Game.h"
 #include "MainMenu.h"
-#include "GameMenu.h"
+//#include "GameMenu.h"
 
 void LevelMenu::draw(sf::RenderWindow &window) const {
 
@@ -14,7 +14,10 @@ void LevelMenu::draw(sf::RenderWindow &window) const {
 }
 
 void LevelMenu::parseLevels() {
-    levels_name.emplace_back("Test Level");
+    levels_name.emplace_back("Test level1");
+    levels_name.emplace_back("Test level2");
+    levels_name.emplace_back("Test level3");
+    levels_name.emplace_back("Test level4");
 }
 
 void LevelMenu::swapLevel(size_t level) {
@@ -52,7 +55,7 @@ void LevelMenu::setGUI(Game *game) {
 
     prev_level_text.setFont(font);
     prev_level_text.setCharacterSize(20);
-    prev_level_text.setString("Previous level");
+    prev_level_text.setString("Prev");
 
     prev_level_button = createElement<MenuOption>(prev_level_text, 100.f, 60.f);
     prev_level_button.setColor(sf::Color{130, 20, 37});
@@ -64,7 +67,7 @@ void LevelMenu::setGUI(Game *game) {
 
     next_level_text.setFont(font);
     next_level_text.setCharacterSize(20);
-    next_level_text.setString("Next level");
+    next_level_text.setString("Next");
 
     next_level_button = createElement<MenuOption>(next_level_text, 100.f, 60.f);
     next_level_button.setColor(sf::Color{130, 20, 37});
@@ -76,7 +79,6 @@ void LevelMenu::setGUI(Game *game) {
 
     current_level_text.setFont(font);
     current_level_text.setCharacterSize(50);
-    // For now the level text will always be on the same position.
     current_level_text.setString(getLevelName());
     current_level_text.setPosition(300.f, 300.f);
 
@@ -86,7 +88,7 @@ void LevelMenu::setGUI(Game *game) {
     play_button = createElement<MenuOption>(play_button_text, 210.f, 60.f);
     play_button.setPosition(300.f, 480.f);
     play_button.setColor(sf::Color{65, 161, 18});
-    play_button.setClickHandler([this, game]() { game->getSceneManager()->setScene<GameMenu>(getLevelName()); });
+    //play_button.setClickHandler([this, game]() { game->getSceneManager()->setScene<GameMenu>(getLevelName()); });
     pushElement(&play_button);
 }
 

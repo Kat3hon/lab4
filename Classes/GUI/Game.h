@@ -17,9 +17,6 @@ class Game: sf::NonCopyable {
     /// Handler for various events, needed to process them in right order and their function
     EventManager event_manager;
 
-    /// Flag, that represents if Game is running or not, needed to quit the main loop of the game
-    bool is_running;
-
     /// Some cosmetic for the main game
     sf::Image icon;
     sf::Music music;
