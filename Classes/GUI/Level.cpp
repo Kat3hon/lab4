@@ -44,38 +44,6 @@ sf::Color parseColor(const std::string &hexRGB) {
     return {red, green, blue};
 }
 
-float parseFloat(const std::string &str) {
-    char *pEnd = nullptr;
-    const float value = strtof(str.c_str(), &pEnd);
-    if (*pEnd != '\0')
-        throw std::runtime_error("'" + str + "' is not a float number");
-    return value;
-}
-
-int Object::getPropertyInt(const std::string &propertyName) {
-    return std::stoi(properties[propertyName]);
-}
-
-float Object::getPropertyFloat(const std::string &propertyName) {
-    return parseFloat(properties[propertyName]);
-}
-
-std::string Object::getPropertyString(const std::string &propertyName) {
-    return properties[propertyName];
-}
-
-void Object::moveBy(const sf::Vector2f &movement) {
-    rect.left += movement.x;
-    rect.top += movement.y;
-    sprite.move(movement);
-}
-
-void Object::moveTo(const sf::Vector2f &position) {
-    rect.left = position.x;
-    rect.top = position.y;
-    sprite.setPosition(position);
-}
-
 bool Level::loadFromFile(const std::string &filepath) {
     XMLDocument levelFile;
 
@@ -244,7 +212,7 @@ bool Level::loadFromFile(const std::string &filepath) {
                 }
 
                 // Define object
-                Object object;
+                GameObject object;
                 object.name = objectName;
                 object.type = objectType;
                 object.sprite = sprite;
@@ -284,17 +252,17 @@ bool Level::loadFromFile(const std::string &filepath) {
     return true;
 }
 
-Object Level::getFirstObject(const std::string &name) const {
+GameObject Level::getFirstObject(const std::string &name) const {
     // Only first object with given name
     for (const auto & object : objects)
         if (object.name == name)
             return object;
-    throw std::runtime_error("Object with name " + name + " was not found");
+    throw std::runtime_error("GameObject with name " + name + " was not found");
 }
 
-std::vector<Object> Level::getAllObjects(const std::string &name) const {
+std::vector<GameObject> Level::getAllObjects(const std::string &name) const {
     // All objects with given name
-    std::vector<Object> vec;
+    std::vector<GameObject> vec;
     for (const auto & object : objects)
         if (object.name == name)
             vec.push_back(object);

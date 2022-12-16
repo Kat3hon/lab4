@@ -1,28 +1,42 @@
+#pragma once
+
+#include <string>
+#include <vector>
+#include <map>
+#include <iostream>
+
 #include <SFML/Graphics/Transformable.hpp>
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 
-class GameObject : public sf::Transformable, public sf::Drawable {
+class GameObject {
 
-    float width;
-    float height;
+    std::string name;
+
+    std::string type;
+
+    sf::Rect<float> rect;
+
+    std::map<std::string, std::string> properties;
+
+    sf::Sprite sprite;
+
+    float parseFloat(const std::string &str);
 
 public:
-    GameObject() = default;
+    int getPropertyInt(const std::string &propertyName);
 
-    /// Checks if current Objects collides with gameObject variable or not.
+    float getPropertyFloat(const std::string &propertyName);
+
+    std::string getPropertyString(const std::string &propertyName);
+
+    void moveBy(const sf::Vector2f &movement);
+
+    void moveTo(const sf::Vector2f &position);
+
+    sf::Rect<float> getRect() const;
+
     bool collidesWith(GameObject *gameObject);
-
-    /// Sets object's height.
-    void setHeight(float height);
-
-    /// Sets object's width.
-    void setWidth(float width);
-
-    //Gets object's height.
-    float getHeight() const;
-
-    //Gets object's width.
-    float getWidth() const;
 };

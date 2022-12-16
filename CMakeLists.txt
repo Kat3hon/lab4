@@ -48,7 +48,9 @@ set(SOURCE_FILES startup.cpp
         Classes/GameLogic/Enemy.h
         Classes/GameLogic/EnemyManager.cpp
         Classes/GameLogic/EnemyManager.h
-        )
+        Classes/GUI/Level.h
+        Classes/GUI/Level.cpp
+        Classes/GameLogic/Path.cpp Classes/GameLogic/Path.h)
 
 
 #сделать проверку на добавление нужной библиотеки

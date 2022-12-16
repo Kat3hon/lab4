@@ -3,7 +3,7 @@
 #include <utility>
 
 Enemy::Enemy(unsigned int health, unsigned int goldWorth, bool isBoss)
-        : GameObject(), health(health), m_goldWorth(goldWorth), m_isBoss(isBoss), m_progress(0),
+        : GameObject(), health(health), m_goldWorth(goldWorth), m_progress(0),
           m_pathingIndex(0),
           m_moveX(0.f), m_moveY(0.f), m_distance(0.f) {
     m_initialHealth = health;

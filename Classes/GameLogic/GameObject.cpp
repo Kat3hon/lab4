@@ -3,31 +3,43 @@
 #include <SFML/Graphics/Rect.hpp>
 
 bool GameObject::collidesWith(GameObject *gameObject) {
-    sf::Rect<float> currentRect(getPosition(), {
-            width,
-            height
-    });
 
-    sf::Rect<float> targetRect(gameObject->getPosition(), {
-            gameObject->getWidth(),
-            gameObject->getHeight()
-    });
-
-    return currentRect.intersects(targetRect);
+    return this->getRect().intersects(gameObject->getRect());
 }
 
-void GameObject::setHeight(float height_v) {
-    height = height_v;
+float GameObject::parseFloat(const std::string &str) {
+    char *pEnd = nullptr;
+    const float value = strtof(str.c_str(), &pEnd);
+    if (*pEnd != '\0')
+        throw std::runtime_error("'" + str + "' is not a float number");
+    return value;
 }
 
-void GameObject::setWidth(float width_v) {
-    width = width_v;
+int GameObject::getPropertyInt(const std::string &propertyName) {
+    return std::stoi(properties[propertyName]);
 }
 
-float GameObject::getHeight() const {
-    return height;
+float GameObject::getPropertyFloat(const std::string &propertyName) {
+    return parseFloat(properties[propertyName]);
 }
 
-float GameObject::getWidth() const {
-    return width;
+std::string GameObject::getPropertyString(const std::string &propertyName) {
+    return properties[propertyName];
 }
+
+void GameObject::moveBy(const sf::Vector2f &movement) {
+    rect.left += movement.x;
+    rect.top += movement.y;
+    sprite.move(movement);
+}
+
+void GameObject::moveTo(const sf::Vector2f &position) {
+    rect.left = position.x;
+    rect.top = position.y;
+    sprite.setPosition(position);
+}
+
+sf::Rect<float> GameObject::getRect() const {
+    return rect;
+}
+

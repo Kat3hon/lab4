@@ -14,7 +14,7 @@ void LevelMenu::draw(sf::RenderWindow &window) const {
 }
 
 void LevelMenu::parseLevels() {
-    levels_name.emplace_back("Test Level");
+    levels_name.emplace_back("Level1");
 }
 
 void LevelMenu::swapLevel(size_t level) {
