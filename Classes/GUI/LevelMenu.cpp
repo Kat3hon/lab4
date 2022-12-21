@@ -1,7 +1,7 @@
 #include "LevelMenu.h"
 #include "Game.h"
 #include "MainMenu.h"
-//#include "GameMenu.h"
+#include "GameMenu.h"
 
 void LevelMenu::draw(sf::RenderWindow &window) const {
 
@@ -14,7 +14,7 @@ void LevelMenu::draw(sf::RenderWindow &window) const {
 }
 
 void LevelMenu::parseLevels() {
-    levels_name.emplace_back("Test level1");
+    levels_name.emplace_back("Level1");
     levels_name.emplace_back("Test level2");
     levels_name.emplace_back("Test level3");
     levels_name.emplace_back("Test level4");
@@ -88,7 +88,7 @@ void LevelMenu::setGUI(Game *game) {
     play_button = createElement<MenuOption>(play_button_text, 210.f, 60.f);
     play_button.setPosition(300.f, 480.f);
     play_button.setColor(sf::Color{65, 161, 18});
-    //play_button.setClickHandler([this, game]() { game->getSceneManager()->setScene<GameMenu>(getLevelName()); });
+    play_button.setClickHandler([this, game]() { game->getSceneManager()->setScene<GameMenu>(getLevelName()); });
     pushElement(&play_button);
 }
 

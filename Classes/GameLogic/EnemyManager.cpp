@@ -1,13 +1,11 @@
 #include "EnemyManager.h"
 
 EnemyManager::EnemyManager() {
-    enemy_textures_coords["Slime"] = {0, 0, 35, 35};
-    enemy_tileset.loadFromFile("asset/texture/enemies.png");
+//    enemy_textures_coords["Slime"] = {0, 0, 35, 35};
+//    enemy_tileset.loadFromFile("asset/texture/enemies.png");
 }
 
 void EnemyManager::removeEnemy(const Enemy::Ptr &enemy) {
-    // we add the enemy to the queue,
-    // so we can remove it safely after everything is done :)
     enemies_after_step.push_back(enemy);
 }
 
@@ -38,11 +36,10 @@ std::size_t EnemyManager::getEnemyCount() {
     return enemies.size();
 }
 
-//void EnemyManager::handleEnemyPathing(const Level &map) {
-//    for (const auto &enemy : enemies) {
-//        if (!enemy->needsNewPath())
-//            continue;
-//
+void EnemyManager::handleEnemyPathing(const Path &path) {
+    for (const auto &enemy : enemies) {
+        enemy->step();
+
 //        // to align stuff, we need to add 25 to x and y of the tile target position (since it's origin is in the left top)
 //        // needs to be changed at some point..
 //
@@ -58,8 +55,8 @@ std::size_t EnemyManager::getEnemyCount() {
 //                                                           {targetPosition.x + 25.f, targetPosition.y + 25.f});
 //
 //        enemy->setDirection(direction, {targetPosition.x + 25.f, targetPosition.y + 25.f});
-//    }
-//}
+    }
+}
 
 void EnemyManager::cleanUp() {
 

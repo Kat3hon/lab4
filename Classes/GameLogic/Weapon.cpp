@@ -36,15 +36,9 @@ Enemy::Ptr Weapon::getLockOn() {
     return curr_focussed_enemy.lock();
 }
 
-//bool Tower::isInRange(const Enemy::Ptr &enemy) {
-//    // https://stackoverflow.com/a/40259331
-//    // also have to take the radius shape hit box thing in consideration..
-//    // because, again we didn't work with origins :(
-//    const float distance = std::hypot((enemy->getPosition().x - getPosition().x - radius_shape.getPosition().x),
-//                                      (enemy->getPosition().y - getPosition().y - radius_shape.getPosition().y));
-//
-//    return distance <= static_cast<float>(getRange() * TILE_SIZE);
-//}
+bool Weapon::isInRange(const Enemy::Ptr &enemy) {
+
+}
 
 void Weapon::setRange(unsigned int range_var) {
     range = range_var;

@@ -3,7 +3,6 @@
 
 //Game* Game::instance = nullptr;
 
-//todo: maybe use 1920 1080 or make all GUI sizes non constant?
 Game::Game(): window(sf::VideoMode(800, 800), "MYFAROG", sf::Style::Titlebar | sf::Style::Close) {
 
     scene_manager.setGameInstance(this);

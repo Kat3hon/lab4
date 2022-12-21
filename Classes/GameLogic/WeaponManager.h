@@ -12,12 +12,12 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 
-class WeaponManager : public sf::Drawable {
+class WeaponManager {
 
     std::vector<Weapon::Ptr> weapons;
-    std::unordered_map<ElementType, sf::Rect<int>> towers_textures_coords;
-    std::unordered_map<ElementType, sf::Rect<int>> trap_textures_coords;
-    sf::Texture tileset;
+    //std::unordered_map<ElementType, sf::Rect<int>> towers_textures_coords;
+    //std::unordered_map<ElementType, sf::Rect<int>> trap_textures_coords;
+    //sf::Texture tileset;
 
 public:
     WeaponManager();
@@ -28,7 +28,7 @@ public:
 
     void pop(const Weapon::Ptr &weapon);
 
-    void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+    //void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
     void handleEnemyLockOn(EnemyManager* enemyManager);
 };

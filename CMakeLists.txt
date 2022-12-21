@@ -5,8 +5,8 @@ set(CMAKE_CXX_STANDARD 20)
 set(SOURCE_FILES startup.cpp
         Classes/GUI/Game.cpp
         Classes/GUI/Game.h
-        #Classes/GUI/GameMenu.cpp
-        #Classes/GUI/GameMenu.h
+        Classes/GUI/GameMenu.cpp
+        Classes/GUI/GameMenu.h
         Classes/GUI/LevelMenu.cpp
         Classes/GUI/LevelMenu.h
         Classes/GUI/MainMenu.cpp
@@ -25,38 +25,43 @@ set(SOURCE_FILES startup.cpp
         Classes/GUI/Scene.h
         Classes/GUI/GUI_Element.cpp
         Classes/GUI/GUI_Element.h
-        #Classes/GUI/ShopElement.cpp
-        #Classes/GUI/ShopElement.h
+        Classes/GUI/ShopElement.cpp
+        Classes/GUI/ShopElement.h
         Classes/GUI/Level.h
         Classes/GUI/Level.cpp
-        #Classes/GUI/TileType.h
-        #Classes/GUI/Tile.cpp
-        #Classes/GUI/Tile.h
-        #Classes/GUI/WeaponGUI.cpp
-        #Classes/GUI/WeaponGUI.h
+        Classes/GUI/tinyxml/tinyxml2.cpp
+        Classes/GUI/tinyxml/tinyxml2.h
+        Classes/GameLogic/TileType.h
+        Classes/GUI/WeaponGUI.cpp
+        Classes/GUI/WeaponGUI.h
         Classes/GUI/GameObject.cpp
         Classes/GUI/GameObject.h
         Classes/Vector/Vector.h
-        #Classes/GameLogic/Weapon.cpp
-        #Classes/GameLogic/Weapon.h
-        #Classes/GameLogic/Trap.cpp
-        #Classes/GameLogic/Trap.h
-        #Classes/GameLogic/MainGame.cpp
-        #Classes/GameLogic/MainGame.h
-        #Classes/GameLogic/EnemyManager.cpp
-        #Classes/GameLogic/EnemyManager.h
-        #Classes/GameLogic/Enemy.cpp
-        #Classes/GameLogic/IWeapon.h
-        #Classes/GameLogic/Graph.h
-        #Classes/GameLogic/Tower.cpp
-        #Classes/GameLogic/Tower.h
-        #Classes/GameLogic/WeaponManager.cpp
-        #Classes/GameLogic/WeaponManager.h
-        #Classes/GameLogic/Wave.cpp
-        #Classes/GameLogic/Wave.h
-        #Classes/GameLogic/WaveManager.cpp
-        #Classes/GameLogic/WaveManager.h
-        )
+        Classes/GameLogic/Weapon.cpp
+        Classes/GameLogic/Weapon.h
+        Classes/GameLogic/Trap.cpp
+        Classes/GameLogic/Trap.h
+        Classes/GameLogic/MainGame.cpp
+        Classes/GameLogic/MainGame.h
+        Classes/GameLogic/EnemyManager.cpp
+        Classes/GameLogic/EnemyManager.h
+        Classes/GameLogic/Enemy.cpp
+        Classes/GameLogic/IWeapon.h
+        Classes/GameLogic/Graph.h
+        Classes/GameLogic/Weapon.cpp
+        Classes/GameLogic/Weapon.h
+        Classes/GameLogic/WeaponManager.cpp
+        Classes/GameLogic/WeaponManager.h
+        Classes/GameLogic/Wave.cpp
+        Classes/GameLogic/Wave.h
+        Classes/GameLogic/WaveManager.cpp
+        Classes/GameLogic/WaveManager.h
+        Classes/GUI/TileGUI.cpp
+        Classes/GUI/TileGUI.h
+        Classes/GameLogic/Path.cpp
+        Classes/GameLogic/Path.h
+        Classes/GameLogic/Tile.cpp
+        Classes/GameLogic/Tile.h Classes/GameLogic/Castle.cpp Classes/GameLogic/Castle.h Classes/GameLogic/Lain.cpp Classes/GameLogic/Lain.h)
 
 
 #сделать проверку на добавление нужной библиотеки

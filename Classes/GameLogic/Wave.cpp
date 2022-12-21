@@ -1,19 +1,19 @@
 #include "Wave.h"
 
-Wave::Wave(unsigned int enemyCount, unsigned int enemySpawnInterval) : m_enemyCount(enemyCount),
-                                                                       m_enemySpawnInterval(enemySpawnInterval),
-                                                                       m_enemiesSpawned(0) {
+Wave::Wave(unsigned int enemyCount, unsigned int enemySpawnInterval) : enemyCount(enemyCount),
+                                                                       enemySpawnInterval(enemySpawnInterval),
+                                                                       enemiesSpawned(0) {
 
 }
 
-unsigned int Wave::getEnemyCount() {
-    return m_enemyCount - m_enemiesSpawned;
+unsigned int Wave::getEnemyCount() const {
+    return enemyCount - enemiesSpawned;
 }
 
-unsigned int Wave::getEnemySpawnInterval() {
-    return m_enemySpawnInterval;
+unsigned int Wave::getEnemySpawnInterval() const {
+    return enemySpawnInterval;
 }
 
 void Wave::enemyGotSpawned() {
-    m_enemiesSpawned++;
+    enemiesSpawned++;
 }

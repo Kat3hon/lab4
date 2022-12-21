@@ -69,8 +69,13 @@ public:
 
     explicit GameMenu(std::string levelName)
             : Scene(), level_name(std::move(levelName)) {
-        if(!map.loadFromFile("Storage/Textures/Landscape/"+level_name))
-            MessageBox(nullptr, "Can not load that level!", "Error!", MB_OK);
+        try {
+            map.loadFromFile("assets/"+level_name+"/"+level_name+".tmx");
+        }
+        catch(const std::exception& ex) {
+            std::cout << ex.what() << std::endl;
+            MessageBox(nullptr, ex.what(), "Error!", MB_OK);
+        }
     }
 
     void fixedUpdate(Game *game, EventStorage *events) override;
@@ -90,5 +95,7 @@ public:
     void deselectWeapon();
 
     void selectWeapon(const WeaponGUI::Ptr &weapon);
+
+    void handleTileClick(const TileGUI::Ptr &tile);
 };
 

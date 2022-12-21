@@ -1,6 +1,9 @@
 #include "GameObject.h"
 #include <SFML/Graphics/Rect.hpp>
 
+void GameObject::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+}
+
 bool GameObject::collidesWith(GameObject *gameObject) {
     return this->getRect().intersects(gameObject->getRect());
 }

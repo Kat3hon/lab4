@@ -2,8 +2,9 @@
 #include <SFML/Config.hpp>
 
 enum TileType : sf::Uint8 {
-    Solid,
+    Castle,
     Path,
     Field,
-    Forest
+    Forest,
+    Lain
 };

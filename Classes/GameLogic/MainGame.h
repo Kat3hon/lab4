@@ -1,41 +1,31 @@
 #pragma once
 
-#include "Tower.h"
+#include "Weapon.h"
 #include "WeaponManager.h"
-#include "WaveManager.h"
-#include "Enemy.h"
-#include "EnemyManager.h"
+#include "Castle.h"
+#include "Lain.h"
 
 #include <memory>
 #include <functional>
 
-#include <SFML/System/Clock.hpp>
-#include <SFML/System/NonCopyable.hpp>
-#include <SFML/Graphics/Drawable.hpp>
-#include <SFML/Graphics/RenderStates.hpp>
-#include <SFML/Graphics/RenderTarget.hpp>
+//#include <SFML/System/Clock.hpp>
+//#include <SFML/System/NonCopyable.hpp>
+//#include <SFML/Graphics/Drawable.hpp>
+//#include <SFML/Graphics/RenderStates.hpp>
+//#include <SFML/Graphics/RenderTarget.hpp>
 
-class MainGame : public sf::Drawable, public sf::NonCopyable {
+class MainGame {
 
-    //Checks to see what enemies can be spawned
-    void spawnEnemies();
-
-    void spawnEnemy(const Enemy::Ptr& enemy);
-
-    unsigned int health = 1000;
     unsigned int gold = 1000;
 
-    WeaponManager weapon_manager;
-    WaveManager wave_manager;
-    EnemyManager enemy_manager;
+    class Castle castle;
+    std::vector<class Lain> lains;
 
-    sf::Clock last_enemy_spawned;
+    WeaponManager weapon_manager;
 
 public:
 
     MainGame() = default;
-
-    void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
     void update();
 
@@ -47,24 +37,10 @@ public:
 
     unsigned int getGold() const;
 
-    void addHealth(unsigned int health);
-
-    void substractHealth(unsigned int health);
-
-    void setHealth(unsigned int health);
-
-    unsigned int getHealth() const;
-
-    void nextWave();
-
-    void onEnemyDestination(const Enemy::Ptr& enemy);
-
-    void onEnemyKilled(const Enemy::Ptr& enemy);
-
     WeaponManager *getWeaponManager();
 
-    WaveManager *getWaveManager();
+    void onEnemyKilled(const Enemy::Ptr &enemy);
 
-    EnemyManager *getEnemyManager();
+    void onEnemyDestination(const Enemy::Ptr &enemy);
 };
 

@@ -1,13 +1,13 @@
 #pragma once
 #include <memory>
 
-class Tower;
+class Weapon;
 
 class Enemy;
 
 class IWeapon{
 public:
-    virtual void onTowerShoot(const std::shared_ptr<Tower> &tower) = 0;
+    virtual void onWeaponShoot(const std::shared_ptr<Weapon> &weapon) = 0;
 
-    virtual void onTowerBulletHit(const std::shared_ptr<Tower> &tower, const std::shared_ptr<Enemy> &enemy) = 0;
+    virtual void onWeaponBulletHit(const std::shared_ptr<Weapon> &weapon, const std::shared_ptr<Enemy> &enemy) = 0;
 };

@@ -27,6 +27,6 @@ void ShopElement::draw(sf::RenderTarget &target, sf::RenderStates states) const 
     target.draw(gold_text, states);
 }
 
-std::shared_ptr<WeaponGUI> ShopElement::get() const{
-    return std::make_shared<WeaponGUI>(weapon_type);
+std::shared_ptr<WeaponGUI> ShopElement::get(float x, float y) const{
+    return std::make_shared<WeaponGUI>(weapon_type, x, y);
 }

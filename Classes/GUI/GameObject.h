@@ -16,10 +16,12 @@
 // Texture coordinates allow you to associate a sprite with an object
 // that uses the main texture of the map as a data source.
 
-class GameObject {
+class GameObject: public sf::Transformable, public sf::Drawable{
 
 
 public:
+
+    void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
     int getPropertyInt(const std::string &propertyName);
 

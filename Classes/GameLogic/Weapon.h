@@ -4,8 +4,6 @@
 #include "../GUI/GameObject.h"
 #include "Enemy.h"
 #include "IWeapon.h"
-#include "Weapon.h"
-#include "WeaponType.h"
 
 #include <memory>
 #include <vector>
@@ -13,7 +11,7 @@
 
 class Weapon: public GameObject {
 
-    /// Range of the weapon.
+    /// Range of the weapon in Tiles.
     unsigned int range;
 
     /// Damage of the weapon.
@@ -44,7 +42,7 @@ public:
 
     void lockOn(std::weak_ptr<Enemy> enemy);
 
-    virtual void attack() = 0;
+    virtual void attack() {};
 
     bool isInRange(const Enemy::Ptr& enemy);
 

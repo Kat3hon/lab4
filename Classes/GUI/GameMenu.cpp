@@ -5,11 +5,11 @@
 #include <sstream>
 
 void GameMenu::fixedUpdate(Game *game, EventStorage *events) {
-    main_game.update();
-
-    if (main_game.getWaveManager()->getWaveCooldown() == 0)
-        main_game.nextWave();
-
+//    main_game.update();
+//
+//    if (main_game.getWaveManager()->getWaveCooldown() == 0)
+//        main_game.nextWave();
+//
     updateBindings();
 }
 
@@ -67,7 +67,7 @@ void GameMenu::updateBindings() {
 
 void GameMenu::setGUI(Game *game) {
 
-    map.setPosition(150, 150);
+    map.constructTiles();
 
     wave_text.setFont(font);
     health_text.setFont(font);
@@ -82,9 +82,9 @@ void GameMenu::setGUI(Game *game) {
     pyro_tower_gold_text.setFont(font);
     pyro_tower_name.setFont(font);
 
-    health_texture.loadFromFile("asset/heart.png");
+    health_texture.loadFromFile("assets/heart.png");
     health_sprite.setTexture(health_texture);
-    gold_texture.loadFromFile("asset/gold.png");
+    gold_texture.loadFromFile("assets/gold.png");
     gold_sprite.setTexture(gold_texture);
 
     exit_text.setString("Exit");
@@ -117,7 +117,7 @@ void GameMenu::setGUI(Game *game) {
 
     next_wave_button = createElement<MenuOption>(next_wave_text, 100.f, 40.f);
     next_wave_button.setPosition(700.f, 0.f);
-    next_wave_button.setClickHandler([this]() { main_game.nextWave(); });
+    //next_wave_button.setClickHandler([this]() { main_game.nextWave(); });
     pushElement(&next_wave_button);
 
     remaining_time_text.setPosition(675.f, 10.f);
@@ -135,7 +135,7 @@ void GameMenu::setGUI(Game *game) {
     electro_tower_item = createElement<ShopElement>(ElementType::Electro, electro_tower_name, electro_tower_gold_text);
     electro_tower_item.setPosition(0.f, 680.f);
     electro_tower_item.setClickHandler([this](){
-        selectWeapon(electro_tower_item.get());
+        selectWeapon(electro_tower_item.get(map.getTileSize().x, map.getTileSize().y));
     });
     pushElement(&electro_tower_item);
 
@@ -145,7 +145,7 @@ void GameMenu::setGUI(Game *game) {
     pyro_tower_item = createElement<ShopElement>(ElementType::Pyro, pyro_tower_name, pyro_tower_gold_text);
     pyro_tower_item.setPosition(120.f, 680.f);
     pyro_tower_item.setClickHandler([this]() {
-        selectWeapon(pyro_tower_item.get());
+        selectWeapon(pyro_tower_item.get(map.getTileSize().x, map.getTileSize().y));
     });
     pushElement(&pyro_tower_item);
 
@@ -155,12 +155,13 @@ void GameMenu::setGUI(Game *game) {
     hydro_trap_item = createElement<ShopElement>(ElementType::Hydro, hydro_trap_name, hydro_trap_gold_text);
     hydro_trap_item.setPosition(240.f, 680.f);
     hydro_trap_item.setClickHandler([this]() {
-        selectWeapon(hydro_trap_item.get());
+        selectWeapon(hydro_trap_item.get(map.getTileSize().x, map.getTileSize().y));
     });
     pushElement(&hydro_trap_item);
 }
 
 void GameMenu::draw(sf::RenderWindow &window) const {
+    map.draw(window);
     window.draw(header);
     window.draw(footer);
     window.draw(wave_text);
@@ -175,21 +176,30 @@ void GameMenu::draw(sf::RenderWindow &window) const {
     window.draw(electro_tower_item);
     window.draw(pyro_tower_item);
 
-    window.draw(main_game);
+
+    //draw main_game
+    // bottom layer (tiles)
+    window.draw(map, states);
+
+    // enemy layer
+    window.draw(enemy_manager, states);
+
+    // tower layer
+    window.draw(tower_manager, states);
 }
 
-void GameMenu::handleTileClick(const Tile::Ptr &tile) {
+void GameMenu::handleTileClick(const TileGUI::Ptr &tile) {
 
     if(hasWeaponSelected())
         getSelectedWeapon()->setSelected(false);
 
     // we have nothing to do here
-    if (!tile->isBuildable()) {
+    if (!tile->getTile().isBuildable()) {
         current_weapon.reset();
         return;
     }
 
-    if (!tile->hasTower() && hasWeaponSelected() && !current_weapon->isBuilt()) {
+    if (!tile->getTile().hasWeapon() && hasWeaponSelected() && !current_weapon->isBuilt()) {
 
         // for now let each tower cost a 100
         if (main_game.getGold() < TOWER_COST) {
@@ -199,13 +209,13 @@ void GameMenu::handleTileClick(const Tile::Ptr &tile) {
 
         main_game.substractGold(TOWER_COST);
 
-        tile->setTower(current_weapon);
-        main_game.getWeaponManager()->push(current_weapon);
+        tile->getTile().setWeapon(current_weapon->getWeapon());
+        main_game.getWeaponManager()->push(current_weapon->getWeapon());
 
         // Since the tower is bigger than the actual tile. A tower equals to 70 pixels on the Y axis. Time to substract that
         // So it actually looks that the tower is on the tile.
-        sf::Vector2<float> towerPosition = map.getTileWindowPosition(tile);
-        current_weapon->setPosition(towerPosition.x, towerPosition.y - (70 - TILE_SIZE));
+        sf::Vector2<float> weaponPosition = map.getTileWindowPosition(tile);
+        current_weapon->getWeapon()->setPosition(weaponPosition.x, weaponPosition.y - (70 - map.getTileSize().y));
         current_weapon->setSelected(true);
         current_weapon->build();
 
@@ -215,13 +225,13 @@ void GameMenu::handleTileClick(const Tile::Ptr &tile) {
     // Seems like there already is a tower built on this spot.
     // We might want to upgrade this tower.
     // Select the tower and open the upgrade
-    if (tile->hasTower()) {
+    if (tile->getTile().hasWeapon()) {
 
         if (hasWeaponSelected()) {
             deselectWeapon();
         }
 
-        current_weapon = tile->getTower();
+        current_weapon->getWeapon() = tile->getTile().getWeapon();
         current_weapon->setSelected(true);
         return;
     }

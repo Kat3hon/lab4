@@ -1,16 +1,19 @@
 #pragma once
 
 #include "GameObject.h"
+#include "TileGUI.h"
 
 #include <string>
 #include <vector>
 #include <map>
 #include <iostream>
 #include <cmath>
+#include <algorithm>
 
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Transformable.hpp>
+#include <SFML/Window/Mouse.hpp>
 #include "tinyxml/tinyxml2.h"
 
 /// Reads map from XML file
@@ -43,10 +46,12 @@ class Level {
     /// Layers to render.
     std::vector<Layer> layers;
 
+    std::vector<TileGUI> tiles_gui;
+
 public:
 
     /// Sets all fields from file.
-    bool loadFromFile(const std::string &filepath);
+    void loadFromFile(const std::string &filepath);
 
     /// Gets first object with that name.
     GameObject getFirstObject(const std::string &name) const;
@@ -69,5 +74,19 @@ public:
     /// Renders all layers, but not objects.
     void draw(sf::RenderTarget & target) const;
 
-    void constructGraph();
+    /// Sets tiles_gui vec.
+    void constructTiles();
+
+    ///Gets a tile from a mouse.
+    TileGUI::Ptr getTileFromMouse(sf::Vector2<float> vector) const;
+
+    ///Gets a tile from window position. This function is used, to calculate to find the position
+    ///on where to position the enemy and/or weapons.
+    sf::Vector2<float> getTileWindowPosition(const TileGUI::Ptr &tile) const;
+
+    ///Gets a tile from a coordinate.
+    TileGUI::Ptr getTileFromCoordinate(sf::Vector2<int> position) const;
+
+    ///Gets a tile from coordinate (or from window, if that did not work).
+    sf::Vector2<float> getTileWindowPositionFromTileCoordinate(sf::Vector2<int> coordinate) const;
 };

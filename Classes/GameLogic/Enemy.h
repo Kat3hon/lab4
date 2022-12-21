@@ -14,53 +14,47 @@
 
 class Enemy : public GameObject, public std::enable_shared_from_this<Enemy> {
 
-    /// Sprite of the enemy. Texture being provided by parent class
-    sf::Sprite sprite;
+public:
+    using Ptr = std::shared_ptr<Enemy>;
+    using EnemyGoalHandler = std::function<void(const Enemy::Ptr&)>;
+    using EnemyDeadHandler = std::function<void(const Enemy::Ptr&)>;
 
-    /// Healthbars
-    sf::RectangleShape back_ground_healthbar;
-    sf::RectangleShape fore_ground_healthbar;
+private:
+
+//    /// Sprite of the enemy. Texture being provided by parent class
+//    sf::Sprite sprite;
+//
+//    /// Healthbars
+//    sf::RectangleShape back_ground_healthbar;
+//    sf::RectangleShape fore_ground_healthbar;
 
     /// Health of enemy
     unsigned int health;
 
     // As the name implies.
     // The amount of health the enemy used to have
-    unsigned m_initialHealth;
+    unsigned initial_health;
 
     // Progress of the enemy in the map. Could be anything.
     // Higher the progress, more chance of being focused by a tower.
-    unsigned int m_progress;
+    unsigned int progress_value;
 
     // The current path this enemy is on.
-    unsigned int m_pathingIndex;
+    unsigned int pathing_index;
 
-    // The amount of X this enemy has to move each update
-    float m_moveX;
+    unsigned int gold_worth;
 
-    // The amount of Y this enemy has to move each update
-    float m_moveY;
+    /// Callback when enemy reaches end of path
+    EnemyGoalHandler goal_handler;
 
-    // The amount of distance the enemy needs to cover
-    // until it needs to request a new path.
-    float m_distance;
-
-    unsigned int m_goldWorth;
-
-    // callback when enemy reaches end of path
-   // EnemyGoalHandler m_goalHandler;
-
-    // callback when enemy gets killed by tower
-    //EnemyDeadHandler m_enemyDeadHandler;
+    /// Callback when enemy gets killed by a weapon
+    EnemyDeadHandler enemy_dead_handler;
 
 public:
-    using Ptr = std::shared_ptr<Enemy>;
-    using EnemyGoalHandler = std::function<void(const Enemy::Ptr&)>;
-    using EnemyDeadHandler = std::function<void(const Enemy::Ptr&)>;
 
     explicit Enemy(unsigned int health, unsigned int goldWorth = 10, bool isBoss = false);
 
-    void draw(sf::RenderTarget &target, sf::RenderStates states) const; //override
+    //void draw(sf::RenderTarget &target, sf::RenderStates states) const; //override
 
     void setGoalHandler(EnemyGoalHandler handler);
 
@@ -72,20 +66,18 @@ public:
 
     void reachGoal();
 
-    //void setDirection(Direction direction, sf::Vector2<float> targetPosition);
+    //void setTexture(const sf::Texture &texture, const sf::Rect<int> &texCoords);
 
-    void setTexture(const sf::Texture &texture, const sf::Rect<int> &texCoords);
-
-    bool needsNewPath() const;
+    //bool needsNewPath() const;
 
     void takeDamage(unsigned int damage);
 
-    unsigned int getGoldWorth();
+    unsigned int getGoldWorth() const;
 
     unsigned int getProgress();
 
     unsigned int getHealth() const;
 
-    unsigned int getPathingIndex();
+    unsigned int getPathingIndex() const;
 };
 
