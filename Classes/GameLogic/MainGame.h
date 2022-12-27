@@ -4,28 +4,35 @@
 #include "WeaponManager.h"
 #include "Castle.h"
 #include "Lain.h"
+#include "ITimer.h"
 
 #include <memory>
 #include <functional>
 
-//#include <SFML/System/Clock.hpp>
-//#include <SFML/System/NonCopyable.hpp>
-//#include <SFML/Graphics/Drawable.hpp>
-//#include <SFML/Graphics/RenderStates.hpp>
-//#include <SFML/Graphics/RenderTarget.hpp>
-
 class MainGame {
 
+    /// Initial gold = 1000
     unsigned int gold = 1000;
 
-    class Castle castle;
+    /// Handles a health of a player
+    Castle castle;
+
+    /// Handles waves
+    WaveManager wave_manager;
+
+    /// Contaiters for enemies
     std::vector<class Lain> lains;
 
+    /// Timer for a game
+    const ITimer& timer;
+
+    /// Weapon handler
     WeaponManager weapon_manager;
 
 public:
 
-    MainGame() = default;
+    MainGame(const ITimer& timer_var):timer(timer_var) {
+    }
 
     void update();
 
@@ -35,12 +42,26 @@ public:
 
     void setGold(unsigned int amount);
 
-    unsigned int getGold() const;
+    [[nodiscard]] unsigned int getGold() const;
 
-    WeaponManager *getWeaponManager();
+    WeaponManager * getWeaponManager();
+
+    [[nodiscard]] WeaponManager * getWeaponManagerToDraw() {
+        return &weapon_manager;
+    }
 
     void onEnemyKilled(const Enemy::Ptr &enemy);
 
     void onEnemyDestination(const Enemy::Ptr &enemy);
+
+    [[nodiscard]] Castle getCastle() const;
+
+    [[nodiscard]] std::vector<Lain> getLains() const;
+
+    void setPath(const std::vector<Tile>& vec);
+
+    void nextWave();
+
+    WaveManager *getWaveManager();
 };
 

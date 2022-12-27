@@ -34,8 +34,6 @@ set(SOURCE_FILES startup.cpp
         Classes/GameLogic/TileType.h
         Classes/GUI/WeaponGUI.cpp
         Classes/GUI/WeaponGUI.h
-        Classes/GUI/GameObject.cpp
-        Classes/GUI/GameObject.h
         Classes/Vector/Vector.h
         Classes/GameLogic/Weapon.cpp
         Classes/GameLogic/Weapon.h
@@ -46,7 +44,6 @@ set(SOURCE_FILES startup.cpp
         Classes/GameLogic/EnemyManager.cpp
         Classes/GameLogic/EnemyManager.h
         Classes/GameLogic/Enemy.cpp
-        Classes/GameLogic/IWeapon.h
         Classes/GameLogic/Graph.h
         Classes/GameLogic/Weapon.cpp
         Classes/GameLogic/Weapon.h
@@ -61,7 +58,19 @@ set(SOURCE_FILES startup.cpp
         Classes/GameLogic/Path.cpp
         Classes/GameLogic/Path.h
         Classes/GameLogic/Tile.cpp
-        Classes/GameLogic/Tile.h Classes/GameLogic/Castle.cpp Classes/GameLogic/Castle.h Classes/GameLogic/Lain.cpp Classes/GameLogic/Lain.h)
+        Classes/GameLogic/Tile.h
+        Classes/GameLogic/Castle.cpp
+        Classes/GameLogic/Castle.h
+        Classes/GameLogic/Lain.cpp
+        Classes/GameLogic/Lain.h
+        Classes/GameLogic/ITimer.cpp
+        Classes/GameLogic/ITimer.h
+        Classes/GUI/MyTimer.cpp
+        Classes/GUI/MyTimer.h
+        Classes/GUI/GameObject.cpp
+        Classes/GUI/GameObject.h
+        Classes/GameLogic/Tower.h
+        Classes/GameLogic/Tower.cpp)
 
 
 #сделать проверку на добавление нужной библиотеки

@@ -15,20 +15,16 @@
 class WeaponManager {
 
     std::vector<Weapon::Ptr> weapons;
-    //std::unordered_map<ElementType, sf::Rect<int>> towers_textures_coords;
-    //std::unordered_map<ElementType, sf::Rect<int>> trap_textures_coords;
     //sf::Texture tileset;
 
 public:
-    WeaponManager();
+    WeaponManager() = default;
 
     void update();
 
     void push(const Weapon::Ptr &weapon);
 
     void pop(const Weapon::Ptr &weapon);
-
-    //void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
     void handleEnemyLockOn(EnemyManager* enemyManager);
 };

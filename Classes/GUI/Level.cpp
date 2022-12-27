@@ -63,8 +63,12 @@ void Level::loadFromFile(const std::string &filepath) {
     //    width="10" height="10" tilewidth="34" tileheight="34">
     width = std::stoi(map->Attribute("width"));
     height = std::stoi(map->Attribute("height"));
-    tile_width = std::stoi(map->Attribute("tilewidth"));
-    tile_height = std::stoi(map->Attribute("tileheight"));
+    int tile_width = std::stoi(map->Attribute("tilewidth"));
+    int tile_height = std::stoi(map->Attribute("tileheight"));
+
+    if (tile_width != tile_height)
+        throw std::runtime_error("Your tiles should have the same width and height.");
+    TILE_SIZE = tile_width;
 
     // Retrieve tileset description and the first tile GID (Group Identifier).
     XMLElement *tilesetElement = map->FirstChildElement("tileset");
@@ -147,7 +151,7 @@ void Level::loadFromFile(const std::string &filepath) {
                 sf::Sprite sprite;
                 sprite.setTexture(tileset_texture);
                 sprite.setTextureRect(subRects[subRectToUse]);
-                sprite.setPosition(static_cast<float>(x * tile_width + 150), static_cast<float>(y * tile_height + 150));
+                sprite.setPosition(static_cast<float>(x * tile_width), static_cast<float>(y * tile_height + 40));
                 sprite.setColor(sf::Color(255, 255, 255, layer.opacity));
 
                 layer.tiles_sprites.push_back(sprite);
@@ -189,8 +193,8 @@ void Level::loadFromFile(const std::string &filepath) {
                 if (objectElement->Attribute("name") != nullptr) {
                     objectName = objectElement->Attribute("name");
                 }
-                float x = std::stof(objectElement->Attribute("x")) + 150;
-                float y = std::stof(objectElement->Attribute("y")) + 150;
+                float x = std::stof(objectElement->Attribute("x"));
+                float y = std::stof(objectElement->Attribute("y")) + 40;
                 float width_v = 0;
                 float height_v = 0;
 
@@ -267,16 +271,12 @@ std::vector<GameObject> Level::getAllObjects(const std::string &name) const {
     return vec;
 }
 
-sf::Vector2i Level::getTileSize() const {
-    return {tile_width, tile_height};
-}
-
 float Level::getTilemapWidth() const {
-    return static_cast<float>(tile_width * width);
+    return static_cast<float>(TILE_SIZE * width);
 }
 
 float Level::getTilemapHeight() const {
-    return static_cast<float>(tile_height * height);
+    return static_cast<float>(TILE_SIZE * height);
 }
 
 sf::Vector2f Level::getTilemapSize() const {
@@ -301,105 +301,77 @@ void Level::constructTiles() {
     for (const auto& tile: layers[0].tiles_sprites) {
         for (const auto& object : objects) {
             float X1 = tile.getPosition().x;
-            auto W1 = static_cast<float>(tile_width);
+            auto W1 = static_cast<float>(TILE_SIZE);
             float X2 = object.rect.left;
             float W2 = object.rect.width;
             float Y1 = tile.getPosition().y;
-            auto H1 = static_cast<float>(tile_height);
+            auto H1 = static_cast<float>(TILE_SIZE);
             float Y2 = object.rect.top;
             float H2 = object.rect.height;
             if (!(X1+W1<=X2 || X2+W2<=X1 || Y1+H1<=Y2 || Y2+H2<=Y1)) {
                 TileType tile_type;
                 if (object.name == "castle")
-                    tile_type = Castle;
+                    tile_type = typeCastle;
                 if (object.name == "path")
-                    tile_type = Path;
+                    tile_type = typePath;
                 if (object.name == "field")
-                    tile_type = Field;
+                    tile_type = typeField;
                 if (object.name == "forest")
-                    tile_type = Forest;
+                    tile_type = typeForest;
                 if (object.name == "lain")
-                    tile_type = Lain;
-                tiles_gui.emplace_back(Tile(tile_type, tile.getPosition().x, tile.getPosition().y,
-                                                              static_cast<float>(tile_width), static_cast<float>(tile_height)), tile);
+                    tile_type = typeLain;
+                tiles_gui.emplace_back(Tile(tile_type, tile.getPosition().x, tile.getPosition().y, TILE_SIZE), tile);
                 break;
             }
         }
     }
 }
 
-TileGUI::Ptr Level::getTileFromMouse(sf::Vector2<float> vector) const {
-    Vector2<int> position = sf::Mouse::getPosition();
+TileGUI* Level::getTileFromMouse(sf::Vector2<float> vector, const sf::Window& window) {
+    Vector2<int> position = sf::Mouse::getPosition(window);
 
-    for (const auto& tile : tiles_gui) {
+    for (auto& tile : tiles_gui) {
         bool x1 = tile.getTile().getX() <= position.x;
-        bool x2 = tile.getTile().getX() + tile_width >= position.x;
+        bool x2 = tile.getTile().getX() + TILE_SIZE >= position.x;
         bool y1 = tile.getTile().getY() <= position.y;
-        bool y2 = tile.getTile().getY() + tile_height >= position.y;
+        bool y2 = tile.getTile().getY() + TILE_SIZE >= position.y;
 
-        if (x1 && x2 && y1 && y2)
-            return (const std::shared_ptr<TileGUI> &) tile;
+        if (x1 && x2 && y1 && y2) {
+            return &(tile);
+        }
     }
-
     return nullptr;
 }
 
-sf::Vector2<float> Level::getTileWindowPosition(const TileGUI::Ptr &tile) const {
-    sf::Vector2<int> gridPosition = sf::Mouse::getPosition();
+Vector2<int> Level::getTileWindowPosition(TileGUI* tile, const sf::Window& window) {
+    sf::Vector2<int> gridPosition = sf::Mouse::getPosition(window);
 
-    const auto yRelative = static_cast<float>(tile->getTile().getY() * tile_height);
-    const auto xRelative = static_cast<float>(tile->getTile().getX() * tile_width);
-
-    return sf::Vector2f{gridPosition.x + xRelative, gridPosition.y + yRelative};
+    std::cout << tile->getTile().getX() << " " << tile->getTile().getY() << " and " << gridPosition.x << " " << gridPosition.y << std::endl;
+    return sf::Vector2i{gridPosition.x, gridPosition.y};
 }
 
-//sf::Vector2<int> Level::getEnemySpawnTileCoordinate() const {
-//    if (m_enemyPathingPoints.empty()) {
-//        throw std::logic_error("No enemy spawn point set");
-//    }
-//
-//    return *m_enemyPathingPoints.begin();
-//}
-//
-//sf::Vector2<int> Level::getEnemyTargetTileCoordinate() const {
-//    if (m_enemyPathingPoints.empty()) {
-//        throw std::logic_error("No enemy target point set");
-//    }
-//
-//    return *m_enemyPathingPoints.end();
-//}
+TileGUI* Level::getTileFromCoordinate(sf::Vector2<int> position) {
 
-//sf::Vector2<int> Level::getEnemyPathTileCoordinate(unsigned int pathIndex) const {
-//
-//    if(pathIndex >= m_enemyPathingPoints.size()) {
-//        return m_enemyPathingPoints[m_enemyPathingPoints.size() - 1];
-//    }
-//
-//    return m_enemyPathingPoints[pathIndex];
-//}
-//
-
-TileGUI::Ptr Level::getTileFromCoordinate(sf::Vector2<int> position) const {
-
-    for (const auto& tile : tiles_gui) {
+    for (auto& tile : tiles_gui) {
         bool x1 = tile.getTile().getX() <= position.x;
-        bool x2 = tile.getTile().getX() + tile_width >= position.x;
+        bool x2 = tile.getTile().getX() + TILE_SIZE >= position.x;
         bool y1 = tile.getTile().getY() <= position.y;
-        bool y2 = tile.getTile().getY() + tile_height >= position.y;
+        bool y2 = tile.getTile().getY() + TILE_SIZE >= position.y;
 
         if (x1 && x2 && y1 && y2)
-            return (const std::shared_ptr<TileGUI> &) tile;
+            return &tile;
     }
-
     return nullptr;
 }
 
-sf::Vector2<float> Level::getTileWindowPositionFromTileCoordinate(sf::Vector2<int> coordinate) const {
-    const TileGUI::Ptr tile = getTileFromCoordinate(coordinate);
+sf::Vector2<int> Level::getTileWindowPositionFromTileCoordinate(sf::Vector2<int> coordinate, const sf::Window& window) {
+    TileGUI* tile = getTileFromCoordinate(coordinate);
+    if (tile == nullptr)
+        return {0,0};
 
-    if (tile == nullptr) {
-        return sf::Vector2<float>{0, 0};
-    }
+    return getTileWindowPosition(tile, window);
+}
 
-    return getTileWindowPosition(tile);
+std::vector<TileGUI> Level::getTiles() const {
+    return tiles_gui;
 }

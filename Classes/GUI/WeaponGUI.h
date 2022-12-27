@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../GameLogic/Weapon.h"
+#include "TileGUI.h"
 
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
@@ -11,10 +12,6 @@
 class WeaponGUI: public GameObject {
 
     bool is_built;
-
-    float tile_width;
-
-    float tile_height;
 
     /// Sprite of the tower.
     sf::Sprite sprite;
@@ -28,9 +25,13 @@ class WeaponGUI: public GameObject {
     std::shared_ptr<Weapon> weapon;
 
 public:
+
+    float TILE_SIZE;
+
     using Ptr = std::shared_ptr<WeaponGUI>;
 
-    explicit WeaponGUI(ElementType elementType, float x, float y);
+    WeaponGUI(ElementType elementType, float tile_size);
+
     void draw(sf::RenderTarget &target, sf::RenderStates states) const;
     void setTexture(const sf::Texture &texture, sf::Rect<int> textureCoords);
     void setSelected(bool selected_var);
@@ -38,4 +39,12 @@ public:
     bool isBuilt() const;
     Weapon::Ptr getWeapon() const;
 
+    const sf::Sprite& getSprite() const;
+    sf::Sprite& getSprite();
+
+    void setWeapon(Weapon::Ptr weapon_var);
+
+    void changeRadius();
+
+    TileType isBuildable();
 };

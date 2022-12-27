@@ -21,8 +21,8 @@ public:
 
 private:
 
-//    /// Sprite of the enemy. Texture being provided by parent class
-//    sf::Sprite sprite;
+    /// Sprite of the enemy. Texture being provided by parent class
+    sf::Sprite sprite;
 //
 //    /// Healthbars
 //    sf::RectangleShape back_ground_healthbar;
@@ -54,7 +54,7 @@ public:
 
     explicit Enemy(unsigned int health, unsigned int goldWorth = 10, bool isBoss = false);
 
-    //void draw(sf::RenderTarget &target, sf::RenderStates states) const; //override
+    void draw(sf::RenderTarget &target, sf::RenderStates states) const; //override
 
     void setGoalHandler(EnemyGoalHandler handler);
 
@@ -66,7 +66,7 @@ public:
 
     void reachGoal();
 
-    //void setTexture(const sf::Texture &texture, const sf::Rect<int> &texCoords);
+    void setTexture(const sf::Texture &texture, const sf::Rect<int> &texCoords);
 
     //bool needsNewPath() const;
 
@@ -74,7 +74,7 @@ public:
 
     unsigned int getGoldWorth() const;
 
-    unsigned int getProgress();
+    unsigned int getProgress() const;
 
     unsigned int getHealth() const;
 

@@ -13,7 +13,7 @@ void MainMenu::setGUI(Game *game) {
 
     play_button_text.setFont(font);
     play_button_text.setString("Play!");
-    play_button_text.setCharacterSize(15);
+    play_button_text.setCharacterSize(30);
 
     play_button = createElement<MenuOption>(play_button_text, 200.f, 50.f);
     play_button.setColor(sf::Color{214, 47, 75});
@@ -25,7 +25,7 @@ void MainMenu::setGUI(Game *game) {
 
     exit_button_text.setFont(font);
     exit_button_text.setString("Quit");
-    exit_button_text.setCharacterSize(15);
+    exit_button_text.setCharacterSize(20);
 
     exit_button = createElement<MenuOption>(exit_button_text, 150.f, 20.f);
     exit_button.setColor(sf::Color{122, 20, 37});

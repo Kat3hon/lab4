@@ -2,18 +2,18 @@
 
 #include <utility>
 
-Tile::Tile(TileType type, float x, float y) :
-    tile_type(type), x_position(x), y_position(y) {}
+Tile::Tile(TileType type, float x, float y, float tile_size) :
+    tile_type(type), x_position(x), y_position(y), TILE_SIZE(tile_size) {}
 
-TileType Tile::getType() {
+TileType Tile::getType() const {
     return tile_type;
 }
 
-bool Tile::isBuildable() {
-    return tile_type == Path || tile_type == Field;
+bool Tile::isBuildable() const {
+    return tile_type == typePath || tile_type == typeField;
 }
 
-bool Tile::hasWeapon() {
+bool Tile::hasWeapon() const {
     return !weapon.expired();
 }
 

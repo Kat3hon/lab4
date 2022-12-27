@@ -16,11 +16,15 @@ public:
         tile = std::move(tile_var);
     }
 
-    Tile getTile() const {
+    Tile& getTile() {
         return tile;
     }
 
-    sf::Sprite getSprite() const {
+    const Tile& getTile() const {
+        return tile;
+    }
+
+    const sf::Sprite& getSprite() const {
         return sprite;
     }
 

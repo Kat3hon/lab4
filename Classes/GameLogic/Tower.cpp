@@ -1,9 +1,8 @@
 #include "Tower.h"
+#include "TileType.h"
 
-Tower::Tower(ElementType elementType): Weapon(elementType){
-    setRange(2);
-    setDamage(5);
-    fire_rate = 500;
+Tower::Tower(ElementType elementType): Weapon(elementType) {
+    setUp();
 }
 
 unsigned int Tower::getFireRate() const {
@@ -17,3 +16,8 @@ void Tower::attack() {
             timeof_last_shot.restart();
         }
 }
+
+TileType Tower::canBeBuilt() {
+    return TileType::typeField;
+}
+

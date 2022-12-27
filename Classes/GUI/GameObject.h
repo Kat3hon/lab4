@@ -11,17 +11,19 @@
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 
-// In TMX maps, an object is an area on the map that has a name, type, boundaries,
-// a set of custom properties (in key-value format) and texture coordinates.
-// Texture coordinates allow you to associate a sprite with an object
-// that uses the main texture of the map as a data source.
-
-class GameObject: public sf::Transformable, public sf::Drawable{
-
+class GameObject {
 
 public:
 
-    void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+    std::string name;
+
+    std::string type;
+
+    sf::Rect<float> rect;
+
+    std::map<std::string, std::string> properties;
+
+    sf::Sprite sprite;
 
     int getPropertyInt(const std::string &propertyName);
 
@@ -36,12 +38,6 @@ public:
     sf::Rect<float> getRect() const;
 
     bool collidesWith(GameObject *gameObject);
-
-    std::string name;
-    std::map<std::string, std::string> properties;
-    sf::Rect<float> rect;
-    sf::Sprite sprite;
-    std::string type;
 };
 
 float parseFloat(const std::string &str);

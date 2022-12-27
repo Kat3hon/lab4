@@ -37,7 +37,8 @@ Enemy::Ptr Weapon::getLockOn() {
 }
 
 bool Weapon::isInRange(const Enemy::Ptr &enemy) {
-
+    //
+    return true;
 }
 
 void Weapon::setRange(unsigned int range_var) {

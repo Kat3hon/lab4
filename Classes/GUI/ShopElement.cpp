@@ -1,4 +1,6 @@
 #include "ShopElement.h"
+#include "../GameLogic/Tower.h"
+#include "../GameLogic/Trap.h"
 
 #include <utility>
 
@@ -27,6 +29,16 @@ void ShopElement::draw(sf::RenderTarget &target, sf::RenderStates states) const 
     target.draw(gold_text, states);
 }
 
-std::shared_ptr<WeaponGUI> ShopElement::get(float x, float y) const{
-    return std::make_shared<WeaponGUI>(weapon_type, x, y);
+std::shared_ptr<WeaponGUI> ShopElement::getTower(float tile_size) const {
+    std::shared_ptr<Tower> tower = std::make_shared<Tower>(weapon_type);
+    std::shared_ptr<WeaponGUI> weapon = std::make_shared<WeaponGUI>(weapon_type, tile_size);
+    weapon->setWeapon(tower);
+    return weapon;
+}
+
+std::shared_ptr<WeaponGUI> ShopElement::getTrap(float tile_size) const {
+    std::shared_ptr<Trap> trap = std::make_shared<Trap>(weapon_type);
+    std::shared_ptr<WeaponGUI> weapon = std::make_shared<WeaponGUI>(weapon_type, tile_size);
+    weapon->setWeapon(trap);
+    return weapon;
 }

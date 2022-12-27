@@ -7,11 +7,12 @@
 class Lain {
 
     EnemyManager enemy_manager;
-    WaveManager wave_manager;
 
     void spawnEnemy(const Enemy::Ptr& enemy);
 
     sf::Clock last_enemy_spawned;
+
+    Path path;
 
 public:
 
@@ -25,7 +26,10 @@ public:
 
     void update();
 
-//Checks to see what enemies can be spawned
-void spawnEnemies();
+    void spawnEnemies(WaveManager &wave_manager);
+
+    void setPath(Tile& start, Tile& end, std::vector<Tile> path_vec) {
+        path.setPath(start, end, path_vec);
+    }
 };
 

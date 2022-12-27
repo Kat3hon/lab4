@@ -5,28 +5,33 @@
 #include <sstream>
 
 void GameMenu::fixedUpdate(Game *game, EventStorage *events) {
-//    main_game.update();
-//
-//    if (main_game.getWaveManager()->getWaveCooldown() == 0)
-//        main_game.nextWave();
-//
+    main_game.update();
+
+    if (main_game.getWaveManager()->getWaveCooldown() == 0)
+        main_game.nextWave();
+
     updateBindings();
 }
 
 void GameMenu::update(Game *game, EventStorage *events) {
 
+    for (auto& it : weapons) {
+        it->changeRadius();
+    }
+
     if (events->inStock(sf::Event::EventType::MouseButtonReleased)) {
         auto event = events->at(sf::Event::EventType::MouseButtonReleased);
         if (event->mouseButton.button == sf::Mouse::Button::Left) {
-            auto tile = map.getTileFromMouse({static_cast<float>(event->mouseButton.x), static_cast<float>(event->mouseButton.y)});
-            if (tile != nullptr) {
-                // we found a tile, no need to look for any other GUI clicks.
-                events->pop(sf::Event::EventType::MouseButtonReleased);
-                handleTileClick(tile);
-            }
-            else
-                if (hasWeaponSelected())
+            if (!(event->mouseButton.y <= 40 || event->mouseButton.x >= 480)) {
+                auto tile = map.getTileFromMouse({static_cast<float>(event->mouseButton.x), static_cast<float>(event->mouseButton.y)}, *(game->getWindow()));
+                if (tile != nullptr) {
+                    // we found a tile, no need to look for any other GUI clicks.
+                    events->pop(sf::Event::EventType::MouseButtonReleased);
+                    handleTileClick(tile, game->getWindow());
+                }
+                else if (hasWeaponSelected())
                     deselectWeapon();
+            }
         }
     }
 
@@ -43,31 +48,39 @@ void GameMenu::updateBindings() {
     waveText << "Wave: " << std::to_string(main_game.getWaveManager()->getCurrentWaveNo());
     wave_text.setString(waveText.str());
 
-    health_text.setString(std::to_string(main_game.getHealth()));
+    health_text.setString(std::to_string(main_game.getCastle().getHealth()));
     gold_text.setString(std::to_string(main_game.getGold()));
     level_text.setString(level_name);
 
-    const unsigned int coolDown = main_game.getWaveManager()->getWaveCooldown();
+        const unsigned int coolDown = main_game.getWaveManager()->getWaveCooldown();
 
-    remaining_time_text.setFillColor(sf::Color::White);
+        remaining_time_text.setFillColor(sf::Color::White);
 
-    if (coolDown <= 10) {
-        if (coolDown % 2 == 0) {
-            remaining_time_text.setFillColor(sf::Color::Red);
+        if (coolDown <= 10) {
+            if (coolDown % 2 == 0) {
+                remaining_time_text.setFillColor(sf::Color::Red);
+            }
         }
-    }
 
-    const bool enemiesPresent = main_game.getEnemyManager()->getEnemyCount() > 0;
-    next_wave_button.setDisabled(enemiesPresent);
-    next_wave_button.setColor(sf::Color{0, 125, 125, static_cast<sf::Uint8>(enemiesPresent ? 32 : 255)});
-
-    remaining_time_text.setString(std::to_string(main_game.getWaveManager()->getWaveCooldown()));
-    remaining_enemies_text.setString(std::to_string(main_game.getEnemyManager()->getEnemyCount()));
+        unsigned int count_of_enemies = 0;
+        for (auto & it : main_game.getLains()) {
+            const bool enemiesPresent = it.getEnemyManager()->getEnemyCount() > 0;
+            next_wave_button.setDisabled(enemiesPresent);
+            next_wave_button.setColor(sf::Color{0, 125, 125, static_cast<sf::Uint8>(enemiesPresent ? 32 : 255)});
+            count_of_enemies += it.getEnemyManager()->getEnemyCount();
+        }
+        remaining_time_text.setString(std::to_string(main_game.getWaveManager()->getWaveCooldown()));
+        remaining_enemies_text.setString(std::to_string(count_of_enemies));
 }
 
 void GameMenu::setGUI(Game *game) {
 
     map.constructTiles();
+    std::vector<Tile> tiles;
+    for (auto& it: map.getTiles()) {
+        tiles.push_back(it.getTile());
+    }
+    main_game.setPath(tiles);
 
     wave_text.setFont(font);
     health_text.setFont(font);
@@ -81,6 +94,8 @@ void GameMenu::setGUI(Game *game) {
     electro_tower_gold_text.setFont(font);
     pyro_tower_gold_text.setFont(font);
     pyro_tower_name.setFont(font);
+    hydro_trap_name.setFont(font);
+    hydro_trap_gold_text.setFont(font);
 
     health_texture.loadFromFile("assets/heart.png");
     health_sprite.setTexture(health_texture);
@@ -94,19 +109,19 @@ void GameMenu::setGUI(Game *game) {
     header.setSize({800.f, 40.f});
     header.setFillColor(sf::Color{255, 255, 255, 50});
 
-    footer.setSize({800.f, 120.f});
+    footer.setSize({120.f, 320.f});
     footer.setFillColor(sf::Color{255, 255, 255, 50});
-    footer.setPosition({0.f, 800.f - footer.getSize().y});
+    footer.setPosition({480.f, 40.f});
 
-    health_sprite.setPosition(400.f, 10.f);
-    health_text.setPosition(425.f, 10.f);
+    health_sprite.setPosition(200.f, 10.f);
+    health_text.setPosition(225.f, 10.f);
     health_text.setCharacterSize(15);
 
-    gold_sprite.setPosition(250.f, 10.f);
-    gold_text.setPosition(275.f, 10.f);
+    gold_sprite.setPosition(125.f, 10.f);
+    gold_text.setPosition(150.f, 10.f);
     gold_text.setCharacterSize(15);
 
-    wave_text.setPosition(500.f, 10.f);
+    wave_text.setPosition(300.f, 10.f);
     wave_text.setCharacterSize(15);
 
     exit_button = createElement<MenuOption>(exit_text, 100.f, 40.f);
@@ -116,36 +131,54 @@ void GameMenu::setGUI(Game *game) {
     pushElement(&exit_button);
 
     next_wave_button = createElement<MenuOption>(next_wave_text, 100.f, 40.f);
-    next_wave_button.setPosition(700.f, 0.f);
-    //next_wave_button.setClickHandler([this]() { main_game.nextWave(); });
+    next_wave_button.setPosition(500.f, 0.f);
+    next_wave_button.setClickHandler([this]() { main_game.nextWave(); });
+    next_wave_button.setColor(sf::Color{255, 0, 0, 128});
     pushElement(&next_wave_button);
 
-    remaining_time_text.setPosition(675.f, 10.f);
+    remaining_time_text.setPosition(400.f, 10.f);
     remaining_time_text.setCharacterSize(13);
 
     remaining_enemies_text.setCharacterSize(13);
-    remaining_enemies_text.setPosition(600.f, 10.f);
+    remaining_enemies_text.setPosition(275.f, 10.f);
 
 
     // ------ shop ------
 
-    electro_tower_name.setString("ElectricTower");
+    if (!tileset.loadFromFile("assets/Level1/AllAssetsPreview.png")) {
+        MessageBox(nullptr, "Can not load weapons.png", "Error!", MB_OK);
+        return;
+    }
+
+    towers_textures_coords[ElementType::Hydro] = {384, 128, 16, 16};
+    towers_textures_coords[ElementType::Dendro] = {336, 192, 16, 16};
+    towers_textures_coords[ElementType::Cryo] = {592, 64, 16, 16};
+    towers_textures_coords[ElementType::Pyro] = {272, 0, 16, 16};
+    towers_textures_coords[ElementType::Electro] = {16, 16, 16, 16};
+
+    trap_textures_coords[ElementType::Hydro] = {};
+    trap_textures_coords[ElementType::Dendro] = {};
+    trap_textures_coords[ElementType::Cryo] = {};
+    trap_textures_coords[ElementType::Pyro] = {};
+    trap_textures_coords[ElementType::Electro] = {};
+
+    electro_tower_name.setString("ElectroTower");
     electro_tower_gold_text.setString("100");
 
     electro_tower_item = createElement<ShopElement>(ElementType::Electro, electro_tower_name, electro_tower_gold_text);
-    electro_tower_item.setPosition(0.f, 680.f);
+    electro_tower_item.setPosition(480.f, 40.f);
     electro_tower_item.setClickHandler([this](){
-        selectWeapon(electro_tower_item.get(map.getTileSize().x, map.getTileSize().y));
+        selectWeapon(electro_tower_item.getTower(map.TILE_SIZE));
     });
     pushElement(&electro_tower_item);
 
-    pyro_tower_name.setString("Pyro");
+    pyro_tower_name.setString("PyroTower");
     pyro_tower_gold_text.setString("100");
 
     pyro_tower_item = createElement<ShopElement>(ElementType::Pyro, pyro_tower_name, pyro_tower_gold_text);
-    pyro_tower_item.setPosition(120.f, 680.f);
+    pyro_tower_item.setPosition(480.f, 140.f);
     pyro_tower_item.setClickHandler([this]() {
-        selectWeapon(pyro_tower_item.get(map.getTileSize().x, map.getTileSize().y));
+        selectWeapon(pyro_tower_item.getTower(map.TILE_SIZE));
     });
     pushElement(&pyro_tower_item);
 
@@ -153,9 +186,9 @@ void GameMenu::setGUI(Game *game) {
     hydro_trap_gold_text.setString("50");
 
     hydro_trap_item = createElement<ShopElement>(ElementType::Hydro, hydro_trap_name, hydro_trap_gold_text);
-    hydro_trap_item.setPosition(240.f, 680.f);
+    hydro_trap_item.setPosition(480.f, 240.f);
     hydro_trap_item.setClickHandler([this]() {
-        selectWeapon(hydro_trap_item.get(map.getTileSize().x, map.getTileSize().y));
+        selectWeapon(hydro_trap_item.getTrap(map.TILE_SIZE));
     });
     pushElement(&hydro_trap_item);
 }
@@ -175,66 +208,64 @@ void GameMenu::draw(sf::RenderWindow &window) const {
     window.draw(next_wave_button);
     window.draw(electro_tower_item);
     window.draw(pyro_tower_item);
+    window.draw(hydro_trap_item);
+
+    for (const auto& it : weapons)
+        it->draw(window, sf::RenderStates::Default);
 
 
-    //draw main_game
-    // bottom layer (tiles)
-    window.draw(map, states);
 
-    // enemy layer
-    window.draw(enemy_manager, states);
-
-    // tower layer
-    window.draw(tower_manager, states);
 }
 
-void GameMenu::handleTileClick(const TileGUI::Ptr &tile) {
+void GameMenu::handleTileClick(TileGUI* tile, sf::RenderWindow* window) {
 
     if(hasWeaponSelected())
         getSelectedWeapon()->setSelected(false);
-
-    // we have nothing to do here
     if (!tile->getTile().isBuildable()) {
         current_weapon.reset();
         return;
     }
+    std::cout << "1" << std::endl;
+    if (!tile->getTile().hasWeapon() &&  hasWeaponSelected() && !(current_weapon->isBuilt()) && tile->getTile().getType()==current_weapon->isBuildable()) {
 
-    if (!tile->getTile().hasWeapon() && hasWeaponSelected() && !current_weapon->isBuilt()) {
-
-        // for now let each tower cost a 100
-        if (main_game.getGold() < TOWER_COST) {
+        std::cout << "2" << std::endl;
+        if (main_game.getGold() < current_weapon->getWeapon()->getGold()) {
             current_weapon.reset();
             return;
         }
 
-        main_game.substractGold(TOWER_COST);
+        main_game.substractGold(current_weapon->getWeapon()->getGold());
 
         tile->getTile().setWeapon(current_weapon->getWeapon());
+        current_weapon->setTexture(tileset, towers_textures_coords[current_weapon->getWeapon()->getElementType()]);
         main_game.getWeaponManager()->push(current_weapon->getWeapon());
 
-        // Since the tower is bigger than the actual tile. A tower equals to 70 pixels on the Y axis. Time to substract that
-        // So it actually looks that the tower is on the tile.
-        sf::Vector2<float> weaponPosition = map.getTileWindowPosition(tile);
-        current_weapon->getWeapon()->setPosition(weaponPosition.x, weaponPosition.y - (70 - map.getTileSize().y));
+        current_weapon->getSprite().setPosition(tile->getTile().getX(), tile->getTile().getY());
         current_weapon->setSelected(true);
         current_weapon->build();
-
+        weapons.push_back(current_weapon);
         return;
     }
 
-    // Seems like there already is a tower built on this spot.
-    // We might want to upgrade this tower.
-    // Select the tower and open the upgrade
+    //Level up weapon
     if (tile->getTile().hasWeapon()) {
-
-        if (hasWeaponSelected()) {
-            deselectWeapon();
+        if (main_game.getGold() < tile->getTile().getWeapon()->getGold() ||
+            tile->getTile().getWeapon()->getDamage() == 50) {
+            return;
         }
 
-        current_weapon->getWeapon() = tile->getTile().getWeapon();
-        current_weapon->setSelected(true);
+        if (hasWeaponSelected())
+            deselectWeapon();
+
+        if(tile->getTile().getWeapon()->canBeLeveledUp()) {
+            tile->getTile().getWeapon()->levelUp();
+            // можно сделать чтоб была таблица стоимости улучшений уровня
+            main_game.substractGold(tile->getTile().getWeapon()->getGold());
+        }
         return;
+
     }
+
 }
 
 bool GameMenu::hasWeaponSelected() {

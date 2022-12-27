@@ -15,20 +15,19 @@ class Tile {
 
 public:
 
-    static float tile_width;
-    static float tile_height;
+    float TILE_SIZE;
 
     using Ptr = std::shared_ptr<Tile>;
 
     Tile() = default;
 
-    explicit Tile(TileType type, float x, float y);
+    explicit Tile(TileType type, float x, float y, float tile_size);
 
-    TileType getType();
+    TileType getType() const;
 
-    bool isBuildable();
+    [[nodiscard]] bool isBuildable() const;
 
-    bool hasWeapon();
+    [[nodiscard]] bool hasWeapon() const;
 
     void setWeapon(std::weak_ptr<Weapon> weapon);
 

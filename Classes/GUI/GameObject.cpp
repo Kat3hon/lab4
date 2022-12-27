@@ -1,10 +1,9 @@
 #include "GameObject.h"
+
 #include <SFML/Graphics/Rect.hpp>
 
-void GameObject::draw(sf::RenderTarget &target, sf::RenderStates states) const {
-}
-
 bool GameObject::collidesWith(GameObject *gameObject) {
+
     return this->getRect().intersects(gameObject->getRect());
 }
 
@@ -43,4 +42,3 @@ void GameObject::moveTo(const sf::Vector2f &position) {
 sf::Rect<float> GameObject::getRect() const {
     return rect;
 }
-

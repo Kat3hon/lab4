@@ -38,5 +38,8 @@ public:
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
     /// Gets that shop element
-    std::shared_ptr<WeaponGUI> get(float x, float y) const;
+
+    std::shared_ptr<WeaponGUI> getTower(float tile_size) const;
+
+    std::shared_ptr<WeaponGUI> getTrap(float tile_size) const;
 };

@@ -3,7 +3,7 @@
 
 //Game* Game::instance = nullptr;
 
-Game::Game(): window(sf::VideoMode(800, 800), "MYFAROG", sf::Style::Titlebar | sf::Style::Close) {
+Game::Game(): window(sf::VideoMode(600, 360), "MYFAROG", sf::Style::Titlebar | sf::Style::Close) {
 
     scene_manager.setGameInstance(this);
 
@@ -38,7 +38,6 @@ void Game::run() {
 
     // Main loop of the game, used for checking events (e.g. clicking on buttons)
     while (window.isOpen()) {
-
         // Clears all previous events to check new ones
         event_manager.clear();
 

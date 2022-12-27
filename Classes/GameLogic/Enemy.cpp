@@ -45,7 +45,7 @@ unsigned int Enemy::getHealth() const {
     return health;
 }
 
-unsigned int Enemy::getProgress() {
+unsigned int Enemy::getProgress() const {
     return progress_value;
 }
 

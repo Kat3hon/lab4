@@ -32,10 +32,6 @@ class Level {
     /// Height of level in tiles_sprites.
     int height = 0;
 
-    int tile_width = 0;
-
-    int tile_height = 0;
-
     int first_tileID = 0;
 
     sf::Texture tileset_texture;
@@ -50,6 +46,8 @@ class Level {
 
 public:
 
+    int TILE_SIZE;
+
     /// Sets all fields from file.
     void loadFromFile(const std::string &filepath);
 
@@ -58,9 +56,6 @@ public:
 
     /// Gets vector of all objects with that name.
     std::vector<GameObject> getAllObjects(const std::string &name) const;
-
-    /// Gets tile size.
-    sf::Vector2i getTileSize() const;
 
     /// Gets width of a map.
     float getTilemapWidth() const;
@@ -78,15 +73,17 @@ public:
     void constructTiles();
 
     ///Gets a tile from a mouse.
-    TileGUI::Ptr getTileFromMouse(sf::Vector2<float> vector) const;
+    TileGUI* getTileFromMouse(sf::Vector2<float> vector, const sf::Window& window);
 
     ///Gets a tile from window position. This function is used, to calculate to find the position
     ///on where to position the enemy and/or weapons.
-    sf::Vector2<float> getTileWindowPosition(const TileGUI::Ptr &tile) const;
+    sf::Vector2<int> getTileWindowPosition(TileGUI* tile, const sf::Window& window);
 
     ///Gets a tile from a coordinate.
-    TileGUI::Ptr getTileFromCoordinate(sf::Vector2<int> position) const;
+    TileGUI* getTileFromCoordinate(sf::Vector2<int> position) ;
 
     ///Gets a tile from coordinate (or from window, if that did not work).
-    sf::Vector2<float> getTileWindowPositionFromTileCoordinate(sf::Vector2<int> coordinate) const;
+    sf::Vector2<int> getTileWindowPositionFromTileCoordinate(sf::Vector2<int> coordinate, const sf::Window& window);
+
+    std::vector<TileGUI> getTiles() const;
 };

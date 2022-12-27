@@ -3,7 +3,7 @@
 #include "ElementType.h"
 #include "../GUI/GameObject.h"
 #include "Enemy.h"
-#include "IWeapon.h"
+#include "TileType.h"
 
 #include <memory>
 #include <vector>
@@ -19,8 +19,6 @@ class Weapon: public GameObject {
 
     /// Type of tower: Hydro, Dendro, Cryo, Pyro or Electro.
     ElementType type;
-
-    std::vector<IWeapon> interfaces;
 
     /// Current enemy in radius of weapon
     std::weak_ptr<Enemy> curr_focussed_enemy;
@@ -56,5 +54,14 @@ public:
 
     void setDamage(unsigned int damage_var);
 
+    virtual void levelUp() = 0;
+
+    virtual ~Weapon() = default;
+
+    virtual int getGold() const = 0;
+
+    virtual TileType canBeBuilt() = 0;
+
+    virtual bool canBeLeveledUp() = 0;
 };
 

@@ -20,11 +20,6 @@ Enemy::Ptr EnemyManager::getMostProgressedEnemy() {
     });
 }
 
-//void EnemyManager::draw(sf::RenderTarget &target, sf::RenderStates states) const {
-//    for (const auto &enemy : enemies)
-//        target.draw(*enemy, states);
-//}
-
 void EnemyManager::update() {
     for (const auto &enemy : enemies)
         enemy->step();

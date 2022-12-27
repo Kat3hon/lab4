@@ -1,8 +1,5 @@
-//
-// Created by kklim on 17.12.2022.
-//
-
 #include "Trap.h"
+#include "TileType.h"
 
 Trap::Trap(ElementType elementType):Weapon(elementType) {
     setDamage(50);
@@ -14,4 +11,8 @@ void Trap::attack() {
         getLockOn()->takeDamage(getDamage());
     //delete trap from a map?
     setRange(-1);
+}
+
+TileType Trap::canBeBuilt() {
+    return TileType::typePath;
 }

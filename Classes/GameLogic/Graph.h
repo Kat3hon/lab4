@@ -158,6 +158,6 @@ template <class T>
 class Edge {
 public:
     int source, destination;
-    T data;
+    std::pair<T,T> data;
 };
 
