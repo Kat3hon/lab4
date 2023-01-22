@@ -1,6 +1,11 @@
 #include "EventManager.h"
 #include <SFML/Window/Event.hpp>
 
+/**
+ * @brief htgdghdhgdgdhgd
+ * @param window  - jsahfgjhasfgnsfgh
+ * @return storage
+ */
 EventStorage *EventManager::checkForEvents(sf::RenderWindow &window) {
     sf::Event currentEvent{};
 

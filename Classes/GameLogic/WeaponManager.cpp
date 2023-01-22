@@ -1,4 +1,5 @@
 #include "WeaponManager.h"
+#include <iostream>
 
 void WeaponManager::push(const Weapon::Ptr &weapon) {
     weapons.push_back(weapon);
@@ -20,9 +21,12 @@ void WeaponManager::handleEnemyLockOn(EnemyManager *enemyManager) {
 
 void WeaponManager::update() {
     for (const auto &weapon : weapons)
-        if(weapon->hasLockOn()) {
+        if(weapon!=nullptr && weapon->hasLockOn()) {
             weapon->attack();
-            if (weapon->getRange() == -1) //Trap case
+            if (weapon->canBeBuilt() == TileType::typePath) { //Trap case
+                weapon->setRange(-1);
                 pop(weapon);
+            }
+
         }
 }

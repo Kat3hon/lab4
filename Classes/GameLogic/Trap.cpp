@@ -2,15 +2,16 @@
 #include "TileType.h"
 
 Trap::Trap(ElementType elementType):Weapon(elementType) {
-    setDamage(50);
+    setDamage(75);
     setRange(1);
 }
 
 void Trap::attack() {
-    if(hasLockOn())
+    //мб будет наносить урон всем врагам в радиусе?
+    if(hasLockOn()) {
         getLockOn()->takeDamage(getDamage());
-    //delete trap from a map?
-    setRange(-1);
+        getLockOn()->takeEffect(getElementType());
+    }
 }
 
 TileType Trap::canBeBuilt() {

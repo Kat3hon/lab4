@@ -4,7 +4,7 @@
 
 class Castle {
 
-    unsigned int health = 1000;
+    unsigned int health = 500;
 
 public:
     void addHealth(unsigned int health);

@@ -7,6 +7,11 @@
 Weapon::Weapon(ElementType elementType) : type(elementType) {
 }
 
+void Weapon::setPosition(float x, float y, unsigned int tile_size) {
+    position = {x,y};
+    TILE_SIZE = tile_size;
+}
+
 unsigned int Weapon::getRange() const {
     return range;
 }
@@ -37,8 +42,9 @@ Enemy::Ptr Weapon::getLockOn() {
 }
 
 bool Weapon::isInRange(const Enemy::Ptr &enemy) {
-    //
-    return true;
+    float distance = sqrt(pow(enemy->getPosition().x-position.first,2)+pow(enemy->getPosition().y-position.second,2));
+
+    return distance <= getRange()*TILE_SIZE;
 }
 
 void Weapon::setRange(unsigned int range_var) {

@@ -3,12 +3,15 @@
 #include "Enemy.h"
 #include "WaveManager.h"
 #include "EnemyManager.h"
+#include "MainGame.h"
+
+class MainGame;
 
 class Lain {
 
     EnemyManager enemy_manager;
 
-    void spawnEnemy(const Enemy::Ptr& enemy);
+    void spawnEnemy(const Enemy::Ptr& enemy, MainGame* instance);
 
     sf::Clock last_enemy_spawned;
 
@@ -18,18 +21,14 @@ public:
 
     Lain() = default;
 
-    void nextWave();
-
-    WaveManager *getWaveManager();
-
     EnemyManager *getEnemyManager();
 
     void update();
 
-    void spawnEnemies(WaveManager &wave_manager);
+    void spawnEnemies(WaveManager &wave_manager, MainGame* instance);
 
-    void setPath(Tile& start, Tile& end, std::vector<Tile> path_vec) {
-        path.setPath(start, end, path_vec);
-    }
+    void draw(sf::RenderTarget &target) const;
+
+    void setPath(unsigned int num);
 };
 

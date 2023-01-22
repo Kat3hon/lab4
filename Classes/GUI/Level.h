@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameObject.h"
+#include "MapObject.h"
 #include "TileGUI.h"
 
 #include <string>
@@ -37,7 +37,7 @@ class Level {
     sf::Texture tileset_texture;
 
     /// Game objects on that level, that can be moved.
-    std::vector<GameObject> objects;
+    std::vector<MapObject> objects;
 
     /// Layers to render.
     std::vector<Layer> layers;
@@ -52,10 +52,10 @@ public:
     void loadFromFile(const std::string &filepath);
 
     /// Gets first object with that name.
-    GameObject getFirstObject(const std::string &name) const;
+    MapObject getFirstObject(const std::string &name) const;
 
     /// Gets vector of all objects with that name.
-    std::vector<GameObject> getAllObjects(const std::string &name) const;
+    std::vector<MapObject> getAllObjects(const std::string &name) const;
 
     /// Gets width of a map.
     float getTilemapWidth() const;

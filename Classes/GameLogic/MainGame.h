@@ -29,9 +29,12 @@ class MainGame {
     /// Weapon handler
     WeaponManager weapon_manager;
 
+    /// Checks if tile can be compressed
+    bool canBeCompressedTile(const std::vector<Tile> &vec, int x, int y);
+
 public:
 
-    MainGame(const ITimer& timer_var):timer(timer_var) {
+    explicit MainGame(const ITimer& timer_var):timer(timer_var) {
     }
 
     void update();
@@ -58,7 +61,7 @@ public:
 
     [[nodiscard]] std::vector<Lain> getLains() const;
 
-    void setPath(const std::vector<Tile>& vec);
+    void setPath(const std::vector<Tile>& vec, unsigned int width = 1, unsigned int height = 1);
 
     void nextWave();
 

@@ -1,7 +1,6 @@
 #include "GameMenu.h"
 #include "LevelMenu.h"
 
-#include <utility>
 #include <sstream>
 
 void GameMenu::fixedUpdate(Game *game, EventStorage *events) {
@@ -14,6 +13,20 @@ void GameMenu::fixedUpdate(Game *game, EventStorage *events) {
 }
 
 void GameMenu::update(Game *game, EventStorage *events) {
+
+
+    //мб сделать задержку?
+    electro_tower_item.setColor(sf::Color{128, 128, 128, 64});
+    pyro_tower_item.setColor(sf::Color{128, 128, 128, 64});
+    cryo_tower_item.setColor(sf::Color{128, 128, 128, 64});
+    hydro_tower_item.setColor(sf::Color{128, 128, 128, 64});
+    dendro_tower_item.setColor(sf::Color{128, 128, 128, 64});
+
+    hydro_trap_item.setColor(sf::Color{128, 128, 128, 64});
+    cryo_trap_item.setColor(sf::Color{128, 128, 128, 64});
+    pyro_trap_item.setColor(sf::Color{128, 128, 128, 64});
+    dendro_trap_item.setColor(sf::Color{128, 128, 128, 64});
+    electro_trap_item.setColor(sf::Color{128, 128, 128, 64});
 
     for (auto& it : weapons) {
         it->changeRadius();
@@ -45,7 +58,10 @@ void GameMenu::enter(Game *game) {
 void GameMenu::updateBindings() {
 
     std::ostringstream waveText;
-    waveText << "Wave: " << std::to_string(main_game.getWaveManager()->getCurrentWaveNo());
+    if (main_game.getWaveManager()->getCurrentWaveNo() == 0) {
+        waveText << "Prepare!";
+    }
+    else waveText << "Wave: " << std::to_string(main_game.getWaveManager()->getCurrentWaveNo());
     wave_text.setString(waveText.str());
 
     health_text.setString(std::to_string(main_game.getCastle().getHealth()));
@@ -80,7 +96,7 @@ void GameMenu::setGUI(Game *game) {
     for (auto& it: map.getTiles()) {
         tiles.push_back(it.getTile());
     }
-    main_game.setPath(tiles);
+    main_game.setPath(tiles, map.getTilemapWidth()/map.TILE_SIZE, map.getTilemapHeight()/map.TILE_SIZE);
 
     wave_text.setFont(font);
     health_text.setFont(font);
@@ -90,12 +106,29 @@ void GameMenu::setGUI(Game *game) {
     next_wave_text.setFont(font);
     remaining_time_text.setFont(font);
     remaining_enemies_text.setFont(font);
+
     electro_tower_name.setFont(font);
     electro_tower_gold_text.setFont(font);
     pyro_tower_gold_text.setFont(font);
     pyro_tower_name.setFont(font);
+    cryo_tower_name.setFont(font);
+    cryo_tower_gold_text.setFont(font);
+    dendro_tower_name.setFont(font);
+    dendro_tower_gold_text.setFont(font);
+    hydro_tower_name.setFont(font);
+    hydro_tower_gold_text.setFont(font);
+
     hydro_trap_name.setFont(font);
     hydro_trap_gold_text.setFont(font);
+    pyro_trap_name.setFont(font);
+    pyro_trap_gold_text.setFont(font);
+    electro_trap_name.setFont(font);
+    electro_trap_gold_text.setFont(font);
+    cryo_trap_name.setFont(font);
+    cryo_trap_gold_text.setFont(font);
+    dendro_trap_name.setFont(font);
+    dendro_trap_gold_text.setFont(font);
+
 
     health_texture.loadFromFile("assets/heart.png");
     health_sprite.setTexture(health_texture);
@@ -150,47 +183,127 @@ void GameMenu::setGUI(Game *game) {
         return;
     }
 
-    towers_textures_coords[ElementType::Hydro] = {384, 128, 16, 16};
-    towers_textures_coords[ElementType::Dendro] = {336, 192, 16, 16};
-    towers_textures_coords[ElementType::Cryo] = {592, 64, 16, 16};
-    towers_textures_coords[ElementType::Pyro] = {272, 0, 16, 16};
-    towers_textures_coords[ElementType::Electro] = {16, 16, 16, 16};
+    towers_textures_coords[ElementType::Hydro] = {192, 192, 16, 16}; //balista
+    towers_textures_coords[ElementType::Dendro] = {784, 128, 16, 16}; //scary sceleton mage
+    towers_textures_coords[ElementType::Cryo] = {192, 0, 16, 16}; //a knight
+    towers_textures_coords[ElementType::Pyro] = {272, 0, 16, 16}; //red dude with hat
+    towers_textures_coords[ElementType::Electro] = {320, 128, 16, 16}; //blue wizard
 
-    trap_textures_coords[ElementType::Hydro] = {};
-    trap_textures_coords[ElementType::Dendro] = {};
-    trap_textures_coords[ElementType::Cryo] = {};
-    trap_textures_coords[ElementType::Pyro] = {};
-    trap_textures_coords[ElementType::Electro] = {};
+    trap_textures_coords[ElementType::Hydro] = {384, 128, 16, 16}; //turtle
+    trap_textures_coords[ElementType::Dendro] = {240, 272, 16, 16}; //some flower
+    trap_textures_coords[ElementType::Cryo] = {688, 160, 16, 16}; //blue slime
+    trap_textures_coords[ElementType::Pyro] = {544, 144, 16, 16}; //crab
+    trap_textures_coords[ElementType::Electro] = {416, 80, 16, 16}; //pirple fich
 
-    electro_tower_name.setString("ElectroTower");
+    electro_tower_name.setString("Electro");
     electro_tower_gold_text.setString("100");
 
     electro_tower_item = createElement<ShopElement>(ElementType::Electro, electro_tower_name, electro_tower_gold_text);
     electro_tower_item.setPosition(480.f, 40.f);
     electro_tower_item.setClickHandler([this](){
         selectWeapon(electro_tower_item.getTower(map.TILE_SIZE));
+        electro_tower_item.setColor(sf::Color(0,255,0,64));
     });
     pushElement(&electro_tower_item);
 
-    pyro_tower_name.setString("PyroTower");
+    pyro_tower_name.setString("Pyro");
     pyro_tower_gold_text.setString("100");
 
     pyro_tower_item = createElement<ShopElement>(ElementType::Pyro, pyro_tower_name, pyro_tower_gold_text);
-    pyro_tower_item.setPosition(480.f, 140.f);
+    pyro_tower_item.setPosition(480.f, 100.f);
     pyro_tower_item.setClickHandler([this]() {
         selectWeapon(pyro_tower_item.getTower(map.TILE_SIZE));
+        pyro_tower_item.setColor(sf::Color(0,255,0,64));
     });
     pushElement(&pyro_tower_item);
 
-    hydro_trap_name.setString("HydroTrap");
+    hydro_tower_name.setString("Hydro");
+    hydro_tower_gold_text.setString("100");
+
+    hydro_tower_item = createElement<ShopElement>(ElementType::Hydro, hydro_tower_name, hydro_tower_gold_text);
+    hydro_tower_item.setPosition(480.f, 160.f);
+    hydro_tower_item.setClickHandler([this]() {
+        selectWeapon(hydro_tower_item.getTower(map.TILE_SIZE));
+        hydro_tower_item.setColor(sf::Color(0,255,0,64));
+    });
+    pushElement(&hydro_tower_item);
+
+    cryo_tower_name.setString("Cryo");
+    cryo_tower_gold_text.setString("100");
+
+    cryo_tower_item = createElement<ShopElement>(ElementType::Cryo, cryo_tower_name, cryo_tower_gold_text);
+    cryo_tower_item.setPosition(480.f, 220.f);
+    cryo_tower_item.setClickHandler([this]() {
+        selectWeapon(cryo_tower_item.getTower(map.TILE_SIZE));
+        cryo_tower_item.setColor(sf::Color(0,255,0,64));
+    });
+    pushElement(&cryo_tower_item);
+
+    dendro_tower_name.setString("Dendro");
+    dendro_tower_gold_text.setString("100");
+
+    dendro_tower_item = createElement<ShopElement>(ElementType::Dendro, dendro_tower_name, dendro_tower_gold_text);
+    dendro_tower_item.setPosition(480.f, 280.f);
+    dendro_tower_item.setClickHandler([this]() {
+        selectWeapon(dendro_tower_item.getTower(map.TILE_SIZE));
+        dendro_tower_item.setColor(sf::Color(0,255,0,64));
+    });
+    pushElement(&dendro_tower_item);
+
+    hydro_trap_name.setString("Hydro");
     hydro_trap_gold_text.setString("50");
 
     hydro_trap_item = createElement<ShopElement>(ElementType::Hydro, hydro_trap_name, hydro_trap_gold_text);
-    hydro_trap_item.setPosition(480.f, 240.f);
+    hydro_trap_item.setPosition(540.f, 40.f);
     hydro_trap_item.setClickHandler([this]() {
         selectWeapon(hydro_trap_item.getTrap(map.TILE_SIZE));
+        hydro_trap_item.setColor(sf::Color(0,255,0,64));
     });
     pushElement(&hydro_trap_item);
+
+    cryo_trap_name.setString("Cryo");
+    cryo_trap_gold_text.setString("50");
+
+    cryo_trap_item = createElement<ShopElement>(ElementType::Cryo, cryo_trap_name, cryo_trap_gold_text);
+    cryo_trap_item.setPosition(540.f, 100.f);
+    cryo_trap_item.setClickHandler([this]() {
+        selectWeapon(cryo_trap_item.getTrap(map.TILE_SIZE));
+        cryo_trap_item.setColor(sf::Color(0,255,0,64));
+    });
+    pushElement(&cryo_trap_item);
+
+    pyro_trap_name.setString("Pyro");
+    pyro_trap_gold_text.setString("50");
+
+    pyro_trap_item = createElement<ShopElement>(ElementType::Pyro, pyro_trap_name, pyro_trap_gold_text);
+    pyro_trap_item.setPosition(540.f, 160.f);
+    pyro_trap_item.setClickHandler([this]() {
+        selectWeapon(pyro_trap_item.getTrap(map.TILE_SIZE));
+        pyro_trap_item.setColor(sf::Color(0,255,0,64));
+    });
+    pushElement(&pyro_trap_item);
+
+    electro_trap_name.setString("Elctro");
+    electro_trap_gold_text.setString("50");
+
+    electro_trap_item = createElement<ShopElement>(ElementType::Electro, electro_trap_name, electro_trap_gold_text);
+    electro_trap_item.setPosition(540.f, 220.f);
+    electro_trap_item.setClickHandler([this]() {
+        selectWeapon(electro_trap_item.getTrap(map.TILE_SIZE));
+        electro_trap_item.setColor(sf::Color(0,255,0,64));
+    });
+    pushElement(&electro_trap_item);
+
+    dendro_trap_name.setString("Dendro");
+    dendro_trap_gold_text.setString("50");
+
+    dendro_trap_item = createElement<ShopElement>(ElementType::Dendro, dendro_trap_name, dendro_trap_gold_text);
+    dendro_trap_item.setPosition(540.f, 280.f);
+    dendro_trap_item.setClickHandler([this]() {
+        selectWeapon(dendro_trap_item.getTrap(map.TILE_SIZE));
+        dendro_trap_item.setColor(sf::Color(0,255,0,64));
+    });
+    pushElement(&dendro_trap_item);
 }
 
 void GameMenu::draw(sf::RenderWindow &window) const {
@@ -206,10 +319,25 @@ void GameMenu::draw(sf::RenderWindow &window) const {
     window.draw(remaining_time_text);
     window.draw(remaining_enemies_text);
     window.draw(next_wave_button);
+
     window.draw(electro_tower_item);
     window.draw(pyro_tower_item);
-    window.draw(hydro_trap_item);
+    window.draw(cryo_tower_item);
+    window.draw(hydro_tower_item);
+    window.draw(dendro_tower_item);
 
+    window.draw(hydro_trap_item);
+    window.draw(electro_trap_item);
+    window.draw(cryo_trap_item);
+    window.draw(dendro_trap_item);
+    window.draw(pyro_trap_item);
+
+    //enemy layer
+    for (const auto& it : main_game.getLains()) {
+        it.draw(window);
+    }
+
+    //weapon layer
     for (const auto& it : weapons)
         it->draw(window, sf::RenderStates::Default);
 
@@ -219,8 +347,9 @@ void GameMenu::draw(sf::RenderWindow &window) const {
 
 void GameMenu::handleTileClick(TileGUI* tile, sf::RenderWindow* window) {
 
-    if(hasWeaponSelected())
-        getSelectedWeapon()->setSelected(false);
+//    if(hasWeaponSelected())
+//        getSelectedWeapon()->setSelected(false);
+
     if (!tile->getTile().isBuildable()) {
         current_weapon.reset();
         return;
@@ -237,7 +366,10 @@ void GameMenu::handleTileClick(TileGUI* tile, sf::RenderWindow* window) {
         main_game.substractGold(current_weapon->getWeapon()->getGold());
 
         tile->getTile().setWeapon(current_weapon->getWeapon());
-        current_weapon->setTexture(tileset, towers_textures_coords[current_weapon->getWeapon()->getElementType()]);
+        if (current_weapon->getWeapon()->canBeBuilt() == typePath) //trap case
+            current_weapon->setTexture(tileset, trap_textures_coords[current_weapon->getWeapon()->getElementType()]);
+        if (current_weapon->getWeapon()->canBeBuilt() == typeField) //tower case
+            current_weapon->setTexture(tileset, towers_textures_coords[current_weapon->getWeapon()->getElementType()]);
         main_game.getWeaponManager()->push(current_weapon->getWeapon());
 
         current_weapon->getSprite().setPosition(tile->getTile().getX(), tile->getTile().getY());
@@ -250,12 +382,13 @@ void GameMenu::handleTileClick(TileGUI* tile, sf::RenderWindow* window) {
     //Level up weapon
     if (tile->getTile().hasWeapon()) {
         if (main_game.getGold() < tile->getTile().getWeapon()->getGold() ||
-            tile->getTile().getWeapon()->getDamage() == 50) {
+            tile->getTile().getWeapon()->canBeBuilt() == typePath) {
             return;
         }
 
         if (hasWeaponSelected())
             deselectWeapon();
+
 
         if(tile->getTile().getWeapon()->canBeLeveledUp()) {
             tile->getTile().getWeapon()->levelUp();

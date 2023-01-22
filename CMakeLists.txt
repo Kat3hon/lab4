@@ -67,10 +67,10 @@ set(SOURCE_FILES startup.cpp
         Classes/GameLogic/ITimer.h
         Classes/GUI/MyTimer.cpp
         Classes/GUI/MyTimer.h
-        Classes/GUI/GameObject.cpp
-        Classes/GUI/GameObject.h
+        Classes/GUI/MapObject.cpp
+        Classes/GUI/MapObject.h
         Classes/GameLogic/Tower.h
-        Classes/GameLogic/Tower.cpp)
+        Classes/GameLogic/Tower.cpp Classes/GameLogic/GameObject.cpp Classes/GameLogic/GameObject.h Classes/GameLogic/Direction.h)
 
 
 #сделать проверку на добавление нужной библиотеки

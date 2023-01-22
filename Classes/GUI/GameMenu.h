@@ -23,6 +23,7 @@ class GameMenu : public Scene {
     sf::Text health_text;
     sf::Text gold_text;
     sf::Text exit_text;
+    sf::Text leave_text;
     sf::Text level_text;
     sf::Text next_wave_text;
     sf::Text remaining_time_text;
@@ -41,6 +42,7 @@ class GameMenu : public Scene {
     sf::RectangleShape footer;
 
     MenuOption exit_button;
+    MenuOption leave_button;
     MenuOption next_wave_button;
 
     std::string level_name;
@@ -48,6 +50,9 @@ class GameMenu : public Scene {
     MainGame main_game;
 
     // separated for shop
+
+    //Towers
+
     ShopElement electro_tower_item;
     sf::Text electro_tower_name;
     sf::Text electro_tower_gold_text;
@@ -56,9 +61,39 @@ class GameMenu : public Scene {
     sf::Text pyro_tower_name;
     sf::Text pyro_tower_gold_text;
 
+    ShopElement hydro_tower_item;
+    sf::Text hydro_tower_name;
+    sf::Text hydro_tower_gold_text;
+
+    ShopElement cryo_tower_item;
+    sf::Text cryo_tower_name;
+    sf::Text cryo_tower_gold_text;
+
+    ShopElement dendro_tower_item;
+    sf::Text dendro_tower_name;
+    sf::Text dendro_tower_gold_text;
+
+    //Traps
+
     ShopElement hydro_trap_item;
     sf::Text hydro_trap_name;
     sf::Text hydro_trap_gold_text;
+
+    ShopElement electro_trap_item;
+    sf::Text electro_trap_name;
+    sf::Text electro_trap_gold_text;
+
+    ShopElement cryo_trap_item;
+    sf::Text cryo_trap_name;
+    sf::Text cryo_trap_gold_text;
+
+    ShopElement pyro_trap_item;
+    sf::Text pyro_trap_name;
+    sf::Text pyro_trap_gold_text;
+
+    ShopElement dendro_trap_item;
+    sf::Text dendro_trap_name;
+    sf::Text dendro_trap_gold_text;
 
     Level map;
 

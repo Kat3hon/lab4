@@ -20,9 +20,9 @@ class Tower : public Weapon {
     /// Last time this tower shot.
     sf::Clock timeof_last_shot;
 
-    std::map<int, std::map<std::string, int>> characteristics = { {1, { {"range", 2}, {"damage", 5}, {"fire rate", 500}} },
-                                                                  {2, { {"range", 3}, {"damage", 10}, {"fire rate", 600}} },
-                                                                  {3, { {"range", 4}, {"damage", 15}, {"fire rate", 700}} } };
+    std::map<int, std::map<std::string, int>> characteristics = { {1, { {"range", 2}, {"damage", 5}, {"fire rate", 1000}} },
+                                                                  {2, { {"range", 3}, {"damage", 10}, {"fire rate", 700}} },
+                                                                  {3, { {"range", 4}, {"damage", 15}, {"fire rate", 500}} } };
 
     void setUp() {
         setRange(characteristics[level]["range"]);

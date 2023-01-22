@@ -11,7 +11,7 @@
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 
-class GameObject {
+class MapObject {
 
 public:
 
@@ -31,13 +31,13 @@ public:
 
     std::string getPropertyString(const std::string &propertyName);
 
-    void moveBy(const sf::Vector2f &movement);
-
-    void moveTo(const sf::Vector2f &position);
-
-    sf::Rect<float> getRect() const;
-
-    bool collidesWith(GameObject *gameObject);
+//    void moveBy(const sf::Vector2f &movement);
+//
+//    void moveTo(const sf::Vector2f &position);
+//
+//    sf::Rect<float> getRect() const;
+//
+//    bool collidesWith(MapObject *gameObject);
 };
 
 float parseFloat(const std::string &str);

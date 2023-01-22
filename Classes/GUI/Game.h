@@ -39,6 +39,4 @@ public:
 
     ///Quits the game and the main window
     void exit();
-
-
 };

@@ -1,16 +1,17 @@
 #include "EnemyManager.h"
 
 EnemyManager::EnemyManager() {
-//    enemy_textures_coords["Slime"] = {0, 0, 35, 35};
-//    enemy_tileset.loadFromFile("asset/texture/enemies.png");
+    enemy_textures_coords["Slime"] = {944, 0, 16, 16};
+    enemy_tileset.loadFromFile("assets/Level1/AllAssetsPreview.png");
 }
 
 void EnemyManager::removeEnemy(const Enemy::Ptr &enemy) {
-    enemies_after_step.push_back(enemy);
+    if (std::find(enemies.begin(), enemies.end(), enemy) != enemies.end())
+        enemies_after_step.push_back(enemy);
 }
 
 void EnemyManager::addEnemy(const Enemy::Ptr &enemy) {
-    //enemy->setTexture(enemy_tileset, enemy_textures_coords[enemy->getName()]);
+    enemy->setTexture(enemy_tileset, enemy_textures_coords["Slime"]);
     enemies.push_back(enemy);
 }
 
@@ -21,10 +22,17 @@ Enemy::Ptr EnemyManager::getMostProgressedEnemy() {
 }
 
 void EnemyManager::update() {
-    for (const auto &enemy : enemies)
+    for (const auto &enemy : enemies) {
         enemy->step();
+        enemy->tickEffect();
+    }
 
     cleanUp();
+}
+
+void EnemyManager::draw(sf::RenderTarget& target) const {
+    for (const auto& enemy: enemies)
+        target.draw(*enemy, sf::RenderStates::Default);
 }
 
 std::size_t EnemyManager::getEnemyCount() {
@@ -33,26 +41,25 @@ std::size_t EnemyManager::getEnemyCount() {
 
 void EnemyManager::handleEnemyPathing(const Path &path) {
     for (const auto &enemy : enemies) {
-        enemy->step();
+        if(!enemy->needsNewPath())
+            continue;
 
-//        // to align stuff, we need to add 25 to x and y of the tile target position (since it's origin is in the left top)
-//        // needs to be changed at some point..
-//
-//        const sf::Vector2<int> targetTileCoordinate = map.getEnemyPathTileCoordinate(enemy->getPathingIndex() + 1);
-//        const sf::Vector2<float> targetPosition = map.getTileWindowPositionFromTileCoordinate(targetTileCoordinate);
-//
-//        if (sf::Vector2<float>({targetPosition.x + 25.f, targetPosition.y + 25.f}) == enemy->getPosition()) {
-//            // enemy reached destination
-//            enemy->reachGoal();
-//        }
-//
-//        const Direction direction = map.determineDirection(enemy->getPosition(),
-//                                                           {targetPosition.x + 25.f, targetPosition.y + 25.f});
-//
-//        enemy->setDirection(direction, {targetPosition.x + 25.f, targetPosition.y + 25.f});
+        const sf::Vector2<int> targetTileCoordinate = path.getEnemyPathTileCoordinate(enemy->getPathingIndex() + 1);
+        const sf::Vector2<float> targetPosition = {static_cast<float>(targetTileCoordinate.x), static_cast<float>(targetTileCoordinate.y)};
+
+        if (sf::Vector2<float>({targetPosition.x, targetPosition.y}) == enemy->getPosition()) {
+            // enemy reached destination
+            enemy->reachGoal();
+        }
+
+        const Direction direction = path.determineDirection(enemy->getPosition(),
+                                                           {targetPosition.x, targetPosition.y});
+
+        enemy->setDirection(direction, {targetPosition.x, targetPosition.y});
     }
 }
 
+#include <iostream>
 void EnemyManager::cleanUp() {
 
     enemies.erase(std::remove_if(enemies.begin(), enemies.end(), [this](const Enemy::Ptr &enemy) {
@@ -62,16 +69,16 @@ void EnemyManager::cleanUp() {
     enemies_after_step.clear();
 }
 
-void EnemyManager::tryGetLockOn(const Tower::Ptr &tower) {
-    if (tower->hasLockOn())
+void EnemyManager::tryGetLockOn(const Weapon::Ptr &weapon) {
+    if (weapon->hasLockOn())
         return;
 
-    auto it = std::find_if(enemies.begin(), enemies.end(), [tower](const Enemy::Ptr& enemy) {
-        return tower->isInRange(enemy);
+    auto it = std::find_if(enemies.begin(), enemies.end(), [weapon](const Enemy::Ptr& enemy) {
+        return weapon->isInRange(enemy);
     });
 
     if (it == enemies.end())
         return;
 
-    tower->lockOn(*it);
+    weapon->lockOn(*it);
 }

@@ -1,64 +1,40 @@
 #pragma once
 
-#include "Graph.h"
 #include "Tile.h"
+#include "Direction.h"
 
-class Path {
-    Graph<Tile> graph;
+#include <array>
+#include <vector>
+#include <cmath>
+#include <unordered_map>
+
+#include <SFML/Graphics/Drawable.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/RenderStates.hpp>
+#include <SFML/Graphics/Texture.hpp>
+#include <SFML/Graphics/VertexArray.hpp>
+#include <SFML/System/Vector2.hpp>
+
+class Path : public sf::Drawable, public sf::Transformable {
+
+    std::vector<Tile> tiles;
+
+    std::vector<sf::Vector2<int>> enemyPathingPoints;
 
 public:
-
-    Tile source;
-    Tile dist;
-
     Path() = default;
 
-    void setPath(Tile& start, Tile& end, std::vector<Tile> tiles) {
-        source = start;
-        dist = end;
-        std::vector<Edge<Tile>> test_vec;
-        int count = 0;
-        auto *temp = new Edge<Tile>;
-        temp->source = count;
-        count++;
-        temp->destination = count;
-        temp->data = {start, tiles[1]};
-        test_vec.push_back(*temp);
-        int i = 2;
-        for (; i < tiles.size(); i += 2) {
-            auto *t1 = new Edge<Tile>;
-            t1->source = count;
-            count++;
-            t1->destination = count;
-            t1->data = {tiles[i - 1], tiles[i]};
-            test_vec.push_back(*t1);
-        }
-        auto *t = new Edge<Tile>;
-        t->source = count;
-        count++;
-        t->destination = count;
-        t->data = {tiles[i-1], end};
-        test_vec.push_back(*t);
-//        std::vector<Edge<Tile>> test_vec;
-//        int count = 0;
-//        for (const auto& tile_first: tiles) {
-//            for (const auto& tile_second: tiles) {
-//                if (!(tile_first.getX() == tile_second.getX() && tile_first.getY() == tile_second.getY())
-//                &&  (tile_first.getX() == tile_second.getX() || tile_second.getY() == tile_first.getY())) {
-//                    auto* temp = new Edge<Tile>;
-//                    temp->source = count;
-//                    count++;
-//                    temp->destination = count;
-//                    temp->data = {tile_first,tile_second};
-//                    test_vec.push_back(*temp);
-//                }
-//            }
-//        }
-//
-        //Print the graph
-        graph = Graph(test_vec, count);
+    void initialize(unsigned int num);
 
-    }
+    void draw(sf::RenderTarget &target, sf::RenderStates states) const override {}
+
+    sf::Vector2<int> getEnemySpawnTileCoordinate() const;
+
+    sf::Vector2<int> getEnemyTargetTileCoordinate() const;
+
+    sf::Vector2<int> getEnemyPathTileCoordinate(unsigned int pathIndex) const;
+
+    Direction determineDirection(sf::Vector2<float> currentPosition, sf::Vector2<float> targetPosition) const;
 
 };
 

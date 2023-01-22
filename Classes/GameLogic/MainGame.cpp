@@ -1,13 +1,14 @@
 #include "MainGame.h"
 
 #include <functional>
+#include <iostream>
 
 void MainGame::update() {
     for (auto &it : lains) {
         it.update();
         weapon_manager.update();
+        it.spawnEnemies(wave_manager, this);
         weapon_manager.handleEnemyLockOn(it.getEnemyManager());
-        it.spawnEnemies(wave_manager);
     }
 }
 
@@ -61,59 +62,44 @@ std::vector<Lain> MainGame::getLains() const {
     return lains;
 }
 
-void MainGame::setPath(const std::vector<Tile>& vec) {
-    //находим 4 тайла, у которых одинаковые стороны и тип убежище
-    //это убежище, старт для графа
-    std::vector<Tile> lain_tiles;
-    std::vector<Tile> path_tiles;
-    std::vector<Tile> castle_tiles;
-    for (auto& tile: vec) {
+bool MainGame::canBeCompressedTile(const std::vector<Tile>& vec, int x, int y) {
+    bool first = false, second = false, third = false;
+    for (const auto& tile: vec) {
+        if (tile.getType() == typePath && tile.getX() == x+tile.TILE_SIZE && tile.getY() == y)
+            first = true;
+        if (tile.getType() == typePath && tile.getX() == x && tile.getY() == y+tile.TILE_SIZE)
+            second = true;
+        if (tile.getType() == typePath && tile.getX() == x+tile.TILE_SIZE && tile.getY() == y+tile.TILE_SIZE)
+            third = true;
+    }
+    return first && second && third;
+}
+
+void MainGame::setPath(const std::vector<Tile>& vec, unsigned int width, unsigned int height) {
+    int count_lains_tiles = 0;
+    std::vector<sf::Vector2<int>> compressed_tiles;
+    std::vector<sf::Vector2<int>> pathing_points;
+    for (const auto& tile : vec) {
         if (tile.getType() == typeLain)
-            lain_tiles.push_back(tile);
-        if (tile.getType() == typeCastle)
-            castle_tiles.push_back(tile);
-        if (tile.getType() == typePath)
-            path_tiles.push_back(tile);
+            count_lains_tiles++;
+        if (canBeCompressedTile(vec, tile.getX(), tile.getY()))
+            compressed_tiles.emplace_back(tile.getX()+tile.TILE_SIZE, tile.getY()+tile.TILE_SIZE);
     }
-    // самостоятельно посчитать кол-во лейнов
-    lains.emplace_back(Lain());
-    lains.emplace_back((Lain()));
-
-    Tile source1;
-    Tile source2;
-
-    Tile dist;
-    for (auto& pt: path_tiles) {
-        if (abs(pt.getX()-lain_tiles[0].getX()) == pt.TILE_SIZE ||
-            abs(pt.getY()-lain_tiles[0].getY()) == pt.TILE_SIZE) {
-            source1 = pt;
-            break;
-        }
-    }
-    for (auto& pt: path_tiles) {
-        if (abs(pt.getX()-lain_tiles[3].getX()) == pt.TILE_SIZE ||
-            abs(pt.getY()-lain_tiles[3].getY()) == pt.TILE_SIZE) {
-            source2 = pt;
-            break;
-        }
+    int count_lains = count_lains_tiles/4;
+    for (int i = 0; i < count_lains; ++i) {
+        lains.emplace_back();
     }
 
-    for (auto& pt: path_tiles) {
-        if (abs(pt.getX()-castle_tiles[0].getX()) == pt.TILE_SIZE ||
-            abs(pt.getY()-castle_tiles[0].getY()) == pt.TILE_SIZE) {
-            dist = pt;
-            break;
-        }
-    }
-
-    lains[0].setPath(source1, dist, path_tiles);
-    lains[1].setPath(source2, dist, path_tiles);
+    lains[0].setPath(0);
+    lains[1].setPath(1);
+    //hardcode
 
 }
 
 void MainGame::nextWave() {
     wave_manager.forceWave();
 }
+
 
 
 

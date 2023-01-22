@@ -2,6 +2,7 @@
 
 #include "../GameLogic/Weapon.h"
 #include "TileGUI.h"
+#include "MapObject.h"
 
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
@@ -9,7 +10,7 @@
 #include <SFML/System/Clock.hpp>
 #include <SFML/Graphics/Transformable.hpp>
 
-class WeaponGUI: public GameObject {
+class WeaponGUI: public MapObject {
 
     bool is_built;
 
@@ -47,4 +48,6 @@ public:
     void changeRadius();
 
     TileType isBuildable();
+
+    void draw(sf::RenderTarget &target, sf::RenderStates states);
 };

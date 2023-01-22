@@ -216,7 +216,7 @@ void Level::loadFromFile(const std::string &filepath) {
                 }
 
                 // Define object
-                GameObject object;
+                MapObject object;
                 object.name = objectName;
                 object.type = objectType;
                 object.sprite = sprite;
@@ -254,17 +254,17 @@ void Level::loadFromFile(const std::string &filepath) {
     }
 }
 
-GameObject Level::getFirstObject(const std::string &name) const {
+MapObject Level::getFirstObject(const std::string &name) const {
     // Only first object with given name
     for (const auto & object : objects)
         if (object.name == name)
             return object;
-    throw std::runtime_error("GameObject with name " + name + " was not found");
+    throw std::runtime_error("MapObject with name " + name + " was not found");
 }
 
-std::vector<GameObject> Level::getAllObjects(const std::string &name) const {
+std::vector<MapObject> Level::getAllObjects(const std::string &name) const {
     // All objects with given name
-    std::vector<GameObject> vec;
+    std::vector<MapObject> vec;
     for (const auto & object : objects)
         if (object.name == name)
             vec.push_back(object);

@@ -13,6 +13,7 @@ void Tower::attack() {
     if(hasLockOn())
         if(timeof_last_shot.getElapsedTime().asMilliseconds() >= getFireRate()) {
             getLockOn()->takeDamage(getDamage());
+            getLockOn()->takeEffect(getElementType());
             timeof_last_shot.restart();
         }
 }

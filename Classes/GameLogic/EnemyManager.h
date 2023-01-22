@@ -40,5 +40,7 @@ public:
 
     void handleEnemyPathing(const Path& path);
 
-    void tryGetLockOn(const Tower::Ptr& tower);
+    void tryGetLockOn(const Weapon::Ptr& weapon);
+
+    void draw(sf::RenderTarget& target) const;
 };

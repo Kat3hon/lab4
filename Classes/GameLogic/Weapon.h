@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ElementType.h"
-#include "../GUI/GameObject.h"
+#include "GameObject.h"
 #include "Enemy.h"
 #include "TileType.h"
 
@@ -10,6 +10,8 @@
 
 
 class Weapon: public GameObject {
+
+    std::pair<unsigned int, unsigned int> position;
 
     /// Range of the weapon in Tiles.
     unsigned int range;
@@ -22,6 +24,8 @@ class Weapon: public GameObject {
 
     /// Current enemy in radius of weapon
     std::weak_ptr<Enemy> curr_focussed_enemy;
+
+    unsigned int TILE_SIZE;
 
 public:
 
@@ -63,5 +67,7 @@ public:
     virtual TileType canBeBuilt() = 0;
 
     virtual bool canBeLeveledUp() = 0;
+
+    void setPosition(float x, float y, unsigned int tile_size);
 };
 

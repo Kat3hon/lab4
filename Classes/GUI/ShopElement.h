@@ -42,4 +42,6 @@ public:
     std::shared_ptr<WeaponGUI> getTower(float tile_size) const;
 
     std::shared_ptr<WeaponGUI> getTrap(float tile_size) const;
+
+    void setColor(sf::Color color);
 };

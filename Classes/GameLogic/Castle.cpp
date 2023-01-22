@@ -10,7 +10,7 @@ void Castle::substractHealth(unsigned int health_var) {
         return;
     }
 
-    health -= health;
+    health -= health_var;
 }
 
 void Castle::setHealth(unsigned int health_var) {
