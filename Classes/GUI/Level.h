@@ -14,7 +14,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Transformable.hpp>
 #include <SFML/Window/Mouse.hpp>
-#include "tinyxml/tinyxml2.h"
+#include "../../tinyxml/tinyxml2.h"
 
 /// Reads map from XML file
 

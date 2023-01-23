@@ -29,8 +29,8 @@ set(SOURCE_FILES startup.cpp
         Classes/GUI/ShopElement.h
         Classes/GUI/Level.h
         Classes/GUI/Level.cpp
-        Classes/GUI/tinyxml/tinyxml2.cpp
-        Classes/GUI/tinyxml/tinyxml2.h
+        tinyxml/tinyxml2.cpp
+        tinyxml/tinyxml2.h
         Classes/GameLogic/TileType.h
         Classes/GUI/WeaponGUI.cpp
         Classes/GUI/WeaponGUI.h
@@ -63,10 +63,6 @@ set(SOURCE_FILES startup.cpp
         Classes/GameLogic/Castle.h
         Classes/GameLogic/Lain.cpp
         Classes/GameLogic/Lain.h
-        Classes/GameLogic/ITimer.cpp
-        Classes/GameLogic/ITimer.h
-        Classes/GUI/MyTimer.cpp
-        Classes/GUI/MyTimer.h
         Classes/GUI/MapObject.cpp
         Classes/GUI/MapObject.h
         Classes/GameLogic/Tower.h

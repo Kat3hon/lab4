@@ -8,8 +8,10 @@
 #include <memory>
 #include <vector>
 
+//! Tower that shoots.
 class Tower : public Weapon {
 
+    /// Current level of a tower.
     int level = 1;
 
     /// Fire rate of the tower, in milliseconds.

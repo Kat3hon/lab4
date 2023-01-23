@@ -14,11 +14,6 @@ template <class T>
 class Edge;
 
 
-
-/////////////////////////////////////////////////////////////////////
-//                      GENERAL GRAPH CLASS                        //
-/////////////////////////////////////////////////////////////////////
-
 ///     This class represents a general graph. This graph is implemented
 ///     in an adjacency list format.
 template <class T>
@@ -146,12 +141,6 @@ public:
         }
     }
 };
-
-
-/////////////////////////////////////////////////////////////////////
-//                            EDGE CLASS                           //
-/////////////////////////////////////////////////////////////////////
-
 
 /// This class represents the edges of the graph.
 template <class T>

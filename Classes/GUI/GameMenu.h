@@ -7,7 +7,6 @@
 #include "ShopElement.h"
 #include "Level.h"
 #include "WeaponGUI.h"
-#include "MyTimer.h"
 
 #include <string>
 #include <memory>
@@ -101,8 +100,6 @@ class GameMenu : public Scene {
 
     void updateBindings();
 
-    MyTimer timer;
-
     std::unordered_map<ElementType, sf::Rect<int>> towers_textures_coords;
     std::unordered_map<ElementType, sf::Rect<int>> trap_textures_coords;
     sf::Texture tileset;
@@ -112,7 +109,7 @@ class GameMenu : public Scene {
 public:
 
     explicit GameMenu(std::string levelName)
-            : Scene(), level_name(std::move(levelName)), main_game(timer) {
+            : Scene(), level_name(std::move(levelName)) {
         try {
             map.loadFromFile("assets/"+level_name+"/"+level_name+".tmx");
         }

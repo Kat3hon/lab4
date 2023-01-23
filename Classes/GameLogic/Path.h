@@ -15,6 +15,7 @@
 #include <SFML/Graphics/VertexArray.hpp>
 #include <SFML/System/Vector2.hpp>
 
+//! Path for enemies.
 class Path : public sf::Drawable, public sf::Transformable {
 
     std::vector<Tile> tiles;

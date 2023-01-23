@@ -2,6 +2,11 @@
 
 #include <iostream>
 
+/**
+ * @brief Hardcode for a path.
+ * @param num - a number of a path.
+ */
+
 void Path::initialize(unsigned int num) {
 
     if (num == 0) {
@@ -26,6 +31,10 @@ void Path::initialize(unsigned int num) {
 
 }
 
+/**
+ * @return Enemy spawn point.
+ */
+
 sf::Vector2<int> Path::getEnemySpawnTileCoordinate() const {
     if (enemyPathingPoints.empty()) {
         throw std::logic_error("No enemy spawn point set");
@@ -33,6 +42,10 @@ sf::Vector2<int> Path::getEnemySpawnTileCoordinate() const {
 
     return *enemyPathingPoints.begin();
 }
+
+/**
+ * @return Enemy final point.
+ */
 
 sf::Vector2<int> Path::getEnemyTargetTileCoordinate() const {
     if (enemyPathingPoints.empty()) {
@@ -42,6 +55,11 @@ sf::Vector2<int> Path::getEnemyTargetTileCoordinate() const {
     return *enemyPathingPoints.end();
 }
 
+/**
+ * @param pathIndex - a number of a point on a path.
+ * @return Enemy's next point.
+ */
+
 sf::Vector2<int> Path::getEnemyPathTileCoordinate(unsigned int pathIndex) const {
 
     if(pathIndex >= enemyPathingPoints.size()) {
@@ -50,6 +68,12 @@ sf::Vector2<int> Path::getEnemyPathTileCoordinate(unsigned int pathIndex) const 
 
     return enemyPathingPoints[pathIndex];
 }
+
+/**
+ * @brief Sets a direction for an enemy.
+ * @param currentPosition - current position of an enemy.
+ * @param targetPosition - current target position for an enemy.
+ */
 
 Direction Path::determineDirection(sf::Vector2<float> currentPosition, sf::Vector2<float> targetPosition) const {
     std::cout << targetPosition.x << " " << targetPosition.y << " and ";

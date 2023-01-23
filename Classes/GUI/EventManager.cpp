@@ -2,9 +2,9 @@
 #include <SFML/Window/Event.hpp>
 
 /**
- * @brief htgdghdhgdgdhgd
- * @param window  - jsahfgjhasfgnsfgh
- * @return storage
+ * @brief Checks for new events from param, is being called once a frame.
+ * @param window - An object via new events are collected.
+ * @return An updated storage with new events.
  */
 EventStorage *EventManager::checkForEvents(sf::RenderWindow &window) {
     sf::Event currentEvent{};
@@ -18,6 +18,9 @@ EventStorage *EventManager::checkForEvents(sf::RenderWindow &window) {
     return &storage;
 }
 
+/**
+ * @brief Clears all previous events from the bag, should be used before all other methods
+ */
 void EventManager::clear() {
     storage.clear();
 }

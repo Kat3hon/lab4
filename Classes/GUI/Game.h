@@ -6,6 +6,7 @@
 #include "EventManager.h"
 #define DELTA_TICKS 60
 
+//! Engine of a game.
 class Game: sf::NonCopyable {
 
     /// Main window of GUI
@@ -23,20 +24,15 @@ class Game: sf::NonCopyable {
 
 public:
 
-    /// Sets the game icon, font, music, scene, frame limit
     Game();
 
     ~Game() = default;
 
-    /// Returns the game main window
     sf::RenderWindow *getWindow();
 
-    /// Returns the game scene_manager
     SceneManager *getSceneManager();
 
-    /// Starts the main loop of the game
     void run();
 
-    ///Quits the game and the main window
     void exit();
 };

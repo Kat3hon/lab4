@@ -4,14 +4,17 @@
 
 class GameObject: public sf::Transformable, public sf::Drawable {
 
+    /// Width of an object.
     float width;
+
+    /// Height of an object.
     float height;
 
 public:
 
     GameObject() = default;
 
-    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override {}
+    void draw(sf::RenderTarget& target, sf::RenderStates states) const override {}
 
     bool collidesWith(GameObject * other);
 

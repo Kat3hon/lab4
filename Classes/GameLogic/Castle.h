@@ -2,6 +2,7 @@
 
 #include "Enemy.h"
 
+//! A storage for health of a player.
 class Castle {
 
     unsigned int health = 500;

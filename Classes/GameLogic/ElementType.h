@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/System.hpp>
 
+//! Possible element types.
 enum ElementType : sf::Uint8 {
     ///Base elements
     Hydro,

@@ -14,6 +14,7 @@
 
 #include <SFML/System/Vector2.hpp>
 
+//! Enemy of a game.
 class Enemy : public GameObject, public std::enable_shared_from_this<Enemy> {
 
 public:
@@ -26,7 +27,7 @@ private:
     /// Sprite of the enemy. Texture being provided by parent class
     sf::Sprite sprite;
 
-//    /// Healthbars
+    /// Healthbars
     sf::RectangleShape back_ground_healthbar;
     sf::RectangleShape fore_ground_healthbar;
 
@@ -96,7 +97,7 @@ public:
 
     void setWeakness(unsigned int var) { weakness = var; }
 
-    explicit Enemy(unsigned int health, std::string  name_var, unsigned int goldWorth = 10, bool isBoss = false);
+    explicit Enemy(unsigned int health, std::string  name_var, unsigned int goldWorth = 10);
 
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
@@ -129,7 +130,5 @@ public:
     void takeEffect(ElementType type);
 
     void tickEffect();
-
-    void draw(sf::RenderTarget &target, sf::RenderStates states);
 };
 

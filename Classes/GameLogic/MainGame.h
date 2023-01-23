@@ -4,11 +4,12 @@
 #include "WeaponManager.h"
 #include "Castle.h"
 #include "Lain.h"
-#include "ITimer.h"
 
 #include <memory>
 #include <functional>
 
+
+//! An engine of a game logic.
 class MainGame {
 
     /// Initial gold = 1000
@@ -23,9 +24,6 @@ class MainGame {
     /// Contaiters for enemies
     std::vector<class Lain> lains;
 
-    /// Timer for a game
-    const ITimer& timer;
-
     /// Weapon handler
     WeaponManager weapon_manager;
 
@@ -33,9 +31,6 @@ class MainGame {
     bool canBeCompressedTile(const std::vector<Tile> &vec, int x, int y);
 
 public:
-
-    explicit MainGame(const ITimer& timer_var):timer(timer_var) {
-    }
 
     void update();
 
@@ -61,7 +56,7 @@ public:
 
     [[nodiscard]] std::vector<Lain> getLains() const;
 
-    void setPath(const std::vector<Tile>& vec, unsigned int width = 1, unsigned int height = 1);
+    void setPath(const std::vector<Tile>& vec);
 
     void nextWave();
 

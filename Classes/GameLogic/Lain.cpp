@@ -1,10 +1,20 @@
 #include "Lain.h"
 #include "MainGame.h"
 
+/**
+ * @brief Updates enemy manager of that lain.
+ */
+
 void Lain::update() {
     enemy_manager.update();
     enemy_manager.handleEnemyPathing(path);
 }
+
+/**
+ * @brief Spawn enemies from that lain.
+ * @param wave_manager - Wave manager for that lain.
+ * @param instance - Main Game menu ptr.
+ */
 
 void Lain::spawnEnemies(WaveManager& wave_manager, MainGame* instance) {
     // We need to check if we are eligible to spawn enemies or not.
@@ -20,9 +30,20 @@ void Lain::spawnEnemies(WaveManager& wave_manager, MainGame* instance) {
     }
 }
 
+/**
+ * @brief Draws every enemy from that lain.
+ * @param target - an SFML object that will draw.
+ */
+
 void Lain::draw(sf::RenderTarget& target) const {
     enemy_manager.draw(target);
 }
+
+/**
+ * @brief Spawn an enemy.
+ * @param enemy - an enemy that will be spawned.
+ * @param instance - a Main Game ptr.
+ */
 
 void Lain::spawnEnemy(const Enemy::Ptr &enemy, MainGame* instance) {
     enemy_manager.addEnemy(enemy);
@@ -36,9 +57,18 @@ void Lain::spawnEnemy(const Enemy::Ptr &enemy, MainGame* instance) {
     enemy->setEnemyDeadHandler(std::bind(&MainGame::onEnemyKilled, instance, std::placeholders::_1));
 }
 
+/**
+ * @return Enemy manager of that lain.
+ */
+
 EnemyManager *Lain::getEnemyManager() {
     return &enemy_manager;
 }
+
+/**
+ * @brief Sets a path for that lain.
+ * @param num - a number of path.
+ */
 
 void Lain::setPath(unsigned int num) {
     path.initialize(num);

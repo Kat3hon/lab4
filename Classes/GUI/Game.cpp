@@ -1,7 +1,10 @@
 #include "MainMenu.h"
 #include "Game.h"
 
-//Game* Game::instance = nullptr;
+
+/**
+ * @brief Sets the game icon, font, music, scene, frame limit
+ */
 
 Game::Game(): window(sf::VideoMode(600, 360), "MYFAROG", sf::Style::Titlebar | sf::Style::Close) {
 
@@ -29,6 +32,10 @@ Game::Game(): window(sf::VideoMode(600, 360), "MYFAROG", sf::Style::Titlebar | s
     scene_manager.setScene<MainMenu>();
 
 }
+
+/**
+ * @brief Starts the main loop of the game.
+ */
 
 void Game::run() {
     sf::Clock clock;
@@ -64,13 +71,25 @@ void Game::run() {
     }
 }
 
+/**
+ * @return A SFML object of a main window of a game.
+ */
+
 sf::RenderWindow *Game::getWindow() {
     return &window;
 }
 
+/**
+ * @return A scene manager of an engine.
+ */
+
 SceneManager *Game::getSceneManager() {
     return &scene_manager;
 }
+
+/**
+ * @brief Closes the game.
+ */
 
 void Game::exit() {
     window.close();

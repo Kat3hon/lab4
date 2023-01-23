@@ -1,7 +1,10 @@
 #include "MainGame.h"
 
 #include <functional>
-#include <iostream>
+
+/**
+ * @brief Updates a main game, its weapon managers and lains.
+ */
 
 void MainGame::update() {
     for (auto &it : lains) {
@@ -12,9 +15,17 @@ void MainGame::update() {
     }
 }
 
+/**
+ * @brief Adds gold.
+ */
+
 void MainGame::addGold(unsigned int amount) {
     gold += amount;
 }
+
+/**
+ * @brief Substracts gold.
+ */
 
 void MainGame::substractGold(unsigned int amount) {
     if (amount > gold) {
@@ -24,21 +35,42 @@ void MainGame::substractGold(unsigned int amount) {
     gold -= amount;
 }
 
+/**
+ * @brief Sets gold.
+ */
+
 void MainGame::setGold(unsigned int amount) {
     gold = amount;
 }
+
+/**
+ * @return Gold of a player.
+ */
 
 unsigned int MainGame::getGold() const {
     return gold;
 }
 
+/**
+ * @return Weapon manager.
+ */
+
 WeaponManager * MainGame::getWeaponManager() {
     return &weapon_manager;
 }
 
+/**
+ * @return Wave manager.
+ */
+
 WaveManager * MainGame::getWaveManager() {
     return &wave_manager;
 }
+
+/**
+ * @brief Callback for a main game when sm enemy is killed.
+ * @param enemy - enemy that should be killed.
+ */
 
 void MainGame::onEnemyKilled(const Enemy::Ptr &enemy) {
     for (auto& it: lains) {
@@ -47,6 +79,11 @@ void MainGame::onEnemyKilled(const Enemy::Ptr &enemy) {
     addGold(wave_manager.getCurrentWaveNo() * 5 + 5);
 }
 
+/**
+ * @brief Call back for a main game when sm enemy reaches a castle.
+ * @param enemy - enemy that reaches a castle.
+ */
+
 void MainGame::onEnemyDestination(const Enemy::Ptr &enemy) {
     castle.substractHealth(enemy->getHealth());
     for (auto &it: lains) {
@@ -54,13 +91,28 @@ void MainGame::onEnemyDestination(const Enemy::Ptr &enemy) {
     }
 }
 
+/**
+ * @return a Castle object.
+ */
+
 Castle MainGame::getCastle() const {
     return castle;
 }
 
+/**
+ * @return a Lains object.
+ */
+
 std::vector<Lain> MainGame::getLains() const {
     return lains;
 }
+
+/**
+ * @brief Checks if that tile can be compressed into one point or not.
+ * @param vec - a vector if tiles
+ * @param x - a left bound of that tile.
+ * @param y - a right bound of that tile.
+ */
 
 bool MainGame::canBeCompressedTile(const std::vector<Tile>& vec, int x, int y) {
     bool first = false, second = false, third = false;
@@ -75,7 +127,12 @@ bool MainGame::canBeCompressedTile(const std::vector<Tile>& vec, int x, int y) {
     return first && second && third;
 }
 
-void MainGame::setPath(const std::vector<Tile>& vec, unsigned int width, unsigned int height) {
+/**
+ * @brief Sets a path from tile vector.
+ * @param vec -  a vector if tiles.
+ */
+
+void MainGame::setPath(const std::vector<Tile>& vec) {
     int count_lains_tiles = 0;
     std::vector<sf::Vector2<int>> compressed_tiles;
     std::vector<sf::Vector2<int>> pathing_points;
@@ -95,6 +152,10 @@ void MainGame::setPath(const std::vector<Tile>& vec, unsigned int width, unsigne
     //hardcode
 
 }
+
+/**
+ * @brief Changes a wave.
+ */
 
 void MainGame::nextWave() {
     wave_manager.forceWave();

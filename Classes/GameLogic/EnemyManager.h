@@ -14,13 +14,21 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 
+//! Manager for enemies pathing.
 class EnemyManager {
 
     void cleanUp();
 
+    /// Vector of enemies that have not stepped.
     std::vector<Enemy::Ptr> enemies;
+
+    /// Vector of enemies that have already stepped.
     std::vector<Enemy::Ptr> enemies_after_step;
+
+    /// Enemy texture coordinates.
     std::unordered_map<std::string, sf::Rect<int>> enemy_textures_coords;
+
+    /// Enemy tileset.
     sf::Texture enemy_tileset;
 
 public:
@@ -34,9 +42,6 @@ public:
     void addEnemy(const Enemy::Ptr &enemy);
 
     std::size_t getEnemyCount();
-
-    /// Gets the enemy which is most advanced.
-    Enemy::Ptr getMostProgressedEnemy();
 
     void handleEnemyPathing(const Path& path);
 

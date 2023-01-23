@@ -3,7 +3,14 @@
 #include <cmath>
 #include <utility>
 
-Enemy::Enemy(unsigned int health, std::string name_var, unsigned int goldWorth, bool isBoss)
+/**
+ * @brief Sets enemy's health, name and sprite.
+ * @param health - an amount of health to be setted.
+ * @param name_var - a name of an enemy.
+ * @param goldWorth - an amount of gold that player gets after killing an enemy.
+ */
+
+Enemy::Enemy(unsigned int health, std::string name_var, unsigned int goldWorth)
         : GameObject(), health(health), name(std::move(name_var)), gold_worth(goldWorth), progress_value(0),
           pathing_index(0), moveX(0.f), moveY(0.f), distance(0.f) {
     initial_health = health;
@@ -18,6 +25,12 @@ Enemy::Enemy(unsigned int health, std::string name_var, unsigned int goldWorth, 
     back_ground_healthbar.setPosition(-HEALTH_BAR_LENGTH / 2.f, -20.f);
 }
 
+/**
+ * @brief Draws an enemy.
+ * @param target - an object that draws.
+ * @param states - states for drawing with SFML.
+ */
+
 void Enemy::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     states.transform *= getTransform();
 
@@ -29,6 +42,11 @@ void Enemy::draw(sf::RenderTarget &target, sf::RenderStates states) const {
         target.draw(effect_name, states);
     }
 }
+
+/**
+ * @brief Substracts health from an enemy.
+ * @param damage - an amount that be substracted from enemy's health.
+ */
 
 void Enemy::takeDamage(unsigned int damage) {
     if (damage*critical_damage*weakness >= health) {
@@ -45,6 +63,11 @@ void Enemy::takeDamage(unsigned int damage) {
 }
 
 #include <iostream>
+
+/**
+ * @brief Sets effect on an enemy.
+ * @param type - an element type to be setted.
+ */
 
 void Enemy::takeEffect(ElementType type) {
     if (current_effect == None) {
@@ -173,6 +196,10 @@ void Enemy::takeEffect(ElementType type) {
     }
 }
 
+/**
+ * @brief Does the element reaction and changes an element.
+ */
+
 void Enemy::tickEffect() {
    if (current_effect == None)// || current_effect == Pyro || current_effect == Hydro ||
 //        current_effect == Cryo || current_effect == Electro || current_effect == Dendro)
@@ -258,13 +285,27 @@ void Enemy::tickEffect() {
     }
 }
 
+/**
+ * @return Health of an enemy.
+ */
+
 unsigned int Enemy::getHealth() const {
     return health;
 }
 
+/**
+ * @return Progress of enemy pathing.
+ */
+
 unsigned int Enemy::getProgress() const {
     return progress_value;
 }
+
+/**
+ * @brief Sets texture.
+ * @param texture - a SFML texture to set.
+ * @param texCoords - a SFML coordinated of a rectangle with textures.
+ */
 
 void Enemy::setTexture(const sf::Texture &texture, const sf::Rect<int> &texCoords) {
     sprite.setTexture(texture);
@@ -274,6 +315,10 @@ void Enemy::setTexture(const sf::Texture &texture, const sf::Rect<int> &texCoord
     // Since that's more convenient for us.
     sprite.setOrigin(texCoords.width / 2.f, texCoords.height / 2.f);
 }
+
+/**
+ * @brief Stops an enemy.
+*/
 
 void Enemy::step() {
     if (distance <= 0) {
@@ -287,9 +332,18 @@ void Enemy::step() {
     move(moveX, moveY);
 }
 
+/**
+  * @return Pathing index of an enemy.
+ */
+
 unsigned int Enemy::getPathingIndex() const {
     return pathing_index;
 }
+
+/**
+ * @brief Sets direction.
+ * @param direction - en enum type of direction.
+ */
 
 void Enemy::setDirection(Direction direction, sf::Vector2<float> targetPosition) {
     pathing_index++;
@@ -334,25 +388,50 @@ void Enemy::setDirection(Direction direction, sf::Vector2<float> targetPosition)
     }
 }
 
+/**
+ * @brief Checks if enemy needs a new path or not.
+ * @return True, if distance <= 0, False, otherwise.
+ */
+
 bool Enemy::needsNewPath() const {
     return distance <= 0.f;
 }
+
+/**
+ * @brief Sets a function that triggers when enemy reaches a distination.
+ */
 
 void Enemy::setGoalHandler(Enemy::EnemyGoalHandler handler) {
     goal_handler = std::move(handler);
 }
 
+/**
+ * @brief Trigger a goal handler.
+ */
+
 void Enemy::reachGoal() {
     goal_handler(shared_from_this());
 }
+
+/**
+ * @brief Sets a function that triggers when enemy dies.
+ */
 
 void Enemy::setEnemyDeadHandler(Enemy::EnemyDeadHandler handler) {
     enemy_dead_handler = std::move(handler);
 }
 
+/**
+ * @brief Kills an enemy.
+*/
+
 void Enemy::kill() {
     enemy_dead_handler(shared_from_this());
 }
+
+/**
+ * @return Gold that player gets after killing that enemy.
+ */
 
 unsigned int Enemy::getGoldWorth() const {
     return gold_worth;
